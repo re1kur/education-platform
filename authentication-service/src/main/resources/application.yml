@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: auth
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:8761/eureka/
+  instance:
+    hostname: localhost
+
+server:
+  port: 0
