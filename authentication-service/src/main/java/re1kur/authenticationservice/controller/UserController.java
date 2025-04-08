@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import re1kur.authenticationservice.dto.UserAuthentication;
 import re1kur.authenticationservice.dto.UserVerification;
 import re1kur.authenticationservice.dto.UserWriteDto;
-import re1kur.authenticationservice.exception.UserLoginException;
+import re1kur.authenticationservice.exception.UserAuthenticationException;
 import re1kur.authenticationservice.exception.UserRegistrationException;
 import re1kur.authenticationservice.exception.UserVerificationException;
 import re1kur.authenticationservice.jwt.entity.Token;
@@ -23,8 +23,8 @@ public class UserController {
         return ResponseEntity.ok("The user is registered successfully");
     }
 
-    @PostMapping("authenticate")
-    public ResponseEntity<String> authenticate(@RequestBody UserAuthentication user) throws UserLoginException {
+    @PostMapping("login")
+    public ResponseEntity<String> authenticate(@RequestBody UserAuthentication user) throws UserAuthenticationException {
         Token token = service.authenticate(user);
         return ResponseEntity.ok(token.toString());
     }

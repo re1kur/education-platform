@@ -5,11 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import re1kur.authenticationservice.dto.UserAuthentication;
-import re1kur.authenticationservice.dto.UserDto;
 import re1kur.authenticationservice.dto.UserVerification;
 import re1kur.authenticationservice.dto.UserWriteDto;
 import re1kur.authenticationservice.entity.User;
-import re1kur.authenticationservice.exception.UserLoginException;
+import re1kur.authenticationservice.exception.UserAuthenticationException;
 import re1kur.authenticationservice.exception.UserRegistrationException;
 import re1kur.authenticationservice.exception.UserVerificationException;
 import re1kur.authenticationservice.jwt.JwtProvider;
@@ -18,7 +17,6 @@ import re1kur.authenticationservice.mapper.UserMapper;
 import re1kur.authenticationservice.repository.UserRepository;
 import re1kur.authenticationservice.service.UserService;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,20 +38,15 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public Token authenticate(UserAuthentication user) throws UserLoginException {
+    public Token authenticate(UserAuthentication user) throws UserAuthenticationException {
         Optional<User> mayBeUser = repo.findByEmailAndPassword(user.email(), user.password());
         if (mayBeUser.isPresent()) {
-            if (!mayBeUser.get().getIsEmailVerified())
-                throw new UserLoginException("This user's email is not verified.");
-            Token jwt = jwtProvider.provide(mayBeUser.get());
-            return jwt;
+            User authUser = mayBeUser.get();
+            if (!authUser.getIsEmailVerified())
+                throw new UserAuthenticationException("This user's email is not verified.");
+            return jwtProvider.provide(authUser);
         }
-        throw new UserLoginException("User not found");
-    }
-
-    @Override
-    public List<UserDto> getUsers() {
-        return repo.findAll().stream().map(mapper::read).toList();
+        throw new UserAuthenticationException("User not found");
     }
 
     @Override

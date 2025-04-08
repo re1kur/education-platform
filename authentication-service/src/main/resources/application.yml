@@ -20,7 +20,11 @@ eureka:
 
 server:
   port: 0
-
+custom:
+  jwt:
+    keySize: 2048
+    privateKeyPath: /tmp/private.key
+    publicKeyPath: /tmp/public.key
 #
 #logging:
 #  pattern:

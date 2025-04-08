@@ -1,9 +1,7 @@
 package re1kur.authenticationservice.jwt.entity;
 
-public record Token(String header, String payload, String signature) {
+public record Token(String body) {
     public String toString() {
-        return this.header() + "."
-               + this.payload() + "."
-               + this.signature();
+        return this.body;
     }
 }
