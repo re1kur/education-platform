@@ -1,0 +1,6 @@
+-- --liquibase formatted sql
+--
+-- --changeset re1kur:1
+-- CREATE TABLE IF NOT EXISTS tasks(
+--
+-- );

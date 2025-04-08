@@ -55,6 +55,7 @@ public class DefaultUserService implements UserService {
         Optional<User> mayBeUser = repo.findByEmail(user.email());
         if (mayBeUser.isPresent()) {
             User verifyUser = mayBeUser.get();
+            if (verifyUser.getIsEmailVerified()) throw new UserVerificationException("This user already verified.");
             verifyUser.setIsEmailVerified(true);
             repo.save(verifyUser);
         }

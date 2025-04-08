@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: task-service
+
+  liquibase:
+    change-log: db/changelog/db.changelog-master.yml
+
+  docker:
+    compose:
+      enabled: true
+      file: ./task-service/docker-compose.yml

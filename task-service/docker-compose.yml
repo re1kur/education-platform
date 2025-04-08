@@ -1,0 +1,10 @@
+services:
+  gpn_case_task_db:
+    image: postgres:17
+    container_name: gpn.case.task.database
+    environment:
+      POSTGRES_DB: gpnCaseTaskDatabase
+      POSTGRES_USER: gpnUser
+      POSTGRES_PASSWORD: yetAnotherPassword
+    ports:
+      - '5434:5432'
