@@ -13,6 +13,7 @@ import re1kur.authenticationservice.jwt.entity.Token;
 import re1kur.authenticationservice.service.UserService;
 
 @RestController
+@RequestMapping("api")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService service;

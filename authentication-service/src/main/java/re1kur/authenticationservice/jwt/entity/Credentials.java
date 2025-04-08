@@ -16,6 +16,9 @@ public class Credentials {
         claims.put("sub", user.getId().toString());
         claims.put("email", user.getEmail());
         claims.put("verified", user.getIsEmailVerified().toString());
-        claims.put("scope", user.getRoles().stream().map(Role::getName).toList().toString());
+        claims.put("scope", user.getRoles().stream()
+                .map(Role::getName)
+                .toList()
+                .toString().replace("[", "").replace("]", ""));
     }
 }

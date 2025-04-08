@@ -1,6 +1,6 @@
 spring:
   application:
-    name: auth
+    name: auth-service
   docker:
     compose:
       enabled: true
