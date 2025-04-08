@@ -1,6 +1,15 @@
 spring:
   application:
     name: auth
+  docker:
+    compose:
+      enabled: true
+      file: ./authentication-service/docker-compose.yml
+  sql:
+    init:
+      mode: always
+  liquibase:
+    change-log: db/changelog/db.changelog-master.yml
 
 eureka:
   client:
@@ -11,3 +20,8 @@ eureka:
 
 server:
   port: 0
+
+#
+#logging:
+#  pattern:
+#    console: "%d{HH:mm:ss} | %-5level | %logger{1.} | %msg%n"
