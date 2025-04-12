@@ -1,0 +1,6 @@
+services:
+  gpn-case-cache-database:
+    image: redis:latest
+    container_name: gpn.case.cache.database
+    ports:
+      - "6379:6379"

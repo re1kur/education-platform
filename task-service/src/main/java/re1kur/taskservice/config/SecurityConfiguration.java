@@ -28,7 +28,8 @@ public class SecurityConfiguration {
         return http
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("/test-api").permitAll()
-                        .requestMatchers("/test-api/token").hasAuthority("USER")
+                        .requestMatchers("/test-api/token").hasAnyAuthority("USER", "ADMIN")
+                        .requestMatchers("/api/tracks/create", "api/tasks/create").hasAuthority("ADMIN")
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth -> oauth.jwt(Customizer.withDefaults()))
                 .httpBasic(AbstractHttpConfigurer::disable)

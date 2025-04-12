@@ -8,4 +8,5 @@ public interface UserMapper {
     User write(UserWriteDto from);
 
     UserDto read(User user);
+
 }

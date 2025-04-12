@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: verification-service
+  docker:
+    compose:
+      file: verification-service/docker-compose.yml
+  rabbitmq:
+    username: gpnUser
+    password: anotherOnePassword
+    virtual-host: vhost
+
+server:
+  port: 0
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+custom:
+  message-broker:
+    exchange: verification.service.exchange
+#    listen-queues:
+#      user-registration:
+#        name: user.registration.queue
+    publish-queues:
+      verification:
+        name: user.verification.queue
+        routing-key: user.is.verified
+      code-generation:
+        name: code.generation.queue
+        routing-key: code.is.generated
+  services:
+    authentication-service:
+      url: http://authentication-service
+  verification-code:
+    ttl: 30

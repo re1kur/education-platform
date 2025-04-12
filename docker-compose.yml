@@ -1,0 +1,11 @@
+services:
+  message_broker_rabbitmq:
+    env_file: .env
+    image: rabbitmq:latest
+    container_name: gpn.case.rabbitmq
+    restart: unless-stopped
+    volumes:
+      - ./rabbitmq:/var/lib/rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"

@@ -1,4 +1,6 @@
 target/
+rabbitmq/
+
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -36,3 +38,5 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+.env

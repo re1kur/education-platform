@@ -1,31 +1,37 @@
 spring:
   application:
-    name: auth-service
+    name: authentication-service
   docker:
     compose:
       enabled: true
       file: ./authentication-service/docker-compose.yml
-  sql:
-    init:
-      mode: always
   liquibase:
     change-log: db/changelog/db.changelog-master.yml
-
+  rabbitmq:
+    username: gpnUser
+    password: anotherOnePassword
+    virtual-host: vhost
+  jpa:
+    open-in-view: false
 eureka:
   client:
     service-url:
-      defaultZone: http://${eureka.instance.hostname}:8761/eureka/
-  instance:
-    hostname: localhost
+      defaultZone: http://localhost:8761/eureka/
 
 server:
   port: 0
+
 custom:
+  rabbitmq:
+    exchange: authentication.service.exchange
+    listen-queues:
+      user-verification:
+        name: user.verification.queue
+    publish-queues:
+      user-registration:
+        name: user.registration.queue
+        routing-key: user.is.registered
   jwt:
     keySize: 2048
     privateKeyPath: /tmp/private.key
     publicKeyPath: /tmp/public.key
-#
-#logging:
-#  pattern:
-#    console: "%d{HH:mm:ss} | %-5level | %logger{1.} | %msg%n"
