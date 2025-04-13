@@ -1,14 +1,15 @@
 spring:
   application:
     name: task-service
-
+  jpa:
+    open-in-view: false
   liquibase:
     change-log: db/changelog/db.changelog-master.yml
 
   docker:
     compose:
       enabled: true
-      file: ./task-service/docker-compose.yml
+      file: task-service/docker-compose.yml
 eureka:
   client:
     service-url:

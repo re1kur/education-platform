@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Data
@@ -19,8 +19,8 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     private String email;
 

@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: coins-service
+  docker:
+    compose:
+      file: coins-service/docker-compose.yml
+  liquibase:
+    change-log: db/changelog/db.changelog-master.yml
+  rabbitmq:
+    username: gpnUser
+    password: anotherOnePassword
+    virtual-host: vhost
+  jpa:
+    open-in-view: false
+
+server:
+  port: 0
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+custom:
+  message-broker:
+    listen-queues:
+      user-registration:
+        name: user.registration.queue
+  jwt:
+    publicKeyPath: /tmp/public.key
+
+

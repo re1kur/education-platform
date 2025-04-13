@@ -1,10 +1,12 @@
 package re1kur.mailservice.mapper;
 
 import org.springframework.mail.SimpleMailMessage;
-import re1kur.mailservice.dto.VerificationCodeGenerationEvent;
+import re1kur.mailservice.event.UserRegistrationEvent;
+import re1kur.mailservice.event.VerificationCodeGenerationEvent;
 
 public interface EventMapper {
-    SimpleMailMessage message(VerificationCodeGenerationEvent event);
+    SimpleMailMessage codeMessage(String message);
 
     SimpleMailMessage welcomeMessage(String email);
+
 }

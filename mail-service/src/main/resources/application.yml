@@ -4,8 +4,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 465
-    username: <>
-    password: <>
+    username:
+    password:
     ssl:
       enabled: true
   rabbitmq:

@@ -39,7 +39,7 @@ public class DefaultAuthenticationService implements AuthenticationService {
             throw new UserRegistrationException("User with this email already exists.");
         User entity = mapper.write(user);
         repo.save(entity);
-        publisher.publishUserRegistrationEvent(entity.getEmail());
+        publisher.publishUserRegistrationEvent(entity);
     }
 
     @Override

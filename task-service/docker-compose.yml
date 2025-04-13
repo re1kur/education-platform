@@ -1,7 +1,8 @@
 services:
   gpn_case_task_db:
-    env_file: .env
+    env_file:
+      - .env
     image: postgres:17
     container_name: gpn.case.task.database
     ports:
-      - '5434:5432'
+      - '5435:5432'
