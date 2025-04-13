@@ -3,7 +3,7 @@ package re1kur.taskservice.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import re1kur.taskservice.dto.TrackWriteDto;
+import re1kur.taskservice.dto.TrackPayload;
 import re1kur.taskservice.mapper.TrackMapper;
 import re1kur.taskservice.repository.TrackRepository;
 import re1kur.taskservice.service.TrackService;
@@ -16,7 +16,7 @@ public class DefaultTrackService implements TrackService {
 
     @Override
     @Transactional
-    public void create(TrackWriteDto dto) {
+    public void create(TrackPayload dto) {
         repo.save(mapper.write(dto));
     }
 }

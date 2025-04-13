@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
-import static jakarta.persistence.GenerationType.UUID;
 
 @Entity
 @Table(name = "transactions")
@@ -19,10 +19,10 @@ import static jakarta.persistence.GenerationType.UUID;
 @NoArgsConstructor
 public class Transaction {
     @Id
-    @GeneratedValue(strategy = UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private UUID id;
 
-    private String userId;
+    private UUID userId;
 
     @Column(insertable = false)
     private LocalDateTime date;

@@ -1,10 +1,13 @@
 package re1kur.taskservice.service;
 
-import re1kur.taskservice.dto.TaskWriteDto;
+import re1kur.taskservice.dto.TaskDto;
+import re1kur.taskservice.dto.TaskPayload;
+
+import java.util.List;
 
 
 public interface TaskService {
-    String getList();
+    List<TaskDto> getList();
 
-    void create(TaskWriteDto task);
+    void create(TaskPayload payload);
 }

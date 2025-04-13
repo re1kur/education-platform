@@ -1,7 +1,7 @@
 package re1kur.taskservice.service;
 
-import re1kur.taskservice.dto.TrackWriteDto;
+import re1kur.taskservice.dto.TrackPayload;
 
 public interface TrackService {
-    void create(TrackWriteDto dto);
+    void create(TrackPayload dto);
 }

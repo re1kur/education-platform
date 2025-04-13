@@ -1,7 +1,10 @@
 package re1kur.coinsservice.service;
 
 import org.springframework.http.ResponseEntity;
+import re1kur.coinsservice.dto.TransactionDto;
+
+import java.util.List;
 
 public interface TransactionService {
-    ResponseEntity<String> getHistory(String subject);
+    ResponseEntity<List<TransactionDto>> getHistory(String subject);
 }

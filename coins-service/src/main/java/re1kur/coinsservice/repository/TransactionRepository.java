@@ -5,8 +5,9 @@ import org.springframework.stereotype.Repository;
 import re1kur.coinsservice.entity.Transaction;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
-public interface TransactionRepository extends JpaRepository<Transaction, String> {
-    List<Transaction> findAllByUserId(String userId);
+public interface TransactionRepository extends JpaRepository<Transaction, UUID> {
+    List<Transaction> findAllByUserId(UUID userId);
 }

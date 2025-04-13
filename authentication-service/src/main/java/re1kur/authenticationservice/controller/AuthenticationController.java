@@ -23,7 +23,7 @@ public class AuthenticationController {
         return ResponseEntity.ok("The user is registered successfully");
     }
 
-    @PostMapping("authenticate")
+    @PostMapping("login")
     public ResponseEntity<String> authenticate(@RequestBody UserPayload user) throws UserAuthenticationException {
         Token token = service.authenticate(user);
         return ResponseEntity.ok(token.toString());

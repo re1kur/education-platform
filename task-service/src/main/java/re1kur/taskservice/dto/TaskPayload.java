@@ -6,7 +6,7 @@ import lombok.Value;
 
 @Data
 @Value
-public class TaskWriteDto {
+public class TaskPayload {
     @Positive
     Integer trackId;
     @NotBlank

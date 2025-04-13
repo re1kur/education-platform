@@ -1,0 +1,8 @@
+services:
+  gpn_case_catalogue_db:
+    container_name: gpn.case.catalogue.database
+    env_file:
+      - .env
+    image: postgres:17
+    ports:
+      - '5436:5432'

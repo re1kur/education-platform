@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: catalogue-service
+  docker:
+    compose:
+      file: catalogue-service/docker-compose.yml
+  liquibase:
+    change-log: db/changelog/db.changelog-master.yml
+  jpa:
+    open-in-view: false
+server:
+  port: 0
+
+custom:
+  jwt:
+    public-key:
+      path: /tmp/public.key

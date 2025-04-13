@@ -2,24 +2,36 @@ package re1kur.taskservice.mapper.impl;
 
 import org.springframework.stereotype.Component;
 import re1kur.taskservice.dto.TaskDto;
-import re1kur.taskservice.dto.TaskWriteDto;
+import re1kur.taskservice.dto.TaskPayload;
 import re1kur.taskservice.entity.Task;
+import re1kur.taskservice.entity.Track;
 import re1kur.taskservice.mapper.TaskMapper;
-import re1kur.taskservice.mapper.func.ReadTaskMapFunction;
-import re1kur.taskservice.mapper.func.WriteTaskMapFunction;
 
 @Component
 public class DefaultTaskMapper implements TaskMapper {
-    private static final ReadTaskMapFunction mapReadTask = new ReadTaskMapFunction();
-    private static final WriteTaskMapFunction mapWriteTask = new WriteTaskMapFunction();
 
     @Override
     public TaskDto read(Task task) {
-        return mapReadTask.apply(task);
+        return TaskDto.builder()
+                .id(task.getId())
+                .name(task.getName())
+                .trackId(task.getTrack().getId())
+                .description(task.getDescription())
+                .level(task.getLevel())
+                .cost(task.getCost())
+                .build();
     }
 
     @Override
-    public Task write(TaskWriteDto dto) {
-        return mapWriteTask.apply(dto);
+    public Task write(TaskPayload dto) {
+        return Task.builder()
+                .name(dto.getName())
+                .track(Track.builder()
+                        .id(dto.getTrackId())
+                        .build())
+                .description(dto.getDescription())
+                .level(dto.getLevel())
+                .cost(dto.getCost())
+                .build();
     }
 }
