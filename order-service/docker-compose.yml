@@ -1,0 +1,8 @@
+services:
+  gpn.case.order.database:
+    container_name: gpn.case.order.database
+    env_file:
+      - .env
+    image: postgres:17
+    ports:
+      - '5436:5432'
