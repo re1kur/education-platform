@@ -19,7 +19,7 @@ public class DefaultListener {
     private final BalanceRepository balanceRepo;
     private final ObjectMapper serializer;
 
-    @RabbitListener(queues = "${custom.message-broker.listen-queues.user-registration.name}")
+    @RabbitListener(queues = "${custom.message-broker.listen-queues.user-registration-balance.name}")
     @SneakyThrows
     public void listenUserRegistrationQueue(String message) {
         log.info("Listening user registration queue: {}", message);

@@ -1,12 +1,10 @@
 package re1kur.mailservice.listener;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
-import re1kur.mailservice.event.UserRegistrationEvent;
 import re1kur.mailservice.service.MailService;
 
 @Component
@@ -15,7 +13,7 @@ import re1kur.mailservice.service.MailService;
 public class DefaultListener {
     private final MailService service;
 
-    @RabbitListener(queues = "${custom.rabbitmq.listen-queues.user-registration.name}")
+    @RabbitListener(queues = "${custom.rabbitmq.listen-queues.user-welcome.name}")
     @SneakyThrows
     public void listenUserRegistration(String message) {
         log.info("Listening user registration: {}", message);

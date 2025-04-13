@@ -12,11 +12,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableRabbit
 public class MQConfiguration {
-    @Value("${custom.rabbitmq.publish-queues.user-registration.name}")
-    private String userRegistrationQueue;
+    @Value("${custom.rabbitmq.publish-queues.user-registration.balance}")
+    private String userRegistrationBalanceQueue;
+
+    @Value("${custom.rabbitmq.publish-queues.user-registration.welcome}")
+    private String userWelcomeQueue;
 
     @Value("${custom.rabbitmq.publish-queues.user-registration.routing-key}")
-    private String userRegistrationQueueRoutingKey;
+    private String userRegistrationRoutingKey;
 
     @Value("${custom.rabbitmq.exchange}")
     private String authenticationServiceExchange;
@@ -27,15 +30,28 @@ public class MQConfiguration {
     }
 
     @Bean
-    public Queue userRegistrationQueue() {
-        return new Queue(userRegistrationQueue);
+    public Queue userRegistrationBalanceQueue() {
+        return new Queue(userRegistrationBalanceQueue);
     }
 
     @Bean
-    public Binding userRegistrationBinding() {
+    public Queue userWelcomeQueue() {
+        return new Queue(userWelcomeQueue);
+    }
+
+    @Bean
+    public Binding userRegistrationBalanceBinding() {
         return BindingBuilder
-                .bind(userRegistrationQueue())
+                .bind(userRegistrationBalanceQueue())
                 .to(exchange())
-                .with(userRegistrationQueueRoutingKey);
+                .with(userRegistrationRoutingKey);
+    }
+
+    @Bean
+    public Binding userWelcomeBinding() {
+        return BindingBuilder
+                .bind(userWelcomeQueue())
+                .to(exchange())
+                .with(userRegistrationRoutingKey);
     }
 }

@@ -3,6 +3,7 @@ package re1kur.authenticationservice.mq.publisher.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import re1kur.authenticationservice.entity.User;
 import re1kur.authenticationservice.mq.event.UserRegistrationEvent;
 import re1kur.authenticationservice.mq.publisher.EventPublisher;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DefaultEventPublisher implements EventPublisher {
@@ -26,6 +28,7 @@ public class DefaultEventPublisher implements EventPublisher {
     @SneakyThrows
     public void publishUserRegistrationEvent(User user) {
         UserRegistrationEvent event = new UserRegistrationEvent(user.getId().toString(), user.getEmail());
+        log.info("Publishing user registration event: {}", event);
         template.convertAndSend(exchange, userRegistrationRoutingKey, serializer.writeValueAsString(event));
     }
 }

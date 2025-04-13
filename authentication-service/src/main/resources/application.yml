@@ -29,7 +29,8 @@ custom:
         name: user.verification.queue
     publish-queues:
       user-registration:
-        name: user.registration.queue
+        welcome: user.welcome.queue
+        balance: user.registration.balance.queue
         routing-key: user.is.registered
   jwt:
     keySize: 2048

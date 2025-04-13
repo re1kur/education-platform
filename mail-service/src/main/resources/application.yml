@@ -21,8 +21,8 @@ eureka:
 custom:
   rabbitmq:
     listen-queues:
-      user-registration:
-        name: user.registration.queue
+      user-welcome:
+        name: user.welcome.queue
       code-generation:
         name: code.generation.queue
 

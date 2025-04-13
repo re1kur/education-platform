@@ -24,8 +24,8 @@ eureka:
 custom:
   message-broker:
     listen-queues:
-      user-registration:
-        name: user.registration.queue
+      user-registration-balance:
+        name: user.registration.balance.queue
   jwt:
     publicKeyPath: /tmp/public.key
 
