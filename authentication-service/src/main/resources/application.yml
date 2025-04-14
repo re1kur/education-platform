@@ -22,11 +22,13 @@ server:
   port: 0
 
 custom:
-  rabbitmq:
+  message-broker:
     exchange: authentication.service.exchange
     listen-queues:
       user-verification:
         name: user.verification.queue
+      block-user-balance-command:
+        name: block.user.balance.command
     publish-queues:
       user-registration:
         welcome: user.welcome.queue

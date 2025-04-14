@@ -1,8 +1,8 @@
 package re1kur.catalogueservice.service;
 
 import org.springframework.http.ResponseEntity;
-import re1kur.catalogueservice.dto.GoodsDto;
-import re1kur.catalogueservice.dto.UpdateCatalogueGoodsPayload;
+import dto.GoodsDto;
+import payload.UpdateCatalogueGoodsPayload;
 import re1kur.catalogueservice.exception.CatalogueGoodsExistingException;
 import re1kur.catalogueservice.exception.GoodsNotFoundException;
 

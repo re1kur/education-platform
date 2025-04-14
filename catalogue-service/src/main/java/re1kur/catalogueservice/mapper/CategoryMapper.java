@@ -1,7 +1,7 @@
 package re1kur.catalogueservice.mapper;
 
-import re1kur.catalogueservice.dto.CategoryDto;
-import re1kur.catalogueservice.dto.CategoryPayload;
+import dto.CategoryDto;
+import payload.CategoryPayload;
 import re1kur.catalogueservice.entity.Category;
 
 public interface CategoryMapper {

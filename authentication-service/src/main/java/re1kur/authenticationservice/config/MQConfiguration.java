@@ -12,16 +12,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableRabbit
 public class MQConfiguration {
-    @Value("${custom.rabbitmq.publish-queues.user-registration.balance}")
+    @Value("${custom.message-broker.publish-queues.user-registration.balance}")
     private String userRegistrationBalanceQueue;
 
-    @Value("${custom.rabbitmq.publish-queues.user-registration.welcome}")
+    @Value("${custom.message-broker.publish-queues.user-registration.welcome}")
     private String userWelcomeQueue;
 
-    @Value("${custom.rabbitmq.publish-queues.user-registration.routing-key}")
+    @Value("${custom.message-broker.publish-queues.user-registration.routing-key}")
     private String userRegistrationRoutingKey;
 
-    @Value("${custom.rabbitmq.exchange}")
+    @Value("${custom.message-broker.exchange}")
     private String authenticationServiceExchange;
 
     @Bean

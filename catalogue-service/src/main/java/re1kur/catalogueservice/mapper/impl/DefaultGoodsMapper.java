@@ -2,9 +2,9 @@ package re1kur.catalogueservice.mapper.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import re1kur.catalogueservice.dto.GoodsDto;
-import re1kur.catalogueservice.dto.GoodsPayload;
-import re1kur.catalogueservice.dto.GoodsUpdatePayload;
+import dto.GoodsDto;
+import payload.GoodsPayload;
+import payload.GoodsUpdatePayload;
 import re1kur.catalogueservice.entity.Category;
 import re1kur.catalogueservice.entity.Goods;
 import re1kur.catalogueservice.exception.CategoryNotFoundException;

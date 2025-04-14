@@ -1,3 +1,61 @@
 spring:
   application:
     name: order-service
+  docker:
+    compose:
+      file: balance-service/docker-compose.yml
+  liquibase:
+    change-log: db/changelog/db.changelog-master.yml
+  rabbitmq:
+    username: gpnUser
+    password: anotherOnePassword
+    virtual-host: vhost
+  jpa:
+    open-in-view: false
+
+server:
+  port: 0
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+custom:
+  saga:
+    exchange: saga.exchange
+    publish-queues:
+      get-goods-info-command:
+        name: get.goods.info.command
+        routing-key: order.is.created
+      block-user-balance-command:
+        name: block.user.balance.command
+        routing-key: goods.info.is.received
+      reject-order-command:
+        name: reject.order.command
+        routing-key: goods.or.balance.commands.are.failed
+      create-transaction-command:
+        name: create.transaction.command
+        routing-key: balance.is.blocked
+    handle-queues:
+      order-created:
+        name: order.created.queue
+      goods-info-received:
+        name: goods.info.received.queue
+      goods-info-receive-failed:
+        name: goods.info.receive.failed.queue
+      balance-already-blocked-queue:
+        name: balance.already.blocked.queue
+      user-balance-blocked-queue:
+        name: user.balance.blocked.queue
+      user-balance-block-failed-queue:
+        name: user.balance.block.failed.queue
+
+  message-broker:
+    exchange: order.service.exchange
+    publish-queues:
+      order-created:
+        name: order.created.queue
+        routing-key: order.created
+  jwt:
+    publicKeyPath: /tmp/public.key

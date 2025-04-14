@@ -1,8 +1,8 @@
 package re1kur.taskservice.mapper.impl;
 
 import org.springframework.stereotype.Component;
-import re1kur.taskservice.dto.TaskDto;
-import re1kur.taskservice.dto.TaskPayload;
+import dto.TaskDto;
+import payload.TaskPayload;
 import re1kur.taskservice.entity.Task;
 import re1kur.taskservice.entity.Track;
 import re1kur.taskservice.mapper.TaskMapper;

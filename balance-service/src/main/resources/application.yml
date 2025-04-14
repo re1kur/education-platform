@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: balance-service
+  docker:
+    compose:
+      file: balance-service/docker-compose.yml
+  liquibase:
+    change-log: db/changelog/db.changelog-master.yml
+  rabbitmq:
+    username: gpnUser
+    password: anotherOnePassword
+    virtual-host: vhost
+  jpa:
+    open-in-view: false
+
+server:
+  port: 0
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+custom:
+  message-broker:
+    exchange: balance.service.exchange
+    publish-queues:
+      balance-already-blocked-queue:
+        name: balance.already.blocked.queue
+        routing-key: balance.is.already.blocked
+      user-balance-blocked-queue:
+        name: user.balance.blocked.queue
+        routing-key: balance.is.blocked
+      user-balance-block-failed-queue:
+        name: user.balance.block.failed.queue
+        routing-key: balance.block.failed
+    listen-queues:
+      user-registration-balance:
+        name: user.registration.balance.queue
+      block-user-balance-command:
+        name: block.user.balance.command
+  jwt:
+    publicKeyPath: /tmp/public.key
+
+

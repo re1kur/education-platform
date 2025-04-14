@@ -2,11 +2,11 @@ package re1kur.verificationservice.controller;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import exception.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import re1kur.verificationservice.dto.VerificationPayload;
-import re1kur.verificationservice.exception.*;
+import payload.VerificationPayload;
 import re1kur.verificationservice.service.CodeService;
 
 @RestController

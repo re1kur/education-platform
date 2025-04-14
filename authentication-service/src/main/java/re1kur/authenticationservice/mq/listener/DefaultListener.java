@@ -13,7 +13,7 @@ import re1kur.authenticationservice.repository.UserRepository;
 public class DefaultListener {
     private final UserRepository repo;
 
-    @RabbitListener(queues = "${custom.rabbitmq.listen-queues.user-verification.name}")
+    @RabbitListener(queues = "${custom.message-broker.listen-queues.user-verification.name}")
     public void listenVerificationUserQueue(String email) {
         log.info("Listened verification user queue {}", email);
         User user = repo.findByEmail(email).get();

@@ -1,13 +1,12 @@
 package re1kur.verificationservice.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import re1kur.verificationservice.client.AuthenticationClient;
-import re1kur.verificationservice.dto.VerificationPayload;
+import payload.VerificationPayload;
 import re1kur.verificationservice.entity.Code;
-import re1kur.verificationservice.exception.*;
 import re1kur.verificationservice.generator.CodeGenerator;
 import lombok.RequiredArgsConstructor;
 import re1kur.verificationservice.mq.publisher.EventPublisher;
@@ -27,7 +26,7 @@ public class DefaultCodeService implements CodeService {
 
     @Override
     @Transactional
-    public ResponseEntity<String> generateCode(String email) throws UserNotFoundException, UserAlreadyVerifiedException, JsonProcessingException {
+    public ResponseEntity<String> generateCode(String email) throws UserNotFoundException, UserAlreadyVerifiedException {
         client.checkVerification(email);
         Code code = generator.generate(email);
         repo.save(code);
@@ -36,9 +35,7 @@ public class DefaultCodeService implements CodeService {
     }
 
     @Override
-    public ResponseEntity<String> verify(VerificationPayload payload)
-            throws NotFoundCodeVerificationException, ExpiredCodeVerificationException, IncorrectCodeVerification,
-            UserNotFoundException, UserAlreadyVerifiedException {
+    public ResponseEntity<String> verify(VerificationPayload payload) throws IncorrectCodeVerification, UserNotFoundException, UserAlreadyVerifiedException, NotFoundCodeVerificationException, ExpiredCodeVerificationException {
         String email = payload.email();
         client.checkVerification(email);
         Code code = repo.findById(email).orElseThrow(() -> new NotFoundCodeVerificationException("Code not found"));

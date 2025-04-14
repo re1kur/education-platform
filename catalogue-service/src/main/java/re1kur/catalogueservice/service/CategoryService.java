@@ -1,9 +1,9 @@
 package re1kur.catalogueservice.service;
 
 import org.springframework.http.ResponseEntity;
-import re1kur.catalogueservice.dto.CategoryDto;
-import re1kur.catalogueservice.dto.CategoryPayload;
-import re1kur.catalogueservice.dto.CategoryUpdatePayload;
+import dto.CategoryDto;
+import payload.CategoryPayload;
+import payload.CategoryUpdatePayload;
 import re1kur.catalogueservice.exception.CategoryAlreadyExistsException;
 import re1kur.catalogueservice.exception.CategoryNotFoundException;
 

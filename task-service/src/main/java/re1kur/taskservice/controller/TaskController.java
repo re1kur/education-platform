@@ -3,8 +3,8 @@ package re1kur.taskservice.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import re1kur.taskservice.dto.TaskDto;
-import re1kur.taskservice.dto.TaskPayload;
+import dto.TaskDto;
+import payload.TaskPayload;
 import re1kur.taskservice.service.TaskService;
 
 import java.util.List;

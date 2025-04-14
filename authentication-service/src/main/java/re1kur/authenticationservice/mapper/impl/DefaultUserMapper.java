@@ -1,10 +1,10 @@
 package re1kur.authenticationservice.mapper.impl;
 
+import payload.UserPayload;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-import re1kur.authenticationservice.dto.UserDto;
-import re1kur.authenticationservice.dto.UserWriteDto;
+import dto.UserDto;
 import re1kur.authenticationservice.entity.User;
 import re1kur.authenticationservice.mapper.UserMapper;
 
@@ -14,10 +14,10 @@ public class DefaultUserMapper implements UserMapper {
     private final BCryptPasswordEncoder encoder;
 
     @Override
-    public User write(UserWriteDto from) {
+    public User write(UserPayload from) {
         return User.builder()
-                .email(from.getEmail())
-                .password(encoder.encode(from.getPassword()))
+                .email(from.email())
+                .password(encoder.encode(from.password()))
                 .build();
     }
 

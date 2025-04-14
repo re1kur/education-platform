@@ -1,15 +1,12 @@
 package re1kur.verificationservice.client.impl;
 
+import dto.CheckVerificationResult;
+import exception.UserAlreadyVerifiedException;
+import exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import re1kur.verificationservice.client.AuthenticationClient;
-import re1kur.verificationservice.dto.ResultCheckVerification;
-import re1kur.verificationservice.exception.UserAlreadyVerifiedException;
-import re1kur.verificationservice.exception.UserNotFoundException;
 
 @Component
 @RequiredArgsConstructor
@@ -18,14 +15,14 @@ public class DefaultAuthenticationClient implements AuthenticationClient {
 
     @Override
     public void checkVerification(String email) throws UserNotFoundException, UserAlreadyVerifiedException {
-        ResultCheckVerification result = client
+        CheckVerificationResult result = client
                 .get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/api/verification")
                         .queryParam("email", email)
                         .build())
                 .retrieve()
-                .bodyToMono(ResultCheckVerification.class)
+                .bodyToMono(CheckVerificationResult.class)
                 .block();
         assert result != null;
         if (!result.isExists()) throw new UserNotFoundException("User does not exist.");

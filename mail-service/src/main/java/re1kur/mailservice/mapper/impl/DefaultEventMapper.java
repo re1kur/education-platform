@@ -1,13 +1,13 @@
 package re1kur.mailservice.mapper.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import event.UserRegistrationEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
-import re1kur.mailservice.event.UserRegistrationEvent;
-import re1kur.mailservice.event.VerificationCodeGenerationEvent;
+import event.VerificationCodeGenerationEvent;
 import re1kur.mailservice.mapper.EventMapper;
 
 @Component

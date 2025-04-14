@@ -1,12 +1,12 @@
 package re1kur.verificationservice.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import exception.*;
 import org.springframework.http.ResponseEntity;
-import re1kur.verificationservice.dto.VerificationPayload;
-import re1kur.verificationservice.exception.*;
+import payload.VerificationPayload;
 
 public interface CodeService {
-    ResponseEntity<String> generateCode(String email) throws UserNotFoundException, UserAlreadyVerifiedException, JsonProcessingException;
+    ResponseEntity<String> generateCode(String email) throws JsonProcessingException, UserNotFoundException, UserAlreadyVerifiedException;
 
-    ResponseEntity<String> verify(VerificationPayload payload) throws NotFoundCodeVerificationException, ExpiredCodeVerificationException, IncorrectCodeVerification, UserNotFoundException, UserAlreadyVerifiedException, UserVerificationException;
+    ResponseEntity<String> verify(VerificationPayload payload) throws IncorrectCodeVerification, UserNotFoundException, UserAlreadyVerifiedException, UserVerificationException, NotFoundCodeVerificationException, ExpiredCodeVerificationException;
 }

@@ -7,6 +7,10 @@
     <groupId>re1kur</groupId>
     <artifactId>gpn-case</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>core</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>

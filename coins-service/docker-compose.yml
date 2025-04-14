@@ -1,8 +1,0 @@
-services:
-  gpn_case_coin_db:
-    env_file:
-      - .env
-    image: postgres:17
-    container_name: gpn.case.coin.database
-    ports:
-      - '5434:5432'

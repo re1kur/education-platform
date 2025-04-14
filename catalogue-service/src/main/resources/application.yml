@@ -15,3 +15,15 @@ custom:
   jwt:
     public-key:
       path: /tmp/public.key
+  message-broker:
+    exchange: catalogue.service.exchange
+    publish-queues:
+      goods-info-received:
+        name: goods.info.received.queue
+        routing-key: goods.info.received
+      goods-info-receive-failed:
+        name: goods.info.receive.failed.queue
+        routing-key: goods.info.receive.failed
+    listen-queues:
+      get-goods-info-command:
+        name: get.goods.info.command

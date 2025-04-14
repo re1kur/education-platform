@@ -1,7 +1,7 @@
 package re1kur.verificationservice.mq.publisher.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import event.VerificationCodeGenerationEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +9,6 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import re1kur.verificationservice.entity.Code;
-import re1kur.verificationservice.mq.event.VerificationCodeGenerationEvent;
 import re1kur.verificationservice.mq.publisher.EventPublisher;
 
 @Component
@@ -27,7 +26,8 @@ public class DefaultEventPublisher implements EventPublisher {
     private String exchange;
 
     @Override
-    public void publishGenerationCodeEvent(Code code) throws JsonProcessingException {
+    @SneakyThrows
+    public void publishGenerationCodeEvent(Code code) {
         VerificationCodeGenerationEvent event = new VerificationCodeGenerationEvent(code.getEmail(), code.getContent());
         template.convertAndSend(exchange, codeGenerationRoutingKey, serializer.writeValueAsString(event));
         log.info("Published generation code event: {}", code);

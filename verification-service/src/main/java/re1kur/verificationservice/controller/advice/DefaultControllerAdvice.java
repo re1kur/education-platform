@@ -1,10 +1,10 @@
 package re1kur.verificationservice.controller.advice;
 
+import exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import re1kur.verificationservice.exception.*;
 
 @ControllerAdvice
 public class DefaultControllerAdvice {

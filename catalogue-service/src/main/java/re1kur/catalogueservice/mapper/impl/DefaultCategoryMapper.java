@@ -2,8 +2,8 @@ package re1kur.catalogueservice.mapper.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import re1kur.catalogueservice.dto.CategoryDto;
-import re1kur.catalogueservice.dto.CategoryPayload;
+import dto.CategoryDto;
+import payload.CategoryPayload;
 import re1kur.catalogueservice.entity.Category;
 import re1kur.catalogueservice.mapper.CategoryMapper;
 

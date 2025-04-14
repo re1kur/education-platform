@@ -1,11 +1,11 @@
 package re1kur.authenticationservice.mapper;
 
-import re1kur.authenticationservice.dto.UserDto;
-import re1kur.authenticationservice.dto.UserWriteDto;
+import dto.UserDto;
+import payload.UserPayload;
 import re1kur.authenticationservice.entity.User;
 
 public interface UserMapper {
-    User write(UserWriteDto from);
+    User write(UserPayload from);
 
     UserDto read(User user);
 

@@ -3,11 +3,10 @@ package re1kur.authenticationservice.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import re1kur.authenticationservice.dto.ResultCheckVerification;
-import re1kur.authenticationservice.dto.UserPayload;
-import re1kur.authenticationservice.dto.UserWriteDto;
-import re1kur.authenticationservice.exception.UserAuthenticationException;
-import re1kur.authenticationservice.exception.UserRegistrationException;
+import dto.CheckVerificationResult;
+import payload.UserPayload;
+import exception.UserAuthenticationException;
+import exception.UserRegistrationException;
 import re1kur.authenticationservice.jwt.entity.Token;
 import re1kur.authenticationservice.service.AuthenticationService;
 
@@ -18,8 +17,8 @@ public class AuthenticationController {
     private final AuthenticationService service;
 
     @PostMapping("register")
-    public ResponseEntity<String> register(@RequestBody UserWriteDto user) throws UserRegistrationException {
-        service.register(user);
+    public ResponseEntity<String> register(@RequestBody UserPayload payload) throws UserRegistrationException {
+        service.register(payload);
         return ResponseEntity.ok("The user is registered successfully");
     }
 
@@ -30,7 +29,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("verification")
-    public ResponseEntity<ResultCheckVerification> authenticate(@RequestParam String email) {
+    public ResponseEntity<CheckVerificationResult> authenticate(@RequestParam String email) {
         return service.checkVerification(email);
     }
 }

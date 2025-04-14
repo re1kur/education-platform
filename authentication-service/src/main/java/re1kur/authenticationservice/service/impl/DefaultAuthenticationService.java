@@ -2,17 +2,15 @@ package re1kur.authenticationservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import re1kur.authenticationservice.dto.ResultCheckVerification;
-import re1kur.authenticationservice.dto.UserPayload;
-import re1kur.authenticationservice.dto.UserWriteDto;
+import dto.CheckVerificationResult;
+import payload.UserPayload;
 import re1kur.authenticationservice.entity.User;
-import re1kur.authenticationservice.exception.UserAuthenticationException;
-import re1kur.authenticationservice.exception.UserRegistrationException;
+import exception.UserAuthenticationException;
+import exception.UserRegistrationException;
 import re1kur.authenticationservice.jwt.JwtProvider;
 import re1kur.authenticationservice.jwt.entity.Token;
 import re1kur.authenticationservice.mapper.UserMapper;
@@ -34,8 +32,8 @@ public class DefaultAuthenticationService implements AuthenticationService {
 
     @Override
     @Transactional
-    public void register(UserWriteDto user) throws UserRegistrationException {
-        if (repo.existsByEmail(user.getEmail()))
+    public void register(UserPayload user) throws UserRegistrationException {
+        if (repo.existsByEmail(user.email()))
             throw new UserRegistrationException("User with this email already exists.");
         User entity = mapper.write(user);
         repo.save(entity);
@@ -52,9 +50,9 @@ public class DefaultAuthenticationService implements AuthenticationService {
     }
 
     @Override
-    public ResponseEntity<ResultCheckVerification> checkVerification(String email) {
+    public ResponseEntity<CheckVerificationResult> checkVerification(String email) {
         Optional<User> mayBeUser = repo.findByEmail(email);
         boolean isExist = mayBeUser.isPresent();
-        return ResponseEntity.ok(new ResultCheckVerification(isExist, isExist ? mayBeUser.get().getIsEmailVerified() : null));
+        return ResponseEntity.ok(new CheckVerificationResult(isExist, isExist ? mayBeUser.get().getIsEmailVerified() : null));
     }
 }

@@ -1,7 +1,7 @@
 package re1kur.taskservice.service;
 
-import re1kur.taskservice.dto.TaskDto;
-import re1kur.taskservice.dto.TaskPayload;
+import dto.TaskDto;
+import payload.TaskPayload;
 
 import java.util.List;
 
