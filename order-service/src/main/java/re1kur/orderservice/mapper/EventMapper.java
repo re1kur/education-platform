@@ -5,4 +5,5 @@ import event.OrderCreatedEvent;
 public interface EventMapper {
     String message(OrderCreatedEvent event);
 
+    String rejectOrderCommand(String message);
 }

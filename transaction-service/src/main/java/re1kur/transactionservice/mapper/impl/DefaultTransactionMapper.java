@@ -1,6 +1,7 @@
 package re1kur.transactionservice.mapper.impl;
 
 import command.CreateTransactionCommand;
+import exception.TransactionTypeNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import dto.TransactionDto;
@@ -30,12 +31,13 @@ public class DefaultTransactionMapper implements TransactionMapper {
     }
 
     @Override
-    public Transaction create(CreateTransactionCommand command) {
+    public Transaction create(CreateTransactionCommand command) throws TransactionTypeNotFoundException {
         return Transaction.builder()
                 .userId(UUID.fromString(command.userId()))
                 .orderId(UUID.fromString(command.orderId()))
                 .amount(command.amount())
-                .type(typeRepo.findByName(command.transactionType()))
+                .type(typeRepo.findByName(command.transactionType())
+                        .orElseThrow(() -> new TransactionTypeNotFoundException("Transaction type %s does not exist.".formatted(command.transactionType()))))
                 .build();
     }
 }

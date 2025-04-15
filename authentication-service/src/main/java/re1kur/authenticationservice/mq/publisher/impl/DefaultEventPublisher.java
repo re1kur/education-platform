@@ -1,6 +1,7 @@
 package re1kur.authenticationservice.mq.publisher.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import event.UserRegistrationEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -8,7 +9,6 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import re1kur.authenticationservice.entity.User;
-import re1kur.authenticationservice.mq.event.UserRegistrationEvent;
 import re1kur.authenticationservice.mq.publisher.EventPublisher;
 
 @Slf4j
@@ -18,10 +18,10 @@ public class DefaultEventPublisher implements EventPublisher {
     private final RabbitTemplate template;
     private final ObjectMapper serializer;
 
-    @Value("${custom.rabbitmq.publish-queues.user-registration.routing-key}")
+    @Value("${custom.message-broker.publish-queues.user-registration.routing-key}")
     private String userRegistrationRoutingKey;
 
-    @Value("${custom.rabbitmq.exchange}")
+    @Value("${custom.message-broker.exchange}")
     private String exchange;
 
     @Override

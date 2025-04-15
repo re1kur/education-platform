@@ -3,7 +3,7 @@ spring:
     name: order-service
   docker:
     compose:
-      file: balance-service/docker-compose.yml
+      file: order-service/docker-compose.yml
   liquibase:
     change-log: db/changelog/db.changelog-master.yml
   rabbitmq:
@@ -53,6 +53,9 @@ custom:
 
   message-broker:
     exchange: order.service.exchange
+    listen-queues:
+      reject-order-command:
+        name: reject.order.command
     publish-queues:
       order-created:
         name: order.created.queue

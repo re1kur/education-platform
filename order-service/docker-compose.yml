@@ -5,4 +5,4 @@ services:
       - .env
     image: postgres:17
     ports:
-      - '5436:5432'
+      - '5438:5432'

@@ -3,7 +3,7 @@ spring:
     name: transaction-service
   docker:
     compose:
-      file: balance-service/docker-compose.yml
+      file: transaction-service/docker-compose.yml
   liquibase:
     change-log: db/changelog/db.changelog-master.yml
   rabbitmq:

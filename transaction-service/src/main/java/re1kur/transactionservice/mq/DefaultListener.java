@@ -1,6 +1,7 @@
 package re1kur.transactionservice.mq;
 
 import command.CreateTransactionCommand;
+import exception.TransactionTypeNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -24,7 +25,7 @@ public class DefaultListener {
 
     @RabbitListener(queues = "${custom.message-broker.listen-queues.create-transaction-command.name}")
     @Transactional
-    public void listenCreateTransactionCommand(String message) {
+    public void listenCreateTransactionCommand(String message) throws TransactionTypeNotFoundException {
         log.info("Listening create transaction command: {}", message);
         CreateTransactionCommand command = eventMapper.createTransactionCommand(message);
         Transaction transaction = mapper.create(command);

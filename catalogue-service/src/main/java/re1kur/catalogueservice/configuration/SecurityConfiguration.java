@@ -29,9 +29,9 @@ public class SecurityConfiguration {
         return http
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("test-api").permitAll()
-                        .requestMatchers("api/category/create", "api/category/delete", "api/category/update").hasAnyAuthority("ADMIN", "CONTENT_MODERATOR")
-                        .requestMatchers("api/goods/create", "api/goods/delete", "api/goods/update").hasAnyAuthority("ADMIN", "CONTENT_MODERATOR")
-                        .requestMatchers("api/catalogue/update", "api/catalogue/add", "api/catalogue/remove").hasAnyAuthority("ADMIN", "CONTENT_MODERATOR")
+                        .requestMatchers("/api/category/create", "/api/category/delete", "/api/category/update").hasAnyAuthority("ADMIN", "CONTENT_MODERATOR")
+                        .requestMatchers("/api/goods/create", "/api/goods/delete", "/api/goods/update").hasAnyAuthority("ADMIN", "CONTENT_MODERATOR")
+                        .requestMatchers("/api/catalogue/update", "/api/catalogue/add", "/api/catalogue/remove").hasAnyAuthority("ADMIN", "CONTENT_MODERATOR")
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 .csrf(AbstractHttpConfigurer::disable)

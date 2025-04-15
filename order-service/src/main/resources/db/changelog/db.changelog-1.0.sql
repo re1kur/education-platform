@@ -16,16 +16,16 @@ CREATE TABLE IF NOT EXISTS orders
     user_id UUID NOT NULL,
     goods_id  INT NOT NULL,
     status_id SMALLINT NOT NULL,
-    date DATE NOT NULL DEFAULT now(),
+    date TIMESTAMP NOT NULL DEFAULT now(), --date        TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     FOREIGN KEY (status_id) REFERENCES statuses (id),
     UNIQUE(user_id, goods_id)
 );
 
 --changeset re1kur:3
-INSERT INTO statuses
+INSERT INTO statuses (name)
 VALUES  ('CREATED'),
         ('REJECTED'),
         ('APPROVED');
 
 --changeset re1kur:4
-ALTER TABLE orders ALTER COLUMN status_id SET DEFAULT (select id from statuses where name = 'CREATED');
+ALTER TABLE orders ALTER COLUMN status_id SET DEFAULT 1;

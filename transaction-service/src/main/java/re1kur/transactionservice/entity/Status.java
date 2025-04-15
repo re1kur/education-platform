@@ -24,6 +24,6 @@ public class Status {
 
     private String name;
 
-    @OneToMany(mappedBy = "type", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "status", fetch = FetchType.LAZY)
     private List<Transaction> transactions = new ArrayList<>();
 }

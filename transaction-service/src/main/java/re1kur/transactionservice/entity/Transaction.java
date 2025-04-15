@@ -33,7 +33,7 @@ public class Transaction {
     private TransactionType type;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(insertable = false)
+    @JoinColumn(name = "status_id", insertable = false)
     private Status status;
 
     private BigDecimal amount;
