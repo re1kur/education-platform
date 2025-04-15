@@ -23,7 +23,23 @@ eureka:
 
 custom:
   message-broker:
+    exchange: transaction.service.exchange
+    publish-queues:
+      transaction-created:
+        name: transaction.created.queue
+        routing-key: transaction.is.created
+      transaction-create-failed:
+        name: transaction.create.failed.queue
+        routing-key: transaction.create.failed
+      transaction-completed:
+        name: transaction.completed.queue
+        routing-key: transaction.is.completed
+      transaction-complete-failed:
+        name: transaction.complete.failed.queue
+        routing-key: transaction.complete.failed
     listen-queues:
+      complete-transaction-command:
+        name: complete.transaction.command
       create-transaction-command:
         name: create.transaction.command
   jwt:

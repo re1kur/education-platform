@@ -1,10 +1,7 @@
 package re1kur.orderservice.mapper.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import command.BlockUserBalanceCommand;
-import command.CreateTransactionCommand;
-import command.GetGoodsInfoCommand;
-import command.RejectOrderCommand;
+import command.*;
 import event.*;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -69,6 +66,59 @@ public class DefaultSagaMapper implements SagaMapper {
                 event.userId(),
                 event.amount(),
                 event.transactionType());
+        return serializer.writeValueAsString(command);
+    }
+
+    @SneakyThrows
+    @Override
+    public String processBalance(String message) {
+        TransactionCreatedEvent event = serializer.readValue(message, TransactionCreatedEvent.class);
+        ProcessUserBalanceCommand command = new ProcessUserBalanceCommand(
+                event.orderId(),
+                event.userId(),
+                event.transactionId(),
+                event.transactionType(),
+                event.amount()
+        );
+        return serializer.writeValueAsString(command);
+    }
+
+    @SneakyThrows
+    @Override
+    public String unblockUserBalanceCommand(String message) {
+        TransactionCreateFailedEvent event = serializer.readValue(message, TransactionCreateFailedEvent.class);
+        UnblockUserBalanceCommand command = new UnblockUserBalanceCommand(
+                event.orderId(),
+                event.userId()
+        );
+        return serializer.writeValueAsString(command);
+    }
+
+    @SneakyThrows
+    @Override
+    public String userBalanceUnblockedEvent(String message) {
+        UserBalanceUnblockedEvent event = serializer.readValue(message, UserBalanceUnblockedEvent.class);
+        return event.orderId();
+    }
+
+    @SneakyThrows
+    @Override
+    public String completeTransactionCommand(String message) {
+        UserBalanceProcessedEvent event = serializer.readValue(message, UserBalanceProcessedEvent.class);
+        CompleteTransactionCommand command = new CompleteTransactionCommand(
+                event.orderId(),
+                event.transactionId()
+        );
+        return serializer.writeValueAsString(command);
+    }
+
+    @SneakyThrows
+    @Override
+    public String approveOrderCommand(String message) {
+        TransactionCompletedEvent event = serializer.readValue(message, TransactionCompletedEvent.class);
+        ApproveOrderCommand command = new ApproveOrderCommand(
+            event.orderId()
+        );
         return serializer.writeValueAsString(command);
     }
 

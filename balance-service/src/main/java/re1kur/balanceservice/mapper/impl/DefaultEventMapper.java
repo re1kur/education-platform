@@ -2,9 +2,9 @@ package re1kur.balanceservice.mapper.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import command.BlockUserBalanceCommand;
-import event.UserBalanceBlockFailedEvent;
-import event.UserBalanceBlockedEvent;
-import event.UserRegistrationEvent;
+import command.ProcessUserBalanceCommand;
+import command.UnblockUserBalanceCommand;
+import event.*;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
@@ -42,6 +42,37 @@ public class DefaultEventMapper implements EventMapper {
     @Override
     public String userBalanceBlockFailedEvent(BlockUserBalanceCommand command) {
         UserBalanceBlockFailedEvent event = new UserBalanceBlockFailedEvent(command.orderId());
+        return serializer.writeValueAsString(event);
+    }
+
+    @SneakyThrows
+    @Override
+    public UnblockUserBalanceCommand unblockUserBalanceCommand(String message) {
+        return serializer.readValue(message, UnblockUserBalanceCommand.class);
+    }
+
+    @SneakyThrows
+    @Override
+    public String userBalanceUnblockedEvent(UnblockUserBalanceCommand command) {
+        UserBalanceUnblockedEvent event = new UserBalanceUnblockedEvent(
+                command.orderId()
+        );
+        return serializer.writeValueAsString(event);
+    }
+
+    @SneakyThrows
+    @Override
+    public ProcessUserBalanceCommand processUserBalanceCommand(String message) {
+        return serializer.readValue(message, ProcessUserBalanceCommand.class);
+    }
+
+    @SneakyThrows
+    @Override
+    public String userBalanceProcessedEvent(ProcessUserBalanceCommand command) {
+        UserBalanceProcessedEvent event = new UserBalanceProcessedEvent(
+                command.orderId(),
+                command.transactionId()
+        );
         return serializer.writeValueAsString(event);
     }
 }

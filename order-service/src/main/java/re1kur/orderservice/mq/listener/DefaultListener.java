@@ -13,7 +13,6 @@ import re1kur.orderservice.mapper.EventMapper;
 import re1kur.orderservice.repository.OrderRepository;
 import re1kur.orderservice.repository.StatusRepository;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -34,6 +33,19 @@ public class DefaultListener {
 
         order.setStatus(rejectStatus);
         repo.save(order);
-        log.info("Order rejected: {}.", order.toString());
+        log.info("Order rejected: {}.", order);
+    }
+
+    @RabbitListener(queues = "${custom.message-broker.listen-queues.approve-order-command.name}")
+    @Transactional
+    public void listenApproveOrderCommand(String message) throws OrderNotFoundException, StatusNotFoundException {
+        log.info("Listening approve order by command: {}.", message);
+        String orderId = mapper.approveOrderCommand(message);
+        Order order = repo.findById(UUID.fromString(orderId)).orElseThrow(() -> new OrderNotFoundException("Order with id '%s' does not exist.".formatted(orderId)));
+        Status approveStatus = statusRepo.findByName("APPROVED").orElseThrow(() -> new StatusNotFoundException("Status 'APPROVED' does not exists."));
+
+        order.setStatus(approveStatus);
+        repo.save(order);
+        log.info("Order approved: {}.", order);
     }
 }

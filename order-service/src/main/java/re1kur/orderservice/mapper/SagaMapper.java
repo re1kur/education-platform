@@ -12,4 +12,14 @@ public interface SagaMapper {
     String userBalanceBlockFailedEvent(String message);
 
     String userBalanceBlockedEvent(String message);
+
+    String processBalance(String message);
+
+    String unblockUserBalanceCommand(String message);
+
+    String userBalanceUnblockedEvent(String message);
+
+    String completeTransactionCommand(String message);
+
+    String approveOrderCommand(String message);
 }

@@ -30,9 +30,45 @@ public class MQConfiguration {
     @Value("${custom.message-broker.publish-queues.user-balance-block-failed-queue.routing-key}")
     private String userBalanceBlockFailedQueueRoutingKey;
 
+    @Value("${custom.message-broker.publish-queues.user-balance-unblocked-queue.name}")
+    private String userBalanceUnblockedQueueName;
+    @Value("${custom.message-broker.publish-queues.user-balance-unblocked-queue.routing-key}")
+    private String userBalanceUnblockedQueueRoutingKey;
+
+    @Value("${custom.message-broker.publish-queues.user-balance-processed-queue.name}")
+    private String userBalanceProcessedQueueName;
+    @Value("${custom.message-broker.publish-queues.user-balance-processed-queue.routing-key}")
+    private String userBalanceProcessedQueueRoutingKey;
+
     @Bean
     public TopicExchange exchange() {
         return new TopicExchange(exchange);
+    }
+
+    @Bean
+    public Queue userBalanceProcessedQueue() {
+        return new Queue(userBalanceProcessedQueueName);
+    }
+
+    @Bean
+    public Binding userBalanceProcessedBinding() {
+        return BindingBuilder
+                .bind(userBalanceProcessedQueue())
+                .to(exchange())
+                .with(userBalanceProcessedQueueRoutingKey);
+    }
+
+    @Bean
+    public Queue userBalanceUnblockedQueue() {
+        return new Queue(userBalanceUnblockedQueueName);
+    }
+
+    @Bean
+    public Binding userBalanceUnblockedBinding() {
+        return BindingBuilder
+                .bind(userBalanceUnblockedQueue())
+                .to(exchange())
+                .with(userBalanceUnblockedQueueRoutingKey);
     }
 
     @Bean

@@ -42,10 +42,82 @@ public class MQConfiguration {
     @Value("${custom.saga.publish-queues.create-transaction-command.routing-key}")
     private String createTransactionCommandQueueRoutingKey;
 
+    @Value("${custom.saga.publish-queues.process-user-balance-command.name}")
+    private String processBalanceCommandQueueName;
+    @Value("${custom.saga.publish-queues.process-user-balance-command.routing-key}")
+    private String processBalanceCommandQueueRoutingKey;
+
+    @Value("${custom.saga.publish-queues.unblock-user-balance-command.name}")
+    private String unblockUserBalanceCommandQueueName;
+    @Value("${custom.saga.publish-queues.unblock-user-balance-command.routing-key}")
+    private String unblockUserBalanceCommandQueueRoutingKey;
+
+    @Value("${custom.saga.publish-queues.complete-transaction-command.name}")
+    private String completeTransactionCommandQueueName;
+    @Value("${custom.saga.publish-queues.complete-transaction-command.routing-key}")
+    private String completeTransactionCommandQueueRoutingKey;
+
+    @Value("${custom.saga.publish-queues.approve-order-command.name}")
+    private String approveOrderCommandQueueName;
+    @Value("${custom.saga.publish-queues.approve-order-command.routing-key}")
+    private String approveOrderCommandQueueRoutingKey;
+
 
     @Bean
     public TopicExchange sagaExchange() {
         return new TopicExchange(sagaExchange);
+    }
+
+    @Bean
+    public Queue approveOrderCommandQueue() {
+        return new Queue(approveOrderCommandQueueName);
+    }
+
+    @Bean
+    public Binding approveOrderCommandBinding() {
+        return BindingBuilder
+                .bind(approveOrderCommandQueue())
+                .to(sagaExchange())
+                .with(approveOrderCommandQueueRoutingKey);
+    }
+
+    @Bean
+    public Queue completeTransactionCommandQueue() {
+        return new Queue(completeTransactionCommandQueueName);
+    }
+
+    @Bean
+    public Binding completeTransactionCommandBinding() {
+        return BindingBuilder
+                .bind(completeTransactionCommandQueue())
+                .to(sagaExchange())
+                .with(completeTransactionCommandQueueRoutingKey);
+    }
+
+    @Bean
+    public Queue unblockUserBalanceCommandQueue() {
+        return new Queue(unblockUserBalanceCommandQueueName);
+    }
+
+    @Bean
+    public Binding unblockUserBalanceCommandRoutingKey() {
+        return BindingBuilder
+                .bind(unblockUserBalanceCommandQueue())
+                .to(sagaExchange())
+                .with(unblockUserBalanceCommandQueueRoutingKey);
+    }
+
+    @Bean
+    public Queue processBalanceCommandQueue() {
+        return new Queue(processBalanceCommandQueueName);
+    }
+
+    @Bean
+    public Binding processBalanceCommandBinding() {
+        return BindingBuilder
+                .bind(processBalanceCommandQueue())
+                .to(sagaExchange())
+                .with(processBalanceCommandQueueRoutingKey);
     }
 
     @Bean

@@ -37,6 +37,18 @@ custom:
       create-transaction-command:
         name: create.transaction.command
         routing-key: balance.is.blocked
+      process-user-balance-command:
+        name: process.user.balance.command
+        routing-key: transaction.is.created
+      unblock-user-balance-command:
+        name: unblock.user.balance.command
+        routing-key: transaction.create.is.failed
+      complete-transaction-command:
+        name: complete.transaction.command
+        routing-key: balance.is.processed
+      approve-order-command:
+        name: approve.order.command
+        routing-key: transaction.is.completed
     handle-queues:
       order-created:
         name: order.created.queue
@@ -50,12 +62,24 @@ custom:
         name: user.balance.blocked.queue
       user-balance-block-failed-queue:
         name: user.balance.block.failed.queue
+      transaction-created-queue:
+        name: transaction.created.queue
+      transaction-create-failed-queue:
+        name: transaction.create.failed.queue
+      user-balance-unblocked-queue:
+        name: user.balance.unblocked.queue
+      user-balance-processed-queue:
+        name: user.balance.processed.queue
+      transaction-completed-queue:
+        name: transaction.completed.queue
 
   message-broker:
     exchange: order.service.exchange
     listen-queues:
       reject-order-command:
         name: reject.order.command
+      approve-order-command:
+        name: approve.order.command
     publish-queues:
       order-created:
         name: order.created.queue

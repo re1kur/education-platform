@@ -1,6 +1,7 @@
 package re1kur.orderservice.mapper.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import command.ApproveOrderCommand;
 import command.RejectOrderCommand;
 import event.OrderCreatedEvent;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,13 @@ public class DefaultEventMapper implements EventMapper {
     @Override
     public String rejectOrderCommand(String message) {
         RejectOrderCommand command = serializer.readValue(message, RejectOrderCommand.class);
+        return command.orderId();
+    }
+
+    @SneakyThrows
+    @Override
+    public String approveOrderCommand(String message) {
+        ApproveOrderCommand command = serializer.readValue(message, ApproveOrderCommand.class);
         return command.orderId();
     }
 }

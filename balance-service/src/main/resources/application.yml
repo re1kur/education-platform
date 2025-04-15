@@ -34,11 +34,21 @@ custom:
       user-balance-block-failed-queue:
         name: user.balance.block.failed.queue
         routing-key: balance.block.failed
+      user-balance-unblocked-queue:
+        name: user.balance.unblocked.queue
+        routing-key: balance.is.unblocked
+      user-balance-processed-queue:
+        name: user.balance.processed.queue
+        routing-key: balance.is.processed
     listen-queues:
       user-registration-balance:
         name: user.registration.balance.queue
       block-user-balance-command:
         name: block.user.balance.command
+      process-user-balance-command:
+        name: process.user.balance.command
+      unblock-user-balance-command:
+        name: unblock.user.balance.command
   jwt:
     publicKeyPath: /tmp/public.key
 

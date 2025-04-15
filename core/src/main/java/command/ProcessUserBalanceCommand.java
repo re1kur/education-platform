@@ -1,8 +1,8 @@
-package event;
+package command;
 
 import java.math.BigDecimal;
 
-public record TransactionCreatedEvent (
+public record ProcessUserBalanceCommand(
         String orderId,
         String userId,
         String transactionId,
