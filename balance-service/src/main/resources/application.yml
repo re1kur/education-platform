@@ -25,9 +25,6 @@ custom:
   message-broker:
     exchange: balance.service.exchange
     publish-queues:
-      balance-already-blocked-queue:
-        name: balance.already.blocked.queue
-        routing-key: balance.is.already.blocked
       user-balance-blocked-queue:
         name: user.balance.blocked.queue
         routing-key: balance.is.blocked

@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -28,6 +30,6 @@ public class Task {
 
     private Integer level;
 
-    private Integer cost;
+    private BigDecimal cost;
 
 }

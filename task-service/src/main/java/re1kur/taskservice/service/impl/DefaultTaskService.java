@@ -1,12 +1,17 @@
 package re1kur.taskservice.service.impl;
 
+import exception.TaskNotFoundException;
+import exception.TrackNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import dto.TaskDto;
 import payload.TaskPayload;
+import payload.TaskUpdatePayload;
 import re1kur.taskservice.entity.Task;
 import re1kur.taskservice.mapper.TaskMapper;
 import re1kur.taskservice.repository.TaskRepository;
@@ -31,8 +36,31 @@ public class DefaultTaskService implements TaskService {
 
     @Override
     @Transactional
-    public void create(TaskPayload payload) {
+    public void create(TaskPayload payload) throws TrackNotFoundException {
         Task task = mapper.write(payload);
         repo.save(task);
+    }
+
+    @Override
+    public void update(TaskUpdatePayload payload) throws TrackNotFoundException, TaskNotFoundException {
+        Task task = repo.findById(payload.id())
+                .orElseThrow(() -> new TaskNotFoundException(
+                        "Task with id %d does not exist.".formatted(payload.id())));
+        Task update = mapper.update(task, payload);
+        repo.save(update);
+    }
+
+    @Override
+    public void delete(Integer id) throws TaskNotFoundException {
+        Task task = repo.findById(id).orElseThrow(
+                () -> new TaskNotFoundException("Task with id %d does not exist.".formatted(id)));
+        repo.delete(task);
+    }
+
+    @Override
+    public ResponseEntity<TaskDto> getById(Integer id) throws TaskNotFoundException {
+        TaskDto task =  repo.findById(id).map(mapper::read).orElseThrow(
+                () -> new TaskNotFoundException("Task with id %d does not exist.".formatted(id)));
+        return ResponseEntity.status(HttpStatus.FOUND).body(task);
     }
 }

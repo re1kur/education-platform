@@ -12,11 +12,11 @@ CREATE TABLE IF NOT EXISTS tracks
 CREATE TABLE IF NOT EXISTS tasks
 (
     id          SERIAL PRIMARY KEY,
-    track_id    SMALLINT     NOT NULL,
-    name        VARCHAR(128) NOT NULL,
-    description TEXT         NOT NULL,
-    level       SMALLINT     NOT NULL CHECK (level BETWEEN 1 AND 3),
-    cost        SMALLINT     NOT NULL,
+    track_id    SMALLINT       NOT NULL,
+    name        VARCHAR(128)   NOT NULL,
+    description TEXT           NOT NULL,
+    level       SMALLINT       NOT NULL CHECK (level BETWEEN 1 AND 3),
+    cost        DECIMAL(19, 2) NOT NULL,
     FOREIGN KEY (track_id) REFERENCES tracks (id) ON DELETE CASCADE,
     CHECK (level = 1 AND cost BETWEEN 10 AND 25 OR
            level = 2 AND cost BETWEEN 26 AND 50 OR
@@ -40,3 +40,9 @@ CREATE TABLE IF NOT EXISTS users_tracks
     PRIMARY KEY (user_id, track_id),
     FOREIGN KEY (track_id) REFERENCES tracks (id) ON DELETE CASCADE
 );
+
+--changeset re1kur:5
+ALTER TABLE users_tasks
+    ALTER COLUMN user_id TYPE UUID;
+ALTER TABLE users_tracks
+    ALTER COLUMN user_id TYPE UUID;

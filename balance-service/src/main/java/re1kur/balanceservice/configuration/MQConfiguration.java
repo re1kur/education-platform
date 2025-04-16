@@ -15,11 +15,6 @@ public class MQConfiguration {
     @Value("${custom.message-broker.exchange}")
     private String exchange;
 
-    @Value("${custom.message-broker.publish-queues.balance-already-blocked-queue.name}")
-    private String balanceAlreadyBlockedQueueName;
-    @Value("${custom.message-broker.publish-queues.balance-already-blocked-queue.routing-key}")
-    private String balanceAlreadyBlockedQueueRoutingKey;
-
     @Value("${custom.message-broker.publish-queues.user-balance-blocked-queue.name}")
     private String userBalanceBlockedQueueName;
     @Value("${custom.message-broker.publish-queues.user-balance-blocked-queue.routing-key}")
@@ -96,18 +91,4 @@ public class MQConfiguration {
                 .to(exchange())
                 .with(userBalanceBlockedQueueRoutingKey);
     }
-
-    @Bean
-    public Queue balanceAlreadyBlockedQueue() {
-        return new Queue(balanceAlreadyBlockedQueueName);
-    }
-
-    @Bean
-    public Binding balanceAlreadyBlockedBinding() {
-        return BindingBuilder
-                .bind(balanceAlreadyBlockedQueue())
-                .to(exchange())
-                .with(balanceAlreadyBlockedQueueRoutingKey);
-    }
-
 }

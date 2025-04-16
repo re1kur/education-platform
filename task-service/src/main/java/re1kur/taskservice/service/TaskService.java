@@ -1,7 +1,11 @@
 package re1kur.taskservice.service;
 
 import dto.TaskDto;
+import exception.TaskNotFoundException;
+import exception.TrackNotFoundException;
+import org.springframework.http.ResponseEntity;
 import payload.TaskPayload;
+import payload.TaskUpdatePayload;
 
 import java.util.List;
 
@@ -9,5 +13,11 @@ import java.util.List;
 public interface TaskService {
     List<TaskDto> getList();
 
-    void create(TaskPayload payload);
+    void create(TaskPayload payload) throws TrackNotFoundException;
+
+    void update(TaskUpdatePayload payload) throws TrackNotFoundException, TaskNotFoundException;
+
+    void delete(Integer id) throws TaskNotFoundException;
+
+    ResponseEntity<TaskDto> getById(Integer id) throws TaskNotFoundException;
 }

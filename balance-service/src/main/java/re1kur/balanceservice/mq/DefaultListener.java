@@ -4,6 +4,7 @@ import command.BlockUserBalanceCommand;
 import command.ProcessUserBalanceCommand;
 import command.UnblockUserBalanceCommand;
 import event.UserRegistrationEvent;
+import exception.BalanceAlreadyBlockedException;
 import exception.NotEnoughCoinsOnBalanceException;
 import exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -67,7 +68,7 @@ public class DefaultListener {
                     .orElseThrow(() -> new UserNotFoundException("User with id %s does not exist.".formatted(command.userId())));
             if (balance.getIsBlocked()) {
                 log.info("Balance of user with id '{}' already blocked.", command.userId());
-                template.convertAndSend(exchange, balanceIsAlreadyBlockedRoutingKey, message);
+                throw new BalanceAlreadyBlockedException("Balance of user with id '%s' already blocked.".formatted(command.userId()));
             }
             else {
                 if (command.transactionType().equals("DEBIT")) checkIsEnoughCoins(balance.getBalance(), command.price());
