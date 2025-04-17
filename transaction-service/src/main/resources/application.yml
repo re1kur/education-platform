@@ -9,7 +9,7 @@ spring:
   rabbitmq:
     username: gpnUser
     password: anotherOnePassword
-    virtual-host: vhost
+    virtual-host: /
   jpa:
     open-in-view: false
 
@@ -26,17 +26,11 @@ custom:
     exchange: transaction.service.exchange
     publish-queues:
       transaction-created:
-        name: transaction.created.queue
         routing-key: transaction.is.created
       transaction-create-failed:
-        name: transaction.create.failed.queue
         routing-key: transaction.create.failed
       transaction-completed:
-        name: transaction.completed.queue
         routing-key: transaction.is.completed
-      transaction-complete-failed:
-        name: transaction.complete.failed.queue
-        routing-key: transaction.complete.failed
     listen-queues:
       complete-transaction-command:
         name: complete.transaction.command

@@ -5,7 +5,9 @@ services:
     container_name: gpn.case.rabbitmq
     restart: unless-stopped
     volumes:
-      - ./rabbitmq:/var/lib/rabbitmq
+      - ./definitions.json:/etc/rabbitmq/definitions.json
+    environment:
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "-rabbitmq_management load_definitions '/etc/rabbitmq/definitions.json'"
     ports:
       - "5672:5672"
       - "15672:15672"

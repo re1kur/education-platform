@@ -2,7 +2,9 @@ package re1kur.transactionservice.mq;
 
 import command.CreateTransactionCommand;
 import event.CompleteTransactionCommand;
+import exception.StatusNotFoundException;
 import exception.TransactionNotFoundException;
+import exception.TransactionTypeNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -39,9 +41,6 @@ public class DefaultListener {
     @Value("${custom.message-broker.publish-queues.transaction-completed.routing-key}")
     private String transactionCompletedQueueRoutingKey;
 
-    @Value("${custom.message-broker.publish-queues.transaction-complete-failed.routing-key}")
-    private String transactionCompleteFailedQueueRoutingKey;
-
     @RabbitListener(queues = "${custom.message-broker.listen-queues.create-transaction-command.name}")
     @Transactional
     public void listenCreateTransactionCommand(String message) {
@@ -65,10 +64,9 @@ public class DefaultListener {
 
     @RabbitListener(queues = "${custom.message-broker.listen-queues.complete-transaction-command.name}")
     @Transactional
-    public void listenCompleteTransactionCommand(String message) {
+    public void listenCompleteTransactionCommand(String message) throws StatusNotFoundException, TransactionTypeNotFoundException, TransactionNotFoundException {
         log.info("Listening complete transaction command: {}", message);
         CompleteTransactionCommand command = eventMapper.completeTransactionCommand(message);
-        try {
             Transaction transaction = repo.findById(UUID.fromString(command.transactionId()))
                     .orElseThrow(() -> new TransactionNotFoundException(
                             "Transaction with id '%s' does not exist.".formatted(command.transactionId())));
@@ -81,11 +79,6 @@ public class DefaultListener {
 
             template.convertAndSend(exchange, transactionCompletedQueueRoutingKey, json);
             log.info("Completed transaction: {}", transaction);
-        } catch (Exception e) {
-            log.error("Complete transaction failed: {}", e.getMessage());
-//            String json = eventMapper.transactionCompleteFailedEvent(command);
-//
-//            template.convertAndSend(exchange, transactionCompleteFailedQueueRoutingKey, json);
-        }
+
     }
 }

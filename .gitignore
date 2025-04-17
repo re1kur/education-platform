@@ -1,5 +1,4 @@
 target/
-rabbitmq/
 
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/

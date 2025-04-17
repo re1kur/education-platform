@@ -1,0 +1,319 @@
+{
+  "vhosts": [
+    {
+      "name": "/"
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "authentication.service.exchange",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true
+    },
+    {
+      "name": "balance.service.exchange",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true
+    },
+    {
+      "name": "catalogue.service.exchange",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true
+    },
+    {
+      "name": "order.service.exchange",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true
+    },
+    {
+      "name": "saga.exchange",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true
+    },
+    {
+      "name": "transaction.service.exchange",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true
+    },
+    {
+      "name": "verification.service.exchange",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true
+    }
+  ],
+  "queues": [
+    {
+      "name": "user.welcome.queue",
+      "vhost": "/",
+      "durable": true
+    },
+    {
+      "name": "user.registration.balance.queue",
+      "vhost": "/",
+      "durable": true
+    },
+    {
+      "name": "user.balance.blocked.queue",
+      "vhost": "/",
+      "durable": true
+    },
+    {
+      "name": "user.balance.unblocked.queue",
+      "vhost": "/",
+      "durable": true
+    },
+    {
+      "name": "user.balance.block.failed.queue",
+      "vhost": "/",
+      "durable": true
+    },
+    {
+      "name": "user.balance.processed.queue",
+      "vhost": "/",
+      "durable": true
+    },
+    {
+      "name": "goods.info.received.queue",
+      "vhost": "/",
+      "durable": true
+    },
+    {
+      "name": "goods.info.receive.failed.queue",
+      "vhost": "/",
+      "durable": true
+    },
+    {
+      "name": "order.created.queue",
+      "vhost": "/",
+      "durable": true
+    },
+    {
+      "name": "get.goods.info.command",
+      "vhost": "/",
+      "durable": true
+    },
+    {
+      "name": "block.user.balance.command",
+      "vhost": "/",
+      "durable": true
+    },
+    {
+      "name": "reject.order.command",
+      "vhost": "/",
+      "durable": true
+    },
+    {
+      "name": "create.transaction.command",
+      "vhost": "/",
+      "durable": true
+    },
+    {
+      "name": "process.user.balance.command",
+      "vhost": "/",
+      "durable": true
+    },
+    {
+      "name": "unblock.user.balance.command",
+      "vhost": "/",
+      "durable": true
+    },
+    {
+      "name": "complete.transaction.command",
+      "vhost": "/",
+      "durable": true
+    },
+    {
+      "name": "approve.order.command",
+      "vhost": "/",
+      "durable": true
+    },
+    {
+      "name": "transaction.created.queue",
+      "vhost": "/",
+      "durable": true
+    },
+    {
+      "name": "transaction.create.failed.queue",
+      "vhost": "/",
+      "durable": true
+    },
+    {
+      "name": "transaction.completed.queue",
+      "vhost": "/",
+      "durable": true
+    },
+    {
+      "name": "user.verification.queue",
+      "vhost": "/",
+      "durable": true
+    },
+    {
+      "name": "code.generation.queue",
+      "vhost": "/",
+      "durable": true
+    }
+  ],
+  "bindings": [
+    {
+      "source": "authentication.service.exchange",
+      "vhost": "/",
+      "destination": "user.welcome.queue",
+      "routing_key": "user.is.registered",
+      "destination_type": "queue"
+    },
+    {
+      "source": "authentication.service.exchange",
+      "vhost": "/",
+      "destination": "user.registration.balance.queue",
+      "routing_key": "user.is.registered",
+      "destination_type": "queue"
+    },
+    {
+      "source": "balance.service.exchange",
+      "vhost": "/",
+      "destination": "user.balance.blocked.queue",
+      "routing_key": "balance.is.blocked",
+      "destination_type": "queue"
+    },
+    {
+      "source": "balance.service.exchange",
+      "vhost": "/",
+      "destination": "user.balance.unblocked.queue",
+      "routing_key": "balance.is.unblocked",
+      "destination_type": "queue"
+    },
+    {
+      "source": "balance.service.exchange",
+      "vhost": "/",
+      "destination": "user.balance.block.failed.queue",
+      "routing_key": "balance.block.failed",
+      "destination_type": "queue"
+    },
+    {
+      "source": "balance.service.exchange",
+      "vhost": "/",
+      "destination": "user.balance.processed.queue",
+      "routing_key": "balance.is.processed",
+      "destination_type": "queue"
+    },
+    {
+      "source": "catalogue.service.exchange",
+      "vhost": "/",
+      "destination": "goods.info.receive.failed.queue",
+      "routing_key": "goods.info.receive.failed",
+      "destination_type": "queue"
+    },
+    {
+      "source": "catalogue.service.exchange",
+      "vhost": "/",
+      "destination": "goods.info.received.queue",
+      "routing_key": "goods.info.received",
+      "destination_type": "queue"
+    },
+    {
+      "source": "order.service.exchange",
+      "vhost": "/",
+      "destination": "order.created.queue",
+      "routing_key": "order.created",
+      "destination_type": "queue"
+    },
+    {
+      "source": "saga.exchange",
+      "vhost": "/",
+      "destination": "get.goods.info.command",
+      "routing_key": "order.is.created",
+      "destination_type": "queue"
+    },
+    {
+      "source": "saga.exchange",
+      "vhost": "/",
+      "destination": "block.user.balance.command",
+      "routing_key": "goods.info.is.received",
+      "destination_type": "queue"
+    },
+    {
+      "source": "saga.exchange",
+      "vhost": "/",
+      "destination": "reject.order.command",
+      "routing_key": "goods.or.balance.commands.are.failed",
+      "destination_type": "queue"
+    },
+    {
+      "source": "saga.exchange",
+      "vhost": "/",
+      "destination": "create.transaction.command",
+      "routing_key": "balance.is.blocked",
+      "destination_type": "queue"
+    },
+    {
+      "source": "saga.exchange",
+      "vhost": "/",
+      "destination": "process.user.balance.command",
+      "routing_key": "transaction.is.created",
+      "destination_type": "queue"
+    },
+    {
+      "source": "saga.exchange",
+      "vhost": "/",
+      "destination": "unblock.user.balance.command",
+      "routing_key": "transaction.create.is.failed",
+      "destination_type": "queue"
+    },
+    {
+      "source": "saga.exchange",
+      "vhost": "/",
+      "destination": "complete.transaction.command",
+      "routing_key": "balance.is.processed",
+      "destination_type": "queue"
+    },
+    {
+      "source": "saga.exchange",
+      "vhost": "/",
+      "destination": "approve.order.command",
+      "routing_key": "transaction.is.completed",
+      "destination_type": "queue"
+    },
+    {
+      "source": "transaction.service.exchange",
+      "vhost": "/",
+      "destination": "transaction.created.queue",
+      "routing_key": "transaction.is.created",
+      "destination_type": "queue"
+    },
+    {
+      "source": "transaction.service.exchange",
+      "vhost": "/",
+      "destination": "transaction.create.failed.queue",
+      "routing_key": "transaction.create.failed",
+      "destination_type": "queue"
+    },
+    {
+      "source": "transaction.service.exchange",
+      "vhost": "/",
+      "destination": "transaction.completed.queue",
+      "routing_key": "transaction.is.completed",
+      "destination_type": "queue"
+    },
+    {
+      "source": "verification.service.exchange",
+      "vhost": "/",
+      "destination": "user.verification.queue",
+      "routing_key": "user.is.verified",
+      "destination_type": "queue"
+    },
+    {
+      "source": "verification.service.exchange",
+      "vhost": "/",
+      "destination": "code.generation.queue",
+      "routing_key": "code.is.generated",
+      "destination_type": "queue"
+    }
+  ]
+}

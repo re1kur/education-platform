@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS tasks
 --changeset re1kur:3
 CREATE TABLE IF NOT EXISTS users_tasks
 (
-    user_id INTEGER,
+    user_id UUID,
     task_id INTEGER,
     PRIMARY KEY (user_id, task_id),
     FOREIGN KEY (task_id) REFERENCES tasks (id) ON DELETE CASCADE
@@ -35,14 +35,8 @@ CREATE TABLE IF NOT EXISTS users_tasks
 --changeset re1kur:4
 CREATE TABLE IF NOT EXISTS users_tracks
 (
-    user_id  INTEGER,
+    user_id  UUID,
     track_id SMALLINT,
     PRIMARY KEY (user_id, track_id),
     FOREIGN KEY (track_id) REFERENCES tracks (id) ON DELETE CASCADE
 );
-
---changeset re1kur:5
-ALTER TABLE users_tasks
-    ALTER COLUMN user_id TYPE UUID;
-ALTER TABLE users_tracks
-    ALTER COLUMN user_id TYPE UUID;

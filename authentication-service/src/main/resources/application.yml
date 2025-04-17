@@ -10,7 +10,7 @@ spring:
   rabbitmq:
     username: gpnUser
     password: anotherOnePassword
-    virtual-host: vhost
+    virtual-host: /
   jpa:
     open-in-view: false
 eureka:
@@ -27,12 +27,8 @@ custom:
     listen-queues:
       user-verification:
         name: user.verification.queue
-      block-user-balance-command:
-        name: block.user.balance.command
     publish-queues:
       user-registration:
-        welcome: user.welcome.queue
-        balance: user.registration.balance.queue
         routing-key: user.is.registered
   jwt:
     keySize: 2048

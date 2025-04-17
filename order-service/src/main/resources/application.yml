@@ -9,7 +9,7 @@ spring:
   rabbitmq:
     username: gpnUser
     password: anotherOnePassword
-    virtual-host: vhost
+    virtual-host: /
   jpa:
     open-in-view: false
 
@@ -26,28 +26,20 @@ custom:
     exchange: saga.exchange
     publish-queues:
       get-goods-info-command:
-        name: get.goods.info.command
         routing-key: order.is.created
       block-user-balance-command:
-        name: block.user.balance.command
         routing-key: goods.info.is.received
       reject-order-command:
-        name: reject.order.command
         routing-key: goods.or.balance.commands.are.failed
       create-transaction-command:
-        name: create.transaction.command
         routing-key: balance.is.blocked
       process-user-balance-command:
-        name: process.user.balance.command
         routing-key: transaction.is.created
       unblock-user-balance-command:
-        name: unblock.user.balance.command
         routing-key: transaction.create.is.failed
       complete-transaction-command:
-        name: complete.transaction.command
         routing-key: balance.is.processed
       approve-order-command:
-        name: approve.order.command
         routing-key: transaction.is.completed
     handle-queues:
       order-created:
@@ -56,8 +48,6 @@ custom:
         name: goods.info.received.queue
       goods-info-receive-failed:
         name: goods.info.receive.failed.queue
-      balance-already-blocked-queue:
-        name: balance.already.blocked.queue
       user-balance-blocked-queue:
         name: user.balance.blocked.queue
       user-balance-block-failed-queue:
@@ -82,7 +72,6 @@ custom:
         name: approve.order.command
     publish-queues:
       order-created:
-        name: order.created.queue
         routing-key: order.created
   jwt:
     publicKeyPath: /tmp/public.key

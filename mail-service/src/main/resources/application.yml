@@ -11,7 +11,7 @@ spring:
   rabbitmq:
     username: gpnUser
     password: anotherOnePassword
-    virtual-host: vhost
+    virtual-host: /
 
 eureka:
   client:

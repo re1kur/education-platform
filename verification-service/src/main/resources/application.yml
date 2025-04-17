@@ -7,7 +7,7 @@ spring:
   rabbitmq:
     username: gpnUser
     password: anotherOnePassword
-    virtual-host: vhost
+    virtual-host: /
 
 server:
   port: 0
@@ -20,15 +20,10 @@ eureka:
 custom:
   message-broker:
     exchange: verification.service.exchange
-#    listen-queues:
-#      user-registration:
-#        name: user.registration.queue
     publish-queues:
       verification:
-        name: user.verification.queue
         routing-key: user.is.verified
       code-generation:
-        name: code.generation.queue
         routing-key: code.is.generated
   services:
     authentication-service:

@@ -9,7 +9,7 @@ spring:
   rabbitmq:
     username: gpnUser
     password: anotherOnePassword
-    virtual-host: vhost
+    virtual-host: /
   jpa:
     open-in-view: false
 
@@ -26,16 +26,12 @@ custom:
     exchange: balance.service.exchange
     publish-queues:
       user-balance-blocked-queue:
-        name: user.balance.blocked.queue
         routing-key: balance.is.blocked
       user-balance-block-failed-queue:
-        name: user.balance.block.failed.queue
         routing-key: balance.block.failed
       user-balance-unblocked-queue:
-        name: user.balance.unblocked.queue
         routing-key: balance.is.unblocked
       user-balance-processed-queue:
-        name: user.balance.processed.queue
         routing-key: balance.is.processed
     listen-queues:
       user-registration-balance:

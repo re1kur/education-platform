@@ -7,7 +7,7 @@ spring:
   liquibase:
     change-log: db/changelog/db.changelog-master.yml
   rabbitmq:
-    virtual-host: vhost
+    virtual-host: /
     username: gpnUser
     password: anotherOnePassword
   jpa:
@@ -23,10 +23,8 @@ custom:
     exchange: catalogue.service.exchange
     publish-queues:
       goods-info-received:
-        name: goods.info.received.queue
         routing-key: goods.info.received
       goods-info-receive-failed:
-        name: goods.info.receive.failed.queue
         routing-key: goods.info.receive.failed
     listen-queues:
       get-goods-info-command:

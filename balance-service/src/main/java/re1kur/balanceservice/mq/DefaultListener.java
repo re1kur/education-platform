@@ -32,9 +32,6 @@ public class DefaultListener {
     @Value("${custom.message-broker.exchange}")
     private String exchange;
 
-    @Value("${custom.message-broker.publish-queues.balance-already-blocked-queue.routing-key}")
-    private String balanceIsAlreadyBlockedRoutingKey;
-
     @Value("${custom.message-broker.publish-queues.user-balance-blocked-queue.routing-key}")
     private String userBalanceBlockedRoutingKey;
 
