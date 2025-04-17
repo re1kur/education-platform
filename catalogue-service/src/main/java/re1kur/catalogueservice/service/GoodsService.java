@@ -1,5 +1,8 @@
 package re1kur.catalogueservice.service;
 
+import dto.GoodsPageDto;
+import filter.GoodsFilter;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import dto.GoodsDto;
 import payload.GoodsPayload;
@@ -20,4 +23,6 @@ public interface GoodsService {
     void update(GoodsUpdatePayload payload) throws CategoryNotFoundException;
 
     ResponseEntity<List<GoodsDto>> getList();
+
+    ResponseEntity<GoodsPageDto> getPage(Pageable pageable, GoodsFilter filter);
 }

@@ -1,6 +1,9 @@
 package re1kur.catalogueservice.service.impl;
 
+import dto.GoodsPageDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -14,11 +17,7 @@ import re1kur.catalogueservice.repository.CatalogueRepository;
 import re1kur.catalogueservice.repository.GoodsRepository;
 import re1kur.catalogueservice.service.CatalogueService;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-
-import static java.util.stream.Collectors.*;
 
 @Component
 @RequiredArgsConstructor
@@ -28,11 +27,11 @@ public class DefaultCatalogueService implements CatalogueService {
     private final GoodsMapper mapper;
 
     @Override
-    public ResponseEntity<Set<GoodsDto>> getCatalogueGoods() {
-        List<CatalogueGoods> catalogue = repo.findAllAndOrderByOrder();
-        Set<GoodsDto> goods = catalogue.stream().map(
-                catalogueGoods -> mapper.read(catalogueGoods.getGoods())).collect(toSet());
-        return ResponseEntity.status(HttpStatus.OK).body(goods);
+    public ResponseEntity<GoodsPageDto> getCatalogueGoods(Pageable pageable) {
+        Page<CatalogueGoods> catalogue = repo.findAllAndOrderByOrder(pageable);
+        Page<GoodsDto> goods = catalogue.map(
+                catalogueGoods -> mapper.read(catalogueGoods.getGoods()));
+        return ResponseEntity.status(HttpStatus.OK).body(GoodsPageDto.of(goods));
     }
 
     @Override

@@ -1,15 +1,15 @@
 package re1kur.catalogueservice.service;
 
+import dto.GoodsPageDto;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import dto.GoodsDto;
 import payload.UpdateCatalogueGoodsPayload;
 import re1kur.catalogueservice.exception.CatalogueGoodsExistingException;
 import re1kur.catalogueservice.exception.GoodsNotFoundException;
 
-import java.util.Set;
 
 public interface CatalogueService {
-    ResponseEntity<Set<GoodsDto>> getCatalogueGoods();
+    ResponseEntity<GoodsPageDto> getCatalogueGoods(Pageable pageable);
 
     void addGoodsToCatalogue(Integer goodsId) throws GoodsNotFoundException, CatalogueGoodsExistingException;
 

@@ -1,15 +1,15 @@
 package re1kur.catalogueservice.controller;
 
+import dto.GoodsPageDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import dto.GoodsDto;
 import payload.UpdateCatalogueGoodsPayload;
 import re1kur.catalogueservice.exception.CatalogueGoodsExistingException;
 import re1kur.catalogueservice.exception.GoodsNotFoundException;
 import re1kur.catalogueservice.service.CatalogueService;
-
-import java.util.Set;
 
 @RestController
 @RequestMapping("api/catalogue")
@@ -18,8 +18,12 @@ public class CatalogueController {
     private final CatalogueService service;
 
     @GetMapping("get")
-    public ResponseEntity<Set<GoodsDto>> getCatalogue() {
-        return service.getCatalogueGoods();
+    public ResponseEntity<GoodsPageDto> getCatalogue(
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "4") Integer size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return service.getCatalogueGoods(pageable);
     }
 
     @PostMapping("add")

@@ -1,16 +1,18 @@
 package re1kur.taskservice.controller;
 
+import dto.TaskPageDto;
 import exception.TaskNotFoundException;
 import exception.TrackNotFoundException;
+import filter.TaskFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import dto.TaskDto;
 import payload.TaskPayload;
 import payload.TaskUpdatePayload;
 import re1kur.taskservice.service.TaskService;
-
-import java.util.List;
 
 
 @RestController
@@ -20,9 +22,13 @@ public class TaskController {
     private final TaskService service;
 
     @GetMapping("list")
-    public ResponseEntity<List<TaskDto>> getTasks() {
-        List<TaskDto> list = service.getList();
-        return ResponseEntity.ok().body(list);
+    public ResponseEntity<TaskPageDto> getTasks(
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "6") Integer size,
+            TaskFilter filter
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return service.getPage(pageable, filter);
     }
 
     @PostMapping("create")
@@ -40,8 +46,8 @@ public class TaskController {
         service.delete(id);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<TaskDto> getTask(@PathVariable Integer id) throws TaskNotFoundException {
+    @GetMapping("get")
+    public ResponseEntity<TaskDto> getTask(@RequestParam Integer id) throws TaskNotFoundException {
         return service.getById(id);
     }
 

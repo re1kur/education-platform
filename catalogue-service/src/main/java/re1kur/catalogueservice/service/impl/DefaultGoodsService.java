@@ -1,6 +1,9 @@
 package re1kur.catalogueservice.service.impl;
 
+import dto.GoodsPageDto;
+import filter.GoodsFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,7 @@ import re1kur.catalogueservice.mapper.GoodsMapper;
 import re1kur.catalogueservice.repository.GoodsRepository;
 import re1kur.catalogueservice.service.GoodsService;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -55,5 +59,14 @@ public class DefaultGoodsService implements GoodsService {
     public ResponseEntity<List<GoodsDto>> getList() {
         List<GoodsDto> list = repo.findAll().stream().map(mapper::read).toList();
         return ResponseEntity.status(HttpStatus.OK).body(list);
+    }
+
+    @Override
+    public ResponseEntity<GoodsPageDto> getPage(Pageable pageable, GoodsFilter filter) {
+        Integer categoryId = filter.categoryId();
+        BigDecimal price = filter.price();
+        String title = filter.title();
+        GoodsPageDto page = GoodsPageDto.of(repo.findAll(pageable, categoryId, price, title).map(mapper::read));
+        return ResponseEntity.status(HttpStatus.OK).body(page);
     }
 }

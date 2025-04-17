@@ -27,9 +27,13 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/test-api/").permitAll()
+                        .requestMatchers("/test-api").permitAll()
                         .requestMatchers("/test-api/token").hasAuthority("ADMIN")
-                        .requestMatchers("/api/tracks/create", "api/tasks/create").hasAnyAuthority("ADMIN", "CONTENT_MODERATOR")
+                        .requestMatchers(
+                                "/api/tracks/create",
+                                "/api/tasks/create",
+                                "/api/tasks/update",
+                                "/api/tasks/delete").hasAnyAuthority("ADMIN", "CONTENT_MODERATOR")
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth -> oauth.jwt(Customizer.withDefaults()))
                 .httpBasic(AbstractHttpConfigurer::disable)
