@@ -66,7 +66,7 @@ public class DefaultGoodsService implements GoodsService {
         Integer categoryId = filter.categoryId();
         BigDecimal price = filter.price();
         String title = filter.title();
-        GoodsPageDto page = GoodsPageDto.of(repo.findAll(pageable, categoryId, price, title).map(mapper::read));
+        GoodsPageDto page = GoodsPageDto.of(repo.findAllByFilter(pageable, categoryId, price, title).map(mapper::read));
         return ResponseEntity.status(HttpStatus.OK).body(page);
     }
 }

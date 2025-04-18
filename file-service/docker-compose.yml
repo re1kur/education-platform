@@ -1,7 +1,18 @@
 services:
   gpn.case.file.database:
+    container_name: gpn.case.file.database
     image: postgres:17
     env_file:
-      - .env
+      - postgres.env
     ports:
-      - '5437:5432'
+      - '5439:5432'
+  gpn.case.file.storage:
+    image: quay.io/minio/minio:latest
+    container_name: gpn.case.file.storage
+    command:
+      - server --console-address ":9001"
+    env_file:
+      - minio.env
+    ports:
+      - '9000:9000'
+      - '9001:9001'
