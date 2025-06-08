@@ -25,4 +25,6 @@ public interface TaskService {
     ResponseEntity<TaskDto> getById(Integer id) throws TaskNotFoundException;
 
     ResponseEntity<TaskPageDto> getPage(Pageable pageable, TaskFilter filter);
+
+    ResponseEntity<String> attachFile(String userId,Integer taskId, String fileId) throws TaskNotFoundException;
 }

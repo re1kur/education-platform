@@ -11,16 +11,14 @@ CREATE TABLE IF NOT EXISTS tracks
 --changeset re1kur:2
 CREATE TABLE IF NOT EXISTS tasks
 (
-    id          SERIAL PRIMARY KEY,
-    track_id    SMALLINT       NOT NULL,
-    name        VARCHAR(128)   NOT NULL,
-    description TEXT           NOT NULL,
-    level       SMALLINT       NOT NULL CHECK (level BETWEEN 1 AND 3),
-    cost        DECIMAL(19, 2) NOT NULL,
-    FOREIGN KEY (track_id) REFERENCES tracks (id) ON DELETE CASCADE,
-    CHECK (level = 1 AND cost BETWEEN 10 AND 25 OR
-           level = 2 AND cost BETWEEN 26 AND 50 OR
-           level = 3 AND cost BETWEEN 51 AND 100)
+    id                  SERIAL PRIMARY KEY,
+    track_id            SMALLINT       NOT NULL,
+    name                VARCHAR(128)   NOT NULL,
+    preview_description VARCHAR(256)   NOT NULL,
+    description         TEXT           NOT NULL,
+    level               SMALLINT       NOT NULL,
+    cost                DECIMAL(19, 2) NOT NULL,
+    FOREIGN KEY (track_id) REFERENCES tracks (id) ON DELETE CASCADE
 );
 
 --changeset re1kur:3
@@ -28,6 +26,7 @@ CREATE TABLE IF NOT EXISTS users_tasks
 (
     user_id UUID,
     task_id INTEGER,
+    completed_at TIMESTAMP,
     PRIMARY KEY (user_id, task_id),
     FOREIGN KEY (task_id) REFERENCES tasks (id) ON DELETE CASCADE
 );
@@ -39,4 +38,14 @@ CREATE TABLE IF NOT EXISTS users_tracks
     track_id SMALLINT,
     PRIMARY KEY (user_id, track_id),
     FOREIGN KEY (track_id) REFERENCES tracks (id) ON DELETE CASCADE
+);
+
+--changeset re1kur:5
+CREATE TABLE user_tasks_files
+(
+    task_id INTEGER,
+    user_id UUID,
+    file_id UUID,
+    PRIMARY KEY (task_id, user_id, file_id),
+    FOREIGN KEY (task_id) REFERENCES tasks (id) ON DELETE CASCADE
 );

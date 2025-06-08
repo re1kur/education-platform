@@ -1,0 +1,338 @@
+
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{https://use.fontawesome.com/releases/v5.8.1/css/all.css}" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/assets/css/templatemo-chain-app-dev.css}">
+
+    <title>GOAL</title>
+  </head>
+
+<body>
+
+  <div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+
+  <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <a href="index.html" class="logo">
+              <img th:src="@{/assets/images/logo.png}" alt="Chain App Dev">
+            </a>
+            <ul class="nav">
+              <li class="scroll-to-section"><a href="#top" class="active">Главная</a></li>
+              <li class="scroll-to-section"><a href="#about">О нас</a></li>
+              <li class="scroll-to-section"><a href="#pricing">Задания</a></li>
+              <li><div class="gradient-button"><a th:href="@{/auth/login}"><i class="fa fa-sign-in-alt"></i>Войти</a></div></li>
+            </ul>        
+            <a class='menu-trigger'>
+                <span>Menu</span>
+            </a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-lg-6 align-self-center">
+              <div class="left-content show-up header-text wow fadeInLeft" data-wow-duration="1s" data-wow-delay="1s">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h2>Твоя IT-карьера начинается здесь</h2>
+                    <p>Goal - это инновационная IT-платформа, объединяющая обучение и возможности трудоустройства. Мы предлагаем студентам и начинающим специалистам решать реальные кейс-задания, зарабатывать внутреннюю валюту (“голкоины”) и обменивать их на обучающие курсы, стажировки и другие ресурсы для развития карьеры.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="right-image wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.5s">
+                <img th:src="@{/assets/images/slider-dec.png}" alt="">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="services" class="services section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+          <div class="section-heading  wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.5s">
+            <h4>Возможности и услуги для <em>Вас</em></h4>
+            <img th:src="@{/assets/images/heading-line-dec.png}" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-3">
+          <div class="service-item first-service">
+            <div class="icon"></div>
+            <h4>Обучение</h4>
+            <p>Решайте реальные кейс-задания и получайте опыт в IT-сфере.</p>
+            <div class="text-button">
+              <a href="#">Подробнее <i class="fa fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="service-item second-service">
+            <div class="icon"></div>
+            <h4>Курсы</h4>
+            <p>Повышайте квалификацию и изучайте новые технологии.</p>
+            <div class="text-button">
+              <a href="#">Подробнее <i class="fa fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="service-item third-service">
+            <div class="icon"></div>
+            <h4>Goal-коины</h4>
+            <p>Зарабатывайте за успешное выполнение заданий.</p>
+            <div class="text-button">
+              <a href="#">Подробнее<i class="fa fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="service-item fourth-service">
+            <div class="icon"></div>
+            <h4>Марафоны</h4>
+            <p> Участвуйте в марафонах, для проверки навыков и перехода на новый уровень.</p>
+            <div class="text-button">
+              <a href="#">Подробнее<i class="fa fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="about" class="about-us section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 align-self-center">
+          <div class="section-heading">
+            <h4>Кто <em>мы такие</em> и что  <em>мы делаем</em></h4>
+            <img th:src="@{/assets/images/heading-line-dec.png}" alt="">
+            <p>Мы - команда энтузиастов, объединенных общей целью: сделать IT-образование более практичным и доступным, а процесс поиска работы - более эффективным. Мы верим в то, что реальные кейсы и возможность обмена заработанной валюты на ценные ресурсы - это лучший способ для студентов приобрести необходимые навыки и опыт. Мы стремимся создать платформу, которая станет мостом между образованием и реальным миром IT, помогая как начинающим специалистам, так и компаниям достигать своих целей.</p>
+          </div>
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="box-item">
+                <h4><a href="#">Инновационный подход</a></h4>
+                <p>Мы постоянно разрабатываем новые инструменты для обучения и поиска работы.</p>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="box-item">
+                <h4><a href="#">Прозрачность и открытость</a></h4>
+                <p>Мы ценим честность и открытое общение</p>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="box-item">
+                <h4><a href="#">Доступность</a></h4>
+                <p>Мы стремимся сделать IT-образование и возможности трудоустройства доступными </p>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="box-item">
+                <h4><a href="#">Поддержка и помощь 24/7</a></h4>
+                <p>Мы всегда готовы ответить на ваши вопросы и помочь решить любые проблемы.</p>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="gradient-button">
+                <a href="register.html">Присоединяйся к нам</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="right-image">
+            <img th:src="@{/assets/images/about-right-dec.png}" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="pricing" class="pricing-tables">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+          <div class="section-heading">
+          
+            <h4>Поставь <em>цель</em>. Достигни с нами – от кейса к работе.</h4>
+            <img th:src="@{/assets/images/heading-line-dec.png}" alt="">
+            <p>Кейсы в Goal – это практические задания, имитирующие реальные задачи из IT-индустрии. Они позволяют студентам отточить навыки программирования, анализа данных, веб-разработки и других IT-направлений. </p>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="pricing-item-regular">
+            <span class="price">10G</span>
+            <h4>“Базовая лига”</h4>
+            <div class="icon">
+              <img th:src="@{/assets/images/pricing-table-01.png}" alt="">
+            </div>
+            <ul>
+              <p>Эти кейсы созданы для оценки ваших базовых знаний и навыков в веб-разработке. Покажите, что вы умеете создавать простые веб-страницы и писать функции, и получите свои первые Goal-коины!</p>
+              <li>1</li>
+              <li>2</li>
+              <li>3</li>
+            </ul>
+            <div class="border-button">
+              <a href="register.html">Приступить</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="pricing-item-pro">
+            <span class="price">50G</span>
+            <h4>“Реактивная лига”</h4>
+            <div class="icon">
+              <img th:src="@{/assets/images/pricing-table-0123.png}" alt="">
+            </div>
+            <ul>
+              <p>Добро пожаловать в мир сложных задач! Погрузитесь в решение сложных задачь, отточите свои навыки работы с базами данных и станьте настоящим архитектором IT-систем! </p>
+              <li>1</li>
+              <li>2</li>
+              <li>3</li>
+            </ul>
+            <div class="border-button">
+              <a href="register.html">Приступить</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="pricing-item-regular">
+            <span class="price">25G</span>
+            <h4>“Высокооктановая лига”</h4>
+            <div class="icon">
+              <img th:src="@{/assets/images/pricing-table-012.png}" alt="">
+            </div>
+            <ul>
+              <p>Вы уже уверенно чувствуете себя в IT? Примените свои знания на практике, создавая программы. Продемонстрируйте свои навыки и получите заслуженные Goal-коины!</p>
+              <li>1</li>
+              <li>2</li>
+              <li>3</li>
+            </ul>
+            <div class="border-button">
+              <a href="register.html">Приступить</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> 
+
+  <footer id="newsletter">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+          <div class="section-heading">
+            <h4>Присоединяйтесь к нашей рассылке, чтобы получать новости</h4>
+          </div>
+        </div>
+        <div class="col-lg-6 offset-lg-3">
+          <form id="search" action="#" method="GET">
+            <div class="row">
+              <div class="col-lg-6 col-sm-6">
+                <fieldset>
+                  <input type="address" name="address" class="email" placeholder="Email..." autocomplete="on" required>
+                </fieldset>
+              </div>
+              <div class="col-lg-6 col-sm-6">
+                <fieldset>
+                  <button type="submit" class="main-button">Подписаться <i class="fa fa-angle-right"></i></button>
+                </fieldset>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-3">
+          <div class="footer-widget">
+            <h4>Полезные ссылки</h4>
+            <ul>
+              <li><a href="#">ТГ-канал «В команде»</a></li>
+              <li><a href="#">Стажировка ИТ-старт</a></li>
+              <li><a href="#">Новость про IT Camp</a></li>
+              <li><a href="#">Новость на сайте «Газпром нефть»</a></li>
+              <li><a href="#">Противодействие мошенничеству</a></li>
+              <li><a href="#">Вакансии</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="footer-widget">
+            <h4>Социальные сети</h4>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="footer-widget">
+            <h4>Контакты</h4>
+            <p><a href="#">+ 8 (800) 700-31-52</a>
+            </p>
+            <p><a href="#">Обратная связь</a></p>
+            <p><a href="#">Все контакты</a></p>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="footer-widget">
+            <h4>О нашей компании</h4>
+            <p><a href="#">Кейсы</a></p>
+            <p><a href="#">Goal-коины</a></p>
+            <p><a href="#">Услуги</a></p>
+          </div>
+        </div>
+      </div>
+        </div> 
+        <div class="col-lg-12">
+          <div class="copyright-text">
+            <p>Copyright © 2025 GOAL. Все права защищены.</p>
+          </div>
+        </div>
+  </footer>
+
+
+  <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+  <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+  <script th:src="@{/assets/js/owl-carousel.js}"></script>
+  <script th:src="@{/assets/js/animation.js}"></script>
+  <script th:src="@{/assets/js/imagesloaded.js}"></script>
+  <script th:src="@{/assets/js/popup.js}"></script>
+  <script th:src="@{/assets/js/custom.js}"></script>
+</body>
+</html>

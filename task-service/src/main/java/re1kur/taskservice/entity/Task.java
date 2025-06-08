@@ -28,6 +28,12 @@ public class Task {
 
     private String description;
 
+    private String previewDescription;
+
+    private String inputData;
+
+    private String outputData;
+
     private Integer level;
 
     private BigDecimal cost;

@@ -8,8 +8,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import dto.TaskDto;
+import org.springframework.web.multipart.MultipartFile;
 import payload.TaskPayload;
 import payload.TaskUpdatePayload;
 import re1kur.taskservice.service.TaskService;
@@ -49,6 +52,15 @@ public class TaskController {
     @GetMapping("get")
     public ResponseEntity<TaskDto> getTask(@RequestParam Integer id) throws TaskNotFoundException {
         return service.getById(id);
+    }
+
+    @PostMapping("attach-file")
+    public ResponseEntity<String> attachFile(
+            @RequestParam String fileId,
+            @RequestParam Integer taskId,
+            @AuthenticationPrincipal UserDetails principal
+    ) throws TaskNotFoundException {
+        return service.attachFile(principal.getUsername(), taskId, fileId);
     }
 
 }

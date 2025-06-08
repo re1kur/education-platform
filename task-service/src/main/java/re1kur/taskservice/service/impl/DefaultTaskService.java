@@ -18,16 +18,19 @@ import payload.TaskUpdatePayload;
 import re1kur.taskservice.entity.Task;
 import re1kur.taskservice.mapper.TaskMapper;
 import re1kur.taskservice.repository.TaskRepository;
+import re1kur.taskservice.repository.UserTaskRepository;
 import re1kur.taskservice.service.TaskService;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class DefaultTaskService implements TaskService {
     private final TaskRepository repo;
+    private final UserTaskRepository userTaskRepo;
     private final TaskMapper mapper;
 
     @Override
@@ -75,5 +78,17 @@ public class DefaultTaskService implements TaskService {
         Integer level = filter.level();
         TaskPageDto page = TaskPageDto.of(repo.findAllByFilter(pageable, name, cost, level).map(mapper::read));
         return ResponseEntity.status(HttpStatus.OK).body(page);
+    }
+
+    @Override
+    public ResponseEntity<String> attachFile(String userId, Integer taskId, String fileId) throws TaskNotFoundException {
+        repo.findById(taskId).orElseThrow(() ->
+                new TaskNotFoundException("Task with id %d does not exist.".formatted(taskId)));
+        try {
+            userTaskRepo.addUsersFile(taskId, UUID.fromString(userId), UUID.fromString(fileId));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+        return ResponseEntity.ok().body("File \"%s\" was attached to task №%d by user with id \"%s\".".formatted(fileId, taskId, userId));
     }
 }

@@ -18,6 +18,7 @@
         <option value="$PROJECT_DIR$/file-service/pom.xml" />
         <option value="$PROJECT_DIR$/transaction-service/pom.xml" />
         <option value="$PROJECT_DIR$/balance-service/pom.xml" />
+        <option value="$PROJECT_DIR$/client-app/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

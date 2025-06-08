@@ -1,6 +1,7 @@
 package re1kur.fileservice.service.impl;
 
 import dto.PresignedUrl;
+import exception.UrlUpdateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import re1kur.fileservice.mapper.FileMapper;
 import re1kur.fileservice.repository.FileRepository;
 import re1kur.fileservice.service.FileService;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -26,19 +28,33 @@ public class DefaultFileService implements FileService {
     @Override
     public ResponseEntity<String> upload(MultipartFile payload) throws IOException {
         File file = mapper.upload(payload);
+        String id = file.getId().toString();
 
-        client.upload(file.getId(), payload);
-        PresignedUrl resp = client.getUrl(file.getId());
+        client.upload(id, payload);
+        PresignedUrl resp = client.getUrl(id);
         file.setUrl(resp.url());
         file.setUrlExpiresAt(resp.expiration().atZone(ZoneId.systemDefault()));
 
-        File save = repo.save(file);
-        return ResponseEntity.ok().body(save.getId().toString());
+        repo.save(file);
+        return ResponseEntity.ok().body(id);
     }
 
     @Override
-    public ResponseEntity<String> getUrl(String id) {
-        return ResponseEntity.ok().body("");
-        // TODO
+    public ResponseEntity<String> getUrl(String id) throws FileNotFoundException, UrlUpdateException {
+        File file = repo.findById(UUID.fromString(id)).orElseThrow(() -> new FileNotFoundException("File with id '%s' does not exist."));
+        if (ZonedDateTime.now().isAfter(file.getUrlExpiresAt().toInstant().atZone(ZoneId.systemDefault()))) {
+            file = updateUrl(file);
+        }
+        return ResponseEntity.ok().body(file.getUrl());
+    }
+
+    private File updateUrl(File file) throws UrlUpdateException {
+        PresignedUrl resp = client.getUrl(file.getId().toString());
+        if (resp.expiration().equals(file.getUrlExpiresAt().toInstant().atZone(ZoneId.systemDefault()))) {
+            throw new UrlUpdateException("The expiration has not been updated.");
+        }
+        file.setUrl(resp.url());
+        file.setUrlExpiresAt(resp.expiration().atZone(ZoneId.systemDefault()));
+        return repo.save(file);
     }
 }

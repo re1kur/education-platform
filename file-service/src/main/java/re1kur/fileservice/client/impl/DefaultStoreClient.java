@@ -9,7 +9,6 @@ import re1kur.fileservice.client.StoreClient;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
-import software.amazon.awssdk.services.s3.model.GetUrlRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
@@ -17,7 +16,6 @@ import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequ
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -32,19 +30,19 @@ public class DefaultStoreClient implements StoreClient {
     private Integer ttl;
 
     @Override
-    public void upload(UUID id, MultipartFile payload) throws IOException {
+    public void upload(String id, MultipartFile payload) throws IOException {
         PutObjectRequest request = PutObjectRequest.builder()
-                .key(id.toString())
+                .key(id)
                 .bucket(bucket)
                 .build();
         s3Client.putObject(request, RequestBody.fromInputStream(payload.getInputStream(), payload.getSize()));
     }
 
     @Override
-    public PresignedUrl getUrl(UUID id) {
+    public PresignedUrl getUrl(String id) {
         GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                 .bucket(bucket)
-                .key(id.toString())
+                .key(id)
                 .build();
 
         GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
