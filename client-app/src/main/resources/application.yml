@@ -1,3 +1,9 @@
 spring:
   application:
     name: client-app
+
+backend:
+  baseUrl: http://localhost:8765
+  authenticationServiceUrl: /authentication-service/api
+  authentication:
+    loginEndpoint: /login
