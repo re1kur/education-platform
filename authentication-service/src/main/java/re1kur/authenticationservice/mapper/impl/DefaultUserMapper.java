@@ -29,5 +29,4 @@ public class DefaultUserMapper implements UserMapper {
                 .isEmailVerified(from.getIsEmailVerified())
                 .build();
     }
-
 }

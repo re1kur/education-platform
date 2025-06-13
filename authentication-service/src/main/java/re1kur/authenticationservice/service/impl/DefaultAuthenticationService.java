@@ -1,5 +1,6 @@
 package re1kur.authenticationservice.service.impl;
 
+import exception.UserVerificationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -54,5 +55,12 @@ public class DefaultAuthenticationService implements AuthenticationService {
         Optional<User> mayBeUser = repo.findByEmail(email);
         boolean isExist = mayBeUser.isPresent();
         return ResponseEntity.ok(new CheckVerificationResult(isExist, isExist ? mayBeUser.get().getIsEmailVerified() : null));
+    }
+
+    @Override
+    public void verify(String email) throws UserVerificationException {
+        User user = repo.findByEmail(email).orElseThrow(() -> new UserVerificationException("Invalid credentials."));
+        user.setIsEmailVerified(true);
+        repo.save(user);
     }
 }

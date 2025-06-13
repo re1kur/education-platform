@@ -1,5 +1,6 @@
 package re1kur.authenticationservice.service;
 
+import exception.UserVerificationException;
 import org.springframework.http.ResponseEntity;
 import dto.CheckVerificationResult;
 import payload.UserPayload;
@@ -13,4 +14,6 @@ public interface AuthenticationService {
     Token authenticate(UserPayload user) throws UserAuthenticationException;
 
     ResponseEntity<CheckVerificationResult> checkVerification(String email);
+
+    void verify(String email) throws UserVerificationException;
 }

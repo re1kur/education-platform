@@ -49,11 +49,9 @@ public class DefaultJwtGenerator implements JwtGenerator {
         RSAPublicKey publicKey = readPublicKeyFromFile(publicKeyPath);
         RSASSASigner signer = new RSASSASigner(privateKey);
 
-
         JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.RS256)
                 .type(JOSEObjectType.JWT)
                 .build();
-
 
         JWTClaimsSet payload = new JWTClaimsSet.Builder()
                 .claim("sub", credentials.getClaims().get("sub"))
@@ -62,7 +60,6 @@ public class DefaultJwtGenerator implements JwtGenerator {
                 .claim("scope", credentials.getClaims().get("scope"))
                 .build();
 
-
         SignedJWT jwt = new SignedJWT(header, payload);
         jwt.sign(signer);
 
@@ -70,7 +67,6 @@ public class DefaultJwtGenerator implements JwtGenerator {
 
         return new Token(jwt.serialize());
     }
-
 
     @SneakyThrows
     private void generateKeyPair() {
@@ -103,5 +99,4 @@ public class DefaultJwtGenerator implements JwtGenerator {
         boolean verify = verifier.verify(jwt.getHeader(), jwt.getSigningInput(), jwt.getSignature());
         log.info("Test verification with public key: {}", verify ? "DONE" : "FAILED");
     }
-
 }
