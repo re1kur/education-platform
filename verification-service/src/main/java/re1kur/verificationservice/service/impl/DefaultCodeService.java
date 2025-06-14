@@ -1,8 +1,6 @@
 package re1kur.verificationservice.service.impl;
 
 import exception.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import re1kur.verificationservice.client.AuthenticationClient;
 import payload.VerificationPayload;
@@ -26,22 +24,20 @@ public class DefaultCodeService implements CodeService {
 
     @Override
     @Transactional
-    public ResponseEntity<String> generateCode(String email) throws UserNotFoundException, UserAlreadyVerifiedException {
+    public void generateCode(String email) throws UserNotFoundException, UserAlreadyVerifiedException {
         client.checkVerification(email);
         Code code = generator.generate(email);
         repo.save(code);
         publisher.publishGenerationCodeEvent(code);
-        return ResponseEntity.status(HttpStatus.OK).body("Code generated and sent to email.");
     }
 
     @Override
-    public ResponseEntity<String> verify(VerificationPayload payload) throws IncorrectCodeVerification, UserNotFoundException, UserAlreadyVerifiedException, NotFoundCodeVerificationException, ExpiredCodeVerificationException {
+    public void verify(VerificationPayload payload) throws IncorrectCodeVerification, UserNotFoundException, UserAlreadyVerifiedException, NotFoundCodeVerificationException, ExpiredCodeVerificationException {
         String email = payload.email();
         client.checkVerification(email);
         Code code = repo.findById(email).orElseThrow(() -> new NotFoundCodeVerificationException("Code not found"));
         if (handleVerificationCode(code, payload.code()))
             publisher.publishUserVerificationEvent(email);
-        return ResponseEntity.status(HttpStatus.OK).body("User verified.");
     }
 
     private boolean handleVerificationCode(Code code, String toCompare) throws ExpiredCodeVerificationException, IncorrectCodeVerification {
@@ -50,6 +46,4 @@ public class DefaultCodeService implements CodeService {
         if (!code.getContent().equals(toCompare)) throw new IncorrectCodeVerification("Provided code is incorrect.");
         return true;
     }
-
-
 }
