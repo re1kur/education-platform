@@ -1,22 +1,21 @@
 package re1kur.catalogueservice.service;
 
-import org.springframework.http.ResponseEntity;
 import dto.CategoryDto;
 import payload.CategoryPayload;
 import payload.CategoryUpdatePayload;
-import re1kur.catalogueservice.exception.CategoryAlreadyExistsException;
+import re1kur.catalogueservice.exception.CategoryAlreadyExistException;
 import re1kur.catalogueservice.exception.CategoryNotFoundException;
 
 import java.util.List;
 
 public interface CategoryService {
-    ResponseEntity<CategoryDto> get(Integer id) throws CategoryNotFoundException;
+    CategoryDto get(Integer id) throws CategoryNotFoundException;
 
-    void create(CategoryPayload payload) throws CategoryAlreadyExistsException;
+    void create(CategoryPayload payload) throws CategoryAlreadyExistException;
 
     void delete(Integer id) throws CategoryNotFoundException;
 
     void update(CategoryUpdatePayload payload) throws CategoryNotFoundException;
 
-    ResponseEntity<List<CategoryDto>> getList();
+    List<CategoryDto> getList();
 }

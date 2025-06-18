@@ -4,10 +4,11 @@ import dto.GoodsPageDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import payload.UpdateCatalogueGoodsPayload;
-import re1kur.catalogueservice.exception.CatalogueGoodsExistingException;
+import re1kur.catalogueservice.exception.CatalogueGoodsAlreadyExistException;
 import re1kur.catalogueservice.exception.GoodsNotFoundException;
 import re1kur.catalogueservice.service.CatalogueService;
 
@@ -23,21 +24,22 @@ public class CatalogueController {
             @RequestParam(name = "size", defaultValue = "4") Integer size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        return service.getCatalogueGoods(pageable);
+        GoodsPageDto pageDto = service.getCatalogueGoods(pageable);
+        return ResponseEntity.status(HttpStatus.OK).body(pageDto);
     }
 
     @PostMapping("add")
-    public void addGoodsToCatalogue(@RequestParam Integer id) throws CatalogueGoodsExistingException, GoodsNotFoundException {
+    public void addGoodsToCatalogue(@RequestParam Integer id) throws CatalogueGoodsAlreadyExistException, GoodsNotFoundException {
         service.addGoodsToCatalogue(id);
     }
 
     @DeleteMapping("remove")
-    public void removeGoodsFromCatalogue(@RequestParam Integer id) throws CatalogueGoodsExistingException, GoodsNotFoundException {
+    public void removeGoodsFromCatalogue(@RequestParam Integer id) throws CatalogueGoodsAlreadyExistException, GoodsNotFoundException {
         service.removeGoodsFromCatalogue(id);
     }
 
     @PutMapping("update")
-    public void updateGoodsInCatalogue(@RequestBody UpdateCatalogueGoodsPayload payload) throws CatalogueGoodsExistingException, GoodsNotFoundException {
+    public void updateGoodsInCatalogue(@RequestBody UpdateCatalogueGoodsPayload payload) throws CatalogueGoodsAlreadyExistException, GoodsNotFoundException {
         service.updateGoodsInCatalogue(payload);
     }
 }

@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class CatalogueGoods {
     @Id
     @Column(name = "goods_id")
-    private Integer userId;
+    private Integer goodsId;
 
     @OneToOne
     @JoinColumn(name = "goods_id", referencedColumnName = "id",

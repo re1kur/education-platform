@@ -14,20 +14,24 @@ import re1kur.catalogueservice.repository.CategoryRepository;
 @Component
 @RequiredArgsConstructor
 public class DefaultGoodsMapper implements GoodsMapper {
-    private final CategoryRepository categoryRepo;
+    private final CategoryRepository repo;
 
 
     @Override
     public GoodsDto read(Goods goods) {
-        return new GoodsDto(goods.getId(), goods.getTitle(),
-                goods.getCategory().getId(), goods.getDescription(),
-                goods.getPrice(), goods.getInStock(),
+        return new GoodsDto(
+                goods.getId(),
+                goods.getTitle(),
+                goods.getCategory().getId(),
+                goods.getDescription(),
+                goods.getPrice(),
+                goods.getInStock(),
                 goods.getImageUrl());
     }
 
     @Override
     public Goods write(GoodsPayload payload) throws CategoryNotFoundException {
-        Category category = categoryRepo
+        Category category = repo
                 .findById(payload.categoryId())
                 .orElseThrow(() -> new CategoryNotFoundException("Category with id %d does not exist.".formatted(payload.categoryId())));
 
@@ -41,7 +45,7 @@ public class DefaultGoodsMapper implements GoodsMapper {
 
     @Override
     public Goods update(GoodsUpdatePayload payload) throws CategoryNotFoundException {
-        Category category = categoryRepo
+        Category category = repo
                 .findById(payload.categoryId())
                 .orElseThrow(() -> new CategoryNotFoundException("Category with id %d does not exist.".formatted(payload.categoryId())));
 
