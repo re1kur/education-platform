@@ -4,15 +4,16 @@ import dto.TaskPageDto;
 import exception.TaskNotFoundException;
 import exception.TrackNotFoundException;
 import filter.TaskFilter;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import dto.TaskDto;
-import org.springframework.web.multipart.MultipartFile;
 import payload.TaskPayload;
 import payload.TaskUpdatePayload;
 import re1kur.taskservice.service.TaskService;
@@ -31,16 +32,17 @@ public class TaskController {
             TaskFilter filter
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        return service.getPage(pageable, filter);
+        TaskPageDto body = service.getPage(pageable, filter);
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     @PostMapping("create")
-    public void create(@RequestBody TaskPayload payload) throws TrackNotFoundException {
+    public void create(@RequestBody @Valid TaskPayload payload) throws TrackNotFoundException {
         service.create(payload);
     }
 
     @PutMapping("update")
-    public void update(@RequestBody TaskUpdatePayload payload) throws TrackNotFoundException, TaskNotFoundException {
+    public void update(@RequestBody @Valid TaskUpdatePayload payload) throws TrackNotFoundException, TaskNotFoundException {
         service.update(payload);
     }
 
@@ -51,7 +53,8 @@ public class TaskController {
 
     @GetMapping("get")
     public ResponseEntity<TaskDto> getTask(@RequestParam Integer id) throws TaskNotFoundException {
-        return service.getById(id);
+        TaskDto body = service.getById(id);
+        return ResponseEntity.status(HttpStatus.FOUND).body(body);
     }
 
     @PostMapping("attach-file")
@@ -60,7 +63,9 @@ public class TaskController {
             @RequestParam Integer taskId,
             @AuthenticationPrincipal UserDetails principal
     ) throws TaskNotFoundException {
-        return service.attachFile(principal.getUsername(), taskId, fileId);
+        String userId = principal.getUsername();
+        service.attachFile(userId, taskId, fileId);
+        return ResponseEntity.ok().body("File \"%s\" was attached to task №%d by user with id \"%s\".".formatted(fileId, taskId, userId));
     }
 
 }

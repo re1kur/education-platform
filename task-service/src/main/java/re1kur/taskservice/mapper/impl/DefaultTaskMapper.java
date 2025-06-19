@@ -18,14 +18,14 @@ public class DefaultTaskMapper implements TaskMapper {
 
     @Override
     public TaskDto read(Task task) {
-        return TaskDto.builder()
-                .id(task.getId())
-                .name(task.getName())
-                .trackId(task.getTrack().getId())
-                .description(task.getDescription())
-                .level(task.getLevel())
-                .cost(task.getCost().intValue())
-                .build();
+        return new TaskDto(
+                task.getId(),
+                task.getTrack().getId(),
+                task.getName(),
+                task.getDescription(),
+                task.getLevel(),
+                task.getCost().intValue()
+        );
     }
 
     @Override

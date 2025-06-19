@@ -6,7 +6,6 @@ import exception.TaskNotFoundException;
 import exception.TrackNotFoundException;
 import filter.TaskFilter;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import payload.TaskPayload;
 import payload.TaskUpdatePayload;
 
@@ -22,9 +21,9 @@ public interface TaskService {
 
     void delete(Integer id) throws TaskNotFoundException;
 
-    ResponseEntity<TaskDto> getById(Integer id) throws TaskNotFoundException;
+    TaskDto getById(Integer id) throws TaskNotFoundException;
 
-    ResponseEntity<TaskPageDto> getPage(Pageable pageable, TaskFilter filter);
+    TaskPageDto getPage(Pageable pageable, TaskFilter filter);
 
-    ResponseEntity<String> attachFile(String userId,Integer taskId, String fileId) throws TaskNotFoundException;
+    void attachFile(String userId,Integer taskId, String fileId) throws TaskNotFoundException;
 }

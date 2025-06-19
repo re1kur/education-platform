@@ -1,5 +1,6 @@
 package re1kur.taskservice.controller.advice;
 
+import exception.InternalServerErrorException;
 import exception.TaskNotFoundException;
 import exception.TrackNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class DefaultControllerAdvice {
+
+    @ExceptionHandler(InternalServerErrorException.class)
+    public ResponseEntity<String> handleInternalServerErrorException(InternalServerErrorException ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
+    }
 
     @ExceptionHandler(BindException.class)
     public ResponseEntity<String> handleBindException(BindException ex) {

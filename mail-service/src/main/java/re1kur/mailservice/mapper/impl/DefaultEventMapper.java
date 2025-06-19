@@ -15,12 +15,12 @@ import re1kur.mailservice.mapper.EventMapper;
 public class DefaultEventMapper implements EventMapper {
     @Value("${spring.mail.username}")
     private String from;
-    private final ObjectMapper serializer;
+    private final ObjectMapper mapper;
 
     @Override
     @SneakyThrows
     public SimpleMailMessage codeMessage(String message) {
-        VerificationCodeGenerationEvent event = serializer.readValue(message, VerificationCodeGenerationEvent.class);
+        VerificationCodeGenerationEvent event = mapper.readValue(message, VerificationCodeGenerationEvent.class);
         SimpleMailMessage plainMessage = new SimpleMailMessage();
         plainMessage.setFrom(from);
         plainMessage.setSubject("Verification Code");
@@ -32,7 +32,7 @@ public class DefaultEventMapper implements EventMapper {
     @Override
     @SneakyThrows
     public SimpleMailMessage welcomeMessage(String message) {
-        UserRegistrationEvent event = serializer.readValue(message, UserRegistrationEvent.class);
+        UserRegistrationEvent event = mapper.readValue(message, UserRegistrationEvent.class);
         SimpleMailMessage plainMessage = new SimpleMailMessage();
         plainMessage.setFrom(from);
         plainMessage.setSubject("Welcome mail.");

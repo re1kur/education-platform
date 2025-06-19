@@ -1,15 +1,13 @@
 package re1kur.taskservice.service.impl;
 
 import dto.TaskPageDto;
+import exception.InternalServerErrorException;
 import exception.TaskNotFoundException;
 import exception.TrackNotFoundException;
 import filter.TaskFilter;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import dto.TaskDto;
@@ -34,7 +32,6 @@ public class DefaultTaskService implements TaskService {
     private final TaskMapper mapper;
 
     @Override
-    @SneakyThrows
     public List<TaskDto> getList() {
         return repo.findAll().stream()
                 .map(mapper::read)
@@ -65,30 +62,27 @@ public class DefaultTaskService implements TaskService {
     }
 
     @Override
-    public ResponseEntity<TaskDto> getById(Integer id) throws TaskNotFoundException {
-        TaskDto task = repo.findById(id).map(mapper::read).orElseThrow(
+    public TaskDto getById(Integer id) throws TaskNotFoundException {
+        return repo.findById(id).map(mapper::read).orElseThrow(
                 () -> new TaskNotFoundException("Task with id %d does not exist.".formatted(id)));
-        return ResponseEntity.status(HttpStatus.FOUND).body(task);
     }
 
     @Override
-    public ResponseEntity<TaskPageDto> getPage(Pageable pageable, TaskFilter filter) {
+    public TaskPageDto getPage(Pageable pageable, TaskFilter filter) {
         String name = filter.name();
         BigDecimal cost = filter.cost();
         Integer level = filter.level();
-        TaskPageDto page = TaskPageDto.of(repo.findAllByFilter(pageable, name, cost, level).map(mapper::read));
-        return ResponseEntity.status(HttpStatus.OK).body(page);
+        return TaskPageDto.of(repo.findAllByFilter(pageable, name, cost, level).map(mapper::read));
     }
 
     @Override
-    public ResponseEntity<String> attachFile(String userId, Integer taskId, String fileId) throws TaskNotFoundException {
+    public void attachFile(String userId, Integer taskId, String fileId) throws TaskNotFoundException {
         repo.findById(taskId).orElseThrow(() ->
                 new TaskNotFoundException("Task with id %d does not exist.".formatted(taskId)));
         try {
             userTaskRepo.addUsersFile(taskId, UUID.fromString(userId), UUID.fromString(fileId));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            throw new InternalServerErrorException(e.getMessage());
         }
-        return ResponseEntity.ok().body("File \"%s\" was attached to task №%d by user with id \"%s\".".formatted(fileId, taskId, userId));
     }
 }
