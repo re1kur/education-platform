@@ -1,8 +1,0 @@
-services:
-  gpn-case-auth-database:
-    env_file:
-      - .env
-    image: postgres:17
-    container_name: gpn.case.auth.database
-    ports:
-      - "5433:5432"

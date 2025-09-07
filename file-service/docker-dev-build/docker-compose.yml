@@ -1,0 +1,16 @@
+services:
+  ep-dev-fs-psql:
+    image: postgres:17-alpine
+    env_file:
+      - environment/sql.env
+    ports:
+      - '5434:5432'
+  ep-dev-minio:
+    image: quay.io/minio/minio:latest
+    command:
+      - server --console-address ":9001"
+    env_file:
+      - environment/minio.env
+    ports:
+      - '9000:9000'
+      - '9001:9001'

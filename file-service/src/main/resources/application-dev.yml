@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: file-service
+  docker:
+    compose:
+      enabled: true
+      file: file-service/docker-compose.yml
+
+minio:
+  access-key: developer
+  secret-key: developer
+  endpoint: http://localhost:9000
+  url:
+    time-to-live: 14
+  default-bucket: developer

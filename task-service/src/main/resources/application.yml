@@ -6,20 +6,6 @@ spring:
   liquibase:
     change-log: db/changelog/db.changelog-master.yml
 
-  docker:
-    compose:
-      enabled: true
-      file: task-service/docker-compose.yml
-eureka:
-  client:
-    service-url:
-      defaultZone: http://${eureka.instance.hostname}:8761/eureka
-  instance:
-    hostname: localhost
 
 server:
-  port: 0
-
-custom:
-  jwt:
-    publicKeyPath: /tmp/public.key
+  port: 8081

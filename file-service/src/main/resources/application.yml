@@ -1,27 +1,8 @@
 spring:
   application:
     name: file-service
-  docker:
-    compose:
-      file: file-service/docker-compose.yml
   liquibase:
     change-log: db/changelog/db.changelog-master.yml
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
-
 server:
-  port: 0
-
-custom:
-  jwt:
-    publicKeyPath: /tmp/public.key
-minio:
-  access-key: gpnUser
-  secret-key: gpnPassword
-  endpoint: http://localhost:9000
-  url:
-    time-to-live: 14
-  default-bucket: gpn.bucket
+  port: 8082

@@ -1,0 +1,7 @@
+services:
+  ep-dev-task-psql:
+    env_file:
+      - environment/sql.env
+    image: postgres:17-alpine
+    ports:
+      - '5433:5432'

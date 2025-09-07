@@ -1,13 +1,35 @@
 services:
-  message_broker_rabbitmq:
-    env_file: .env
-    image: rabbitmq:latest
-    container_name: gpn.case.rabbitmq
-    restart: unless-stopped
+#  LOCAL DEVELOPING
+  ep-rabbitmq:
+    image: rabbitmq:4-alpine
+    env_file: docker-build/rabbit/environment/.env
     volumes:
-      - ./definitions.json:/etc/rabbitmq/definitions.json
+      - ./docker-build/rabbit/init/definitions.json:/etc/rabbitmq/definitions.json
     environment:
       RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "-rabbitmq_management load_definitions '/etc/rabbitmq/definitions.json'"
     ports:
       - "5672:5672"
       - "15672:15672"
+    profiles:
+      - dev
+
+# PROD
+  ep-kc-psql:
+    image: postgres:17-alpine
+    env_file: docker-build/psql/environment/.env
+    networks:
+      - keycloak_net
+  ep-keycloak:
+    image: quay.io/keycloak/keycloak:26.2
+    env_file: docker-build/keycloak/environment/.env
+    command: start-dev
+    ports:
+      - "9090:8080"
+    networks:
+      - keycloak_net
+    depends_on:
+      - ep-kc-psql
+
+networks:
+  keycloak_net:
+    external: false
