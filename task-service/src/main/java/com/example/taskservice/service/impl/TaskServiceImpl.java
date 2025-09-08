@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.example.taskservice.entity.Task;
@@ -44,7 +44,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public TaskDto create(TaskPayload payload, MultipartFile[] files, OidcUser user) {
+    public TaskDto create(TaskPayload payload, MultipartFile[] files, Jwt user) {
         UUID userId = UUID.fromString(user.getSubject());
         log.info("CREATE TASK REQUEST BY USER [{}]", userId);
 
@@ -71,7 +71,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public void delete(UUID id) {
+    public void delete(UUID id, Jwt jwt) {
         Task task = repo.findById(id)
                 .orElseThrow(() -> new TaskNotFoundException(messageNotFound.formatted(id)));
         repo.delete(task);

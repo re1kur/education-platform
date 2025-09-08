@@ -1,8 +1,9 @@
 package com.example.taskservice.service.impl;
 
+import com.example.dto.PageDto;
 import com.example.dto.TaskAttemptResultDto;
-import com.example.exception.TaskAttemptNotFoundException;
 import com.example.exception.TaskAttemptResultNotFoundException;
+import com.example.other.AttemptResultFilter;
 import com.example.payload.TaskAttemptResultPayload;
 import com.example.taskservice.entity.TaskAttempt;
 import com.example.taskservice.entity.TaskAttemptResult;
@@ -12,7 +13,10 @@ import com.example.taskservice.service.TaskAttemptResultService;
 import com.example.taskservice.service.TaskAttemptService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,11 +34,11 @@ public class TaskAttemptResultServiceImpl implements TaskAttemptResultService {
 
     @Override
     @Transactional
-    public TaskAttemptResultDto create(TaskAttemptResultPayload payload, UUID attemptId, OidcUser user) {
-        UUID userId = UUID.fromString(user.getSubject());
+    public TaskAttemptResultDto create(TaskAttemptResultPayload payload, UUID attemptId, Jwt jwt) {
+        UUID userId = UUID.fromString(jwt.getSubject());
         log.info("CREATE RESULT FOR TASK ATTEMPT [{}] REQUEST BY ADMIN [{}]", attemptId, userId);
 
-        TaskAttempt found = attemptService.get(attemptId, user);
+        TaskAttempt found = attemptService.get(attemptId, jwt);
         TaskAttemptResult mapped = mapper.create(payload, userId, found);
 
         TaskAttemptResult saved = repo.save(mapped);
@@ -45,7 +49,7 @@ public class TaskAttemptResultServiceImpl implements TaskAttemptResultService {
 
     @Override
     @Transactional
-    public void delete(UUID attemptId, OidcUser user) {
+    public void delete(UUID attemptId, Jwt user) {
         UUID userId = UUID.fromString(user.getSubject());
         log.info("DELETE RESULT FOR TASK ATTEMPT [{}] REQUEST BY ADMIN [{}]", attemptId, userId);
 
@@ -58,7 +62,7 @@ public class TaskAttemptResultServiceImpl implements TaskAttemptResultService {
     }
 
     @Override
-    public TaskAttemptResultDto read(UUID attemptId, OidcUser user) {
+    public TaskAttemptResultDto read(UUID attemptId, Jwt user) {
         UUID userId = UUID.fromString(user.getSubject());
         log.info("READ RESULT FOR TASK ATTEMPT [{}] REQUEST BY ADMIN [{}]", attemptId, userId);
 
@@ -66,5 +70,21 @@ public class TaskAttemptResultServiceImpl implements TaskAttemptResultService {
                 .orElseThrow(() -> new TaskAttemptResultNotFoundException(resultNotFoundMessage.formatted(attemptId)));
 
         return mapper.read(taskAttemptResult);
+    }
+
+    @Override
+    public PageDto<TaskAttemptResultDto> readAll(Jwt jwt, AttemptResultFilter filter, int page, int size) {
+        UUID adminId = UUID.fromString(jwt.getSubject());
+        log.info("READ ALL ATTEMPT RESULTS BY FILTER [{}] BY ADMIN [{}]", filter.toString(), adminId);
+        Pageable pageable = PageRequest.of(page, size);
+
+
+        UUID checkedBy = filter.checkedBy();
+        UUID attemptId = filter.attemptId();
+        String comment = filter.comment();
+
+        Page<TaskAttemptResult> results = repo.findAll(pageable, checkedBy, attemptId, comment);
+
+        return mapper.readPage(results);
     }
 }

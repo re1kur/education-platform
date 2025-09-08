@@ -4,12 +4,13 @@ spring:
   docker:
     compose:
       enabled: true
-      file: file-service/docker-compose.yml
+      file: file-service/docker-dev-build/docker-compose.yml
 
 minio:
   access-key: developer
   secret-key: developer
   endpoint: http://localhost:9000
+  endpoint-override: http://localhost:9000
   url:
-    time-to-live: 14
+    time-to-live: 7
   default-bucket: developer

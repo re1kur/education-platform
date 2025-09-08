@@ -56,4 +56,9 @@ public class TaskAttempt {
     public int hashCode() {
         return id == null ? System.identityHashCode(this) : id.hashCode();
     }
+
+    @PrePersist
+    public void prePersist() {
+        if (status == null) status = TaskAttemptStatus.NEW;
+    }
 }

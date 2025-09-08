@@ -1,13 +1,13 @@
 package com.example.taskservice.controller;
 
 import com.example.dto.TaskDto;
-import com.example.exception.TaskNotFoundException;
-import com.example.exception.TrackNotFoundException;
 import com.example.payload.TaskUpdatePayload;
 import com.example.taskservice.service.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -20,9 +20,10 @@ public class TaskController {
 
     @DeleteMapping
     public ResponseEntity<?> delete(
-            @PathVariable UUID id
+            @PathVariable UUID id,
+            @AuthenticationPrincipal Jwt jwt
     ) {
-        service.delete(id);
+        service.delete(id, jwt);
         return ResponseEntity.noContent().build();
     }
 

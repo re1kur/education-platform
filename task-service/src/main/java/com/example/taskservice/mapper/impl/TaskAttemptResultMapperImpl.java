@@ -1,12 +1,16 @@
 package com.example.taskservice.mapper.impl;
 
+import com.example.dto.PageDto;
+import com.example.dto.TaskAttemptDto;
 import com.example.dto.TaskAttemptResultDto;
 import com.example.payload.TaskAttemptResultPayload;
 import com.example.taskservice.entity.TaskAttempt;
 import com.example.taskservice.entity.TaskAttemptResult;
 import com.example.taskservice.mapper.TaskAttemptResultMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -29,5 +33,11 @@ public class TaskAttemptResultMapperImpl implements TaskAttemptResultMapper {
                 .checkedBy(userId)
                 .comment(payload.comment())
                 .build();
+    }
+
+    @Override
+    public PageDto<TaskAttemptResultDto> readPage(Page<TaskAttemptResult> page) {
+        List<TaskAttemptResultDto> content = page.stream().map(this::read).toList();
+        return new PageDto<>(content, page.getNumber(), page.getSize(), page.getTotalPages(), page.hasNext(), page.hasPrevious());
     }
 }

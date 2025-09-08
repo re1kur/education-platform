@@ -24,7 +24,6 @@ public class TaskAttemptResult {
 
     private UUID checkedBy;
 
-    @Column(updatable = false, insertable = false)
     private LocalDateTime checkedAt;
 
     private String comment;
@@ -45,5 +44,10 @@ public class TaskAttemptResult {
     @Override
     public int hashCode() {
         return taskAttemptId == null ? System.identityHashCode(this) : taskAttemptId.hashCode();
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (checkedAt == null) checkedAt = LocalDateTime.now();
     }
 }

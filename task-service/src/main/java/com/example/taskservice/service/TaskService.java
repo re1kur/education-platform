@@ -6,7 +6,7 @@ import com.example.other.TaskFilter;
 import com.example.payload.TaskPayload;
 import com.example.payload.TaskUpdatePayload;
 import com.example.taskservice.entity.Task;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -16,11 +16,11 @@ import java.util.UUID;
 public interface TaskService {
     List<TaskDto> getList();
 
-    TaskDto create(TaskPayload payload, MultipartFile[] files, OidcUser user);
+    TaskDto create(TaskPayload payload, MultipartFile[] files, Jwt user);
 
     TaskDto update(UUID id, TaskUpdatePayload payload);
 
-    void delete(UUID id);
+    void delete(UUID id, Jwt jwt);
 
     TaskDto read(UUID id);
 

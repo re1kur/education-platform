@@ -12,10 +12,16 @@ spring:
             user-name-attribute: preferred
 
 custom:
-  file-service-url: http:/localhost:8082/api/v1/files
+  file-service-url: http://localhost:8082/api/v1/files
 
 springdoc:
   swagger-ui:
     oauth:
       client-id: task-service-swagger-ui
       client-secret: cguk5MFIfES8KpbiFrvmeyBPsohB1Qcn
+
+logging:
+  level:
+    org:
+      apache:
+        http: DEBUG

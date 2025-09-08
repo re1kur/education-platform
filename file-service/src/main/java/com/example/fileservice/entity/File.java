@@ -16,7 +16,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class File {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     private String extension;

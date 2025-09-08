@@ -26,15 +26,16 @@ public class FIleServiceImpl implements FIleService {
     private final RestTemplate restTemplate;
 
     @Value("${custom.file-service-url}")
-    private final String FILE_SERVICE_URL;
-    private static final String FILE_READ_MESSAGE = "FILE [%s] COULDN'T READ:\n %S";
+    private String FILE_SERVICE_URL;
+
+    private String FILE_READ_MESSAGE = "FILE [%s] COULDN'T READ:\n %s";
 
     @Override
     public List<UUID> upload(MultipartFile[] files) {
         if (files == null) return null;
         int length = files.length;
         log.info("UPLOAD FILES FUNCTION. LENGTH OF FILES ARRAY: [{}]", length);
-        if (length >= 3) throw new FileCountLimitExceededException("File's count must be lesser than 3.");
+        if (length >= 3) throw new FileCountLimitExceededException("FILE COUNT HAVE TO BE LESSER THAN 3.");
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
@@ -57,7 +58,10 @@ public class FIleServiceImpl implements FIleService {
                 .map(MultipartFile::getOriginalFilename).toList());
 
         Map response = restTemplate.postForObject(FILE_SERVICE_URL, requestEntity, Map.class);
-        List<UUID> fileIds = (List<UUID>) response.get("fileIds");
+
+        List<String> fileIdsStr = (List<String>) response.get("fileIds");
+        List<UUID> fileIds = fileIdsStr.stream().map(UUID::fromString).toList();
+
 
         log.info("FILE UPLOAD REQUEST IS SUCCESS: [{}]", fileIds);
 

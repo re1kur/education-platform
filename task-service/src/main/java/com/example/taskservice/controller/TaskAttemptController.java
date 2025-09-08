@@ -5,7 +5,7 @@ import com.example.taskservice.service.TaskAttemptService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -19,18 +19,18 @@ public class TaskAttemptController {
     @GetMapping
     public ResponseEntity<?> getAttempt(
             @PathVariable(name = "id") UUID attemptId,
-            @AuthenticationPrincipal OidcUser user
+            @AuthenticationPrincipal Jwt jwt
             ) {
-        TaskAttemptFullDto body = service.read(attemptId, user);
+        TaskAttemptFullDto body = service.read(attemptId, jwt);
         return ResponseEntity.ok(body);
     }
 
     @DeleteMapping
     public ResponseEntity<?> deleteAttempt(
             @PathVariable(name = "id") UUID attemptId,
-            @AuthenticationPrincipal OidcUser user
+            @AuthenticationPrincipal Jwt jwt
     ) {
-        service.delete(attemptId, user);
+        service.delete(attemptId, jwt);
         return ResponseEntity.noContent().build();
     }
 }

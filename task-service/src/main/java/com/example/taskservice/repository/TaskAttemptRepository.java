@@ -19,7 +19,7 @@ public interface TaskAttemptRepository extends CrudRepository<TaskAttempt, UUID>
     Optional<TaskAttempt> findByIdAndUserId(UUID attemptId, UUID userId);
 
     @Query(value = """
-            SELECT * FROM TaskAttempt ta WHERE
+            FROM TaskAttempt ta WHERE
             (:userId IS NULL OR ta.userId = :userId) AND
             (:taskId IS NULL OR ta.task.id = :taskId) AND
             (:status IS NULL OR ta.status = :status)

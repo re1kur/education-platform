@@ -31,25 +31,32 @@ public class FileServiceImpl implements FileService {
     private final String FILE_NOT_FOUND_MESSAGE = "FILE [%s] WAS NOT FOUND.";
 
     @Override
-    @Transactional
     public List<UUID> upload(MultipartFile[] multipartFiles) {
+        log.info("UPLOAD FILES REQUEST. LENGTH [{}]", multipartFiles.length);
         List<UUID> fileIds = new ArrayList<>();
         for (MultipartFile multipartFile : multipartFiles) {
-            UUID fileId = UUID.randomUUID();
-            String fileIdString = fileId.toString();
-            try {
-                client.upload(fileIdString, multipartFile);
-            } catch (IOException e) {
-                log.error("COULDN'T UPLOAD FILE [{}] IN MINIO:\n [{}]", multipartFile.getOriginalFilename(), e.getMessage());
-            }
-            PresignedUrl resp = client.getUrl(fileIdString);
-
-            File mapped = mapper.create(fileId, resp.url(), LocalDateTime.ofInstant(resp.expiration(), ZoneId.systemDefault()), multipartFile.getContentType());
-            File saved = repo.save(mapped);
-
-            fileIds.add(saved.getId());
+            UUID id = getFileId(multipartFile);
+            fileIds.add(id);
         }
+        log.info("SUCCESSFUL UPLOAD FILES REQUEST. [{}]", fileIds);
         return fileIds;
+    }
+
+    @Transactional
+    private UUID getFileId(MultipartFile multipartFile) {
+        UUID fileId = UUID.randomUUID();
+        String fileIdString = fileId.toString();
+        try {
+            client.upload(fileIdString, multipartFile);
+        } catch (IOException e) {
+            log.error("COULDN'T UPLOAD FILE [{}] IN MINIO:\n [{}]", multipartFile.getOriginalFilename(), e.getMessage());
+        }
+        PresignedUrl resp = client.getUrl(fileIdString);
+
+        File mapped = mapper.create(fileId, resp.url(), LocalDateTime.ofInstant(resp.expiration(), ZoneId.systemDefault()), multipartFile.getContentType());
+        File saved = repo.save(mapped);
+
+        return saved.getId();
     }
 
     @Override

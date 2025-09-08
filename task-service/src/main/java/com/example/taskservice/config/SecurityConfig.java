@@ -27,12 +27,17 @@ public class SecurityConfig {
                                 "/swagger-ui.html",
                                 "/v3/api-docs",
                                 "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/api/v1/test/token").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/test/token",
+                                "/api/v1/tasks/attempts/*/results").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/v1/tasks/*").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/tasks/attempts").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/tasks/*").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/v1/tasks").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/v1/tasks", "/api/v1/tasks/*").authenticated()
-                        .anyRequest().authenticated())
+                        .requestMatchers(HttpMethod.GET, "/api/v1/tasks", "/api/v1/tasks/*", "/api/v1/tasks/attempts/*").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/tasks/*/attempts").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/tasks/*/attempts").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/tasks/attempts/*").authenticated()
+                        .anyRequest().denyAll())
                 .oauth2ResourceServer(oauth -> oauth.jwt(Customizer.withDefaults()))
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .sessionManagement(AbstractHttpConfigurer::disable)

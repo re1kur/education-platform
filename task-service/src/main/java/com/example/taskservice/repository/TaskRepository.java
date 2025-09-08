@@ -12,12 +12,11 @@ import java.util.UUID;
 
 public interface TaskRepository extends JpaRepository<Task, UUID> {
 
-    @Query(value =
-            """
-                    from Task t where 
-                    (lower(t.name) like lower(concat('%', :name, '%')) or :name is null) and
-                    ((t.cost = :cost) or :cost is null)
-                    """)
+    @Query(value = """
+            from Task t where
+            (lower(t.name) like lower(concat('%', :name, '%')) or :name is null) and
+            ((t.cost = :cost) or :cost is null)
+            """)
     Page<Task> findAllByFilter(Pageable pageable,
                                @Param("name") String name,
                                @Param("cost") BigDecimal cost);

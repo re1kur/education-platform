@@ -22,7 +22,8 @@ public class TaskMapperImpl implements TaskMapper {
                 task.getName(),
                 task.getDescription(),
                 task.getPreviewDescription(),
-                task.getCost()
+                task.getCost(),
+                task.getFileIds()
         );
     }
 

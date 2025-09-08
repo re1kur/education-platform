@@ -261,33 +261,33 @@
 //
 //    @Test
 //    void testAttachFile__DoesNotThrowException() throws TaskNotFoundException {
-//        String userId = "550e8400-e29b-41d4-a716-446655440000";
+//        String checkedBy = "550e8400-e29b-41d4-a716-446655440000";
 //        String fileId = "550e8400-e29b-41d4-a716-446655440001";
 //        int taskId = 1;
 //        Task task = Mockito.mock(Task.class);
 //
 //        Mockito.when(repo.findById(taskId)).thenReturn(Optional.of(task));
 //
-//        service.attachFile(userId, taskId, fileId);
+//        service.attachFile(checkedBy, taskId, fileId);
 //
 //        Mockito.verify(repo).findById(taskId);
 //        Mockito.verify(userTaskRepo).addUsersFile(
 //                taskId,
-//                UUID.fromString(userId),
+//                UUID.fromString(checkedBy),
 //                UUID.fromString(fileId)
 //        );
 //    }
 //
 //    @Test
 //    void testAttachFile__NotExistingTask__ThrowTaskNotFoundException() {
-//        String userId = "550e8400-e29b-41d4-a716-446655440000";
+//        String checkedBy = "550e8400-e29b-41d4-a716-446655440000";
 //        String fileId = "550e8400-e29b-41d4-a716-446655440001";
 //        int taskId = 999;
 //
 //        Mockito.when(repo.findById(taskId)).thenReturn(Optional.empty());
 //
 //        TaskNotFoundException exception = Assertions.assertThrows(TaskNotFoundException.class, () ->
-//                service.attachFile(userId, taskId, fileId));
+//                service.attachFile(checkedBy, taskId, fileId));
 //
 //        Assertions.assertEquals("Task with id 999 does not exist.", exception.getMessage());
 //        Mockito.verify(repo).findById(taskId);
@@ -296,7 +296,7 @@
 //
 //    @Test
 //    void testAttachFile__ExceptionInUserTaskRepo__ThrowInternalServerErrorException() {
-//        String userId = "550e8400-e29b-41d4-a716-446655440000";
+//        String checkedBy = "550e8400-e29b-41d4-a716-446655440000";
 //        String fileId = "invalid-uuid";
 //        int taskId = 1;
 //        Task task = Mockito.mock(Task.class);
@@ -304,7 +304,7 @@
 //        Mockito.when(repo.findById(1)).thenReturn(Optional.of(task));
 //
 //        InternalServerErrorException exception = Assertions.assertThrows(InternalServerErrorException.class, () ->
-//                service.attachFile(userId, taskId, fileId));
+//                service.attachFile(checkedBy, taskId, fileId));
 //
 //        Assertions.assertTrue(exception.getMessage().contains("Invalid UUID"));
 //    }

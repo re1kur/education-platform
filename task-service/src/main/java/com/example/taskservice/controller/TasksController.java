@@ -7,9 +7,10 @@ import com.example.payload.TaskPayload;
 import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import com.example.taskservice.service.TaskService;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,13 +32,13 @@ public class TasksController {
         return ResponseEntity.ok(body);
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> create(
-            @RequestBody @Valid TaskPayload payload,
-            @Nullable MultipartFile[] files,
-            @AuthenticationPrincipal OidcUser user
+            @RequestPart(name = "payload") @Valid TaskPayload payload,
+            @RequestPart(name = "files", required = false) MultipartFile[] files,
+            @AuthenticationPrincipal Jwt jwt
             ) {
-        TaskDto body = service.create(payload, files, user);
+        TaskDto body = service.create(payload, files, jwt);
         return ResponseEntity.ok(body);
     }
 }

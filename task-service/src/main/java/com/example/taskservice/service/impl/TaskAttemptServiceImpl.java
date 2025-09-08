@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,7 +43,7 @@ public class TaskAttemptServiceImpl implements TaskAttemptService {
 
     @Override
     @Transactional
-    public TaskAttemptDto create(TaskAttemptPayload payload, UUID taskId, OidcUser user, MultipartFile[] files) {
+    public TaskAttemptDto create(TaskAttemptPayload payload, UUID taskId, Jwt user, MultipartFile[] files) {
         UUID userId = UUID.fromString(user.getSubject());
         log.info("CREATE ATTEMPT FOR TASK [{}] BY USER [{}]", taskId, userId);
 
@@ -59,7 +59,7 @@ public class TaskAttemptServiceImpl implements TaskAttemptService {
     }
 
     @Override
-    public PageDto<TaskAttemptDto> readAll(OidcUser user, UUID taskId, int page, int size) {
+    public PageDto<TaskAttemptDto> readAll(Jwt user, UUID taskId, int page, int size) {
         UUID userId = UUID.fromString(user.getSubject());
         log.info("READ ALL ATTEMPTS BY TASK [{}] BY USER [{}]", taskId, userId);
         Pageable pageable = PageRequest.of(page, size);
@@ -70,11 +70,11 @@ public class TaskAttemptServiceImpl implements TaskAttemptService {
     }
 
     @Override
-    public TaskAttemptFullDto read(UUID attemptId, OidcUser user) {
+    public TaskAttemptFullDto read(UUID attemptId, Jwt user) {
         UUID userId = UUID.fromString(user.getSubject());
         log.info("READ ATTEMPT [{}] BY USER [{}]", attemptId, userId);
 
-        TaskAttempt found = repo.findById(attemptId)
+        TaskAttempt found = repo.findByIdAndUserId(attemptId, userId)
                 .orElseThrow(() -> new AttemptNotFoundException(attemptNotFoundMessage.formatted(attemptId)));
         TaskAttemptResultDto resultDto = resultMapper.read(found.getResult());
 
@@ -83,7 +83,7 @@ public class TaskAttemptServiceImpl implements TaskAttemptService {
 
     @Override
     @Transactional
-    public void delete(UUID attemptId, OidcUser user) {
+    public void delete(UUID attemptId, Jwt user) {
         UUID userId = UUID.fromString(user.getSubject());
         log.info("DELETE ATTEMPT [{}] BY USER [{}]", attemptId, userId);
 
@@ -95,7 +95,7 @@ public class TaskAttemptServiceImpl implements TaskAttemptService {
     }
 
     @Override
-    public PageDto<TaskAttemptDto> readAll(OidcUser user, AttemptFilter filter, int page, int size) {
+    public PageDto<TaskAttemptDto> readAll(Jwt user, AttemptFilter filter, int page, int size) {
         UUID adminId = UUID.fromString(user.getSubject());
         log.info("READ ALL ATTEMPTS BY FILTER [{}] BY ADMIN [{}]", filter.toString(), adminId);
         Pageable pageable = PageRequest.of(page, size);
@@ -111,9 +111,9 @@ public class TaskAttemptServiceImpl implements TaskAttemptService {
     }
 
     @Override
-    public TaskAttempt get(UUID attemptId, OidcUser user) {
+    public TaskAttempt get(UUID attemptId, Jwt user) {
         UUID userId = UUID.fromString(user.getSubject());
-        log.info("READ ATTEMPT [{}] BY USER [{}]", attemptId, userId);
+        log.info("GET ATTEMPT [{}] BY USER [{}]", attemptId, userId);
 
         return repo.findById(attemptId)
                 .orElseThrow(() -> new TaskAttemptNotFoundException(attemptNotFoundMessage.formatted(attemptId)));
