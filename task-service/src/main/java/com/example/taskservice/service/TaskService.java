@@ -1,7 +1,7 @@
 package com.example.taskservice.service;
 
+import com.example.dto.PageDto;
 import com.example.dto.TaskDto;
-import com.example.dto.TaskPageDto;
 import com.example.other.TaskFilter;
 import com.example.payload.TaskPayload;
 import com.example.payload.TaskUpdatePayload;
@@ -18,13 +18,13 @@ public interface TaskService {
 
     TaskDto create(TaskPayload payload, MultipartFile[] files, Jwt user);
 
-    TaskDto update(UUID id, TaskUpdatePayload payload);
+    TaskDto update(UUID id, TaskUpdatePayload payload, Jwt jwt);
 
     void delete(UUID id, Jwt jwt);
 
     TaskDto read(UUID id);
 
-    TaskPageDto getPage(TaskFilter filter, int page, int size);
+    PageDto<TaskDto> getPage(TaskFilter filter, int page, int size, Jwt jwt);
 
     Task get(UUID id);
 }

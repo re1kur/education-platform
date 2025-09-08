@@ -17,7 +17,7 @@ public interface TaskRepository extends JpaRepository<Task, UUID> {
             (lower(t.name) like lower(concat('%', :name, '%')) or :name is null) and
             ((t.cost = :cost) or :cost is null)
             """)
-    Page<Task> findAllByFilter(Pageable pageable,
-                               @Param("name") String name,
-                               @Param("cost") BigDecimal cost);
+    Page<Task> findAll(Pageable pageable,
+                       @Param("name") String name,
+                       @Param("cost") BigDecimal cost);
 }

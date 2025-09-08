@@ -1,9 +1,12 @@
 package com.example.taskservice.mapper.impl;
 
+import com.example.dto.PageDto;
+import com.example.dto.TaskAttemptDto;
 import com.example.dto.TaskDto;
 import com.example.payload.TaskPayload;
 import com.example.payload.TaskUpdatePayload;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import com.example.taskservice.entity.Task;
 import com.example.taskservice.mapper.TaskMapper;
@@ -47,5 +50,16 @@ public class TaskMapperImpl implements TaskMapper {
         task.setPreviewDescription(payload.previewDescription());
         task.setCost(payload.cost());
         return task;
+    }
+
+    @Override
+    public PageDto<TaskDto> readPage(Page<Task> page) {
+        return new PageDto<>(
+                page.stream().map(this::read).toList(),
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalPages(),
+                page.hasNext(),
+                page.hasPrevious());
     }
 }

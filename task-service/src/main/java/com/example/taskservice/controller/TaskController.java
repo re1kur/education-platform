@@ -37,10 +37,11 @@ public class TaskController {
 
     @PutMapping
     public ResponseEntity<?> update(
+            @AuthenticationPrincipal Jwt jwt,
             @PathVariable(name = "id") UUID id,
             @RequestBody @Valid TaskUpdatePayload payload
     ) {
-        TaskDto body = service.update(id, payload);
+        TaskDto body = service.update(id, payload, jwt);
         return ResponseEntity.ok(body);
     }
 }

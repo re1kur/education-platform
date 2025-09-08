@@ -1,5 +1,6 @@
 package com.example.taskservice.controller;
 
+import com.example.dto.PageDto;
 import com.example.dto.TaskDto;
 import com.example.dto.TaskPageDto;
 import com.example.other.TaskFilter;
@@ -24,11 +25,12 @@ public class TasksController {
 
     @GetMapping
     public ResponseEntity<?> getTasks(
+            @AuthenticationPrincipal Jwt jwt,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
-            @RequestParam(name = "size", defaultValue = "6") Integer size,
+            @RequestParam(name = "size", defaultValue = "5") Integer size,
             @ModelAttribute @Nullable TaskFilter filter
     ) {
-        TaskPageDto body = service.getPage(filter, page, size);
+        PageDto<TaskDto> body = service.getPage(filter, page, size, jwt);
         return ResponseEntity.ok(body);
     }
 
