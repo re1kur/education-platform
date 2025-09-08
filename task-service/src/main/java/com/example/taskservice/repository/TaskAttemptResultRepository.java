@@ -16,7 +16,7 @@ public interface TaskAttemptResultRepository extends CrudRepository<TaskAttemptR
             FROM TaskAttemptResult tar WHERE
             (:checkedBy IS NULL OR tar.checkedBy = :checkedBy) AND
             (:attemptId IS NULL OR tar.taskAttemptId = :attemptId) AND
-            (:comment IS NULL OR lower(concat('%', :comment, '%')) LIKE lower(tar.comment))
+            (:comment IS NULL OR lower(tar.comment) LIKE lower(concat('%', cast(:comment as string), '%')))
             """)
     Page<TaskAttemptResult> findAll(
             Pageable pageable,

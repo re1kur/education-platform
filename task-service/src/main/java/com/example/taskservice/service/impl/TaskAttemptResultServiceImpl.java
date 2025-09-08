@@ -28,8 +28,8 @@ import java.util.UUID;
 public class TaskAttemptResultServiceImpl implements TaskAttemptResultService {
     private final TaskAttemptResultRepository repo;
     private final TaskAttemptResultMapper mapper;
-
     private final TaskAttemptService attemptService;
+
     private final String resultNotFoundMessage = "TASK ATTEMPT [%S] RESULT WAS NOT FOUND";
 
     @Override
@@ -49,14 +49,16 @@ public class TaskAttemptResultServiceImpl implements TaskAttemptResultService {
 
     @Override
     @Transactional
-    public void delete(UUID attemptId, Jwt user) {
-        UUID userId = UUID.fromString(user.getSubject());
+    public void delete(UUID attemptId, Jwt jwt) {
+        UUID userId = UUID.fromString(jwt.getSubject());
         log.info("DELETE RESULT FOR TASK ATTEMPT [{}] REQUEST BY ADMIN [{}]", attemptId, userId);
 
-        TaskAttemptResult taskAttemptResult = repo.findById(attemptId)
-                .orElseThrow(() -> new TaskAttemptResultNotFoundException(resultNotFoundMessage.formatted(attemptId)));
+        TaskAttempt foundAttempt = attemptService.get(attemptId, jwt);
+        TaskAttemptResult foundResult = foundAttempt.getResult();
+        if (foundResult == null) throw new TaskAttemptResultNotFoundException(resultNotFoundMessage.formatted(attemptId));
 
-        repo.delete(taskAttemptResult);
+        foundAttempt.setResult(null);
+        repo.delete(foundResult);
 
         log.info("DELETED TASK ATTEMPT [{}] RESULT BY ADMIN [{}]", attemptId, userId);
     }
