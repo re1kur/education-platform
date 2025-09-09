@@ -1,6 +1,6 @@
 package com.example.taskservice.repository;
 
-import com.example.other.TaskAttemptStatus;
+import com.example.enums.TaskAttemptStatus;
 import com.example.taskservice.entity.TaskAttempt;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

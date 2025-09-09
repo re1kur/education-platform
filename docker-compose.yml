@@ -2,9 +2,9 @@ services:
 #  LOCAL DEVELOPING
   ep-rabbitmq:
     image: rabbitmq:4-alpine
-    env_file: docker-build/rabbit/environment/.env
+    env_file: docker/rabbit/environment/.env
     volumes:
-      - ./docker-build/rabbit/init/definitions.json:/etc/rabbitmq/definitions.json
+      - ./docker/rabbit/init/definitions.json:/etc/rabbitmq/definitions.json
     environment:
       RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "-rabbitmq_management load_definitions '/etc/rabbitmq/definitions.json'"
     ports:
@@ -16,12 +16,12 @@ services:
 # PROD
   ep-kc-psql:
     image: postgres:17-alpine
-    env_file: docker-build/psql/environment/.env
+    env_file: docker/psql/environment/.env
     networks:
       - keycloak_net
   ep-keycloak:
     image: quay.io/keycloak/keycloak:26.2
-    env_file: docker-build/keycloak/environment/.env
+    env_file: docker/keycloak/environment/.env
     command: start-dev
     ports:
       - "9090:8080"

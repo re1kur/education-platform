@@ -2,8 +2,7 @@ package com.example.taskservice.controller;
 
 import com.example.dto.PageDto;
 import com.example.dto.TaskDto;
-import com.example.dto.TaskPageDto;
-import com.example.other.TaskFilter;
+import com.example.filter.TasksFilter;
 import com.example.payload.TaskPayload;
 import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
@@ -28,7 +27,7 @@ public class TasksController {
             @AuthenticationPrincipal Jwt jwt,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "5") Integer size,
-            @ModelAttribute @Nullable TaskFilter filter
+            @ModelAttribute @Nullable TasksFilter filter
     ) {
         PageDto<TaskDto> body = service.getPage(filter, page, size, jwt);
         return ResponseEntity.ok(body);

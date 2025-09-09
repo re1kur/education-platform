@@ -36,6 +36,22 @@ public class AdviceController {
         return ResponseEntity.badRequest().body(body);
     }
 
+    @ExceptionHandler(TaskAttemptResultCreateException.class)
+    public ResponseEntity<?> handleTaskAttemptResultCreateException(TaskAttemptResultCreateException ex) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        Map<String, Object> body = Map.of("status", status.value(), "message", ex.getMessage());
+
+        return ResponseEntity.badRequest().body(body);
+    }
+
+    @ExceptionHandler(TaskConflictException.class)
+    public ResponseEntity<?> handleTaskConflictException(TaskConflictException ex) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        Map<String, Object> body = Map.of("status", status.value(), "message", ex.getMessage());
+
+        return ResponseEntity.badRequest().body(body);
+    }
+
     @ExceptionHandler(TaskAttemptResultNotFoundException.class)
     public ResponseEntity<?> handleTaskAttemptResultNotFoundException(TaskAttemptResultNotFoundException ex) {
         HttpStatus status = HttpStatus.BAD_REQUEST;

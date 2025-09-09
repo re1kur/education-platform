@@ -5,15 +5,15 @@ import com.example.dto.TaskAttemptDto;
 import com.example.dto.TaskAttemptFullDto;
 import com.example.dto.TaskAttemptResultDto;
 import com.example.exception.TaskAttemptNotFoundException;
-import com.example.other.AttemptFilter;
-import com.example.other.TaskAttemptStatus;
+import com.example.filter.AttemptsFilter;
+import com.example.enums.TaskAttemptStatus;
 import com.example.payload.TaskAttemptPayload;
 import com.example.taskservice.entity.Task;
 import com.example.taskservice.entity.TaskAttempt;
 import com.example.taskservice.mapper.TaskAttemptMapper;
 import com.example.taskservice.mapper.TaskAttemptResultMapper;
 import com.example.taskservice.repository.TaskAttemptRepository;
-import com.example.taskservice.service.FIleService;
+import com.example.taskservice.service.FileService;
 import com.example.taskservice.service.TaskAttemptService;
 import com.example.taskservice.service.TaskService;
 import lombok.RequiredArgsConstructor;
@@ -37,8 +37,9 @@ public class TaskAttemptServiceImpl implements TaskAttemptService {
     private final TaskAttemptMapper mapper;
     private final TaskAttemptResultMapper resultMapper;
     private final TaskService taskService;
-    private final String attemptNotFoundMessage = "Task attempt [%s] was not found.";
-    private final FIleService fileService;
+    private final FileService fileService;
+
+    private final String attemptNotFoundMessage = "TASK ATTEMPT [%s] WAS NOT FOUND.";
 
     @Override
     @Transactional
@@ -94,7 +95,7 @@ public class TaskAttemptServiceImpl implements TaskAttemptService {
     }
 
     @Override
-    public PageDto<TaskAttemptDto> readAll(Jwt user, AttemptFilter filter, int page, int size) {
+    public PageDto<TaskAttemptDto> readAll(Jwt user, AttemptsFilter filter, int page, int size) {
         UUID adminId = UUID.fromString(user.getSubject());
         log.info("READ ALL ATTEMPTS BY FILTER [{}] BY ADMIN [{}]", filter.toString(), adminId);
         Pageable pageable = PageRequest.of(page, size);
@@ -116,5 +117,15 @@ public class TaskAttemptServiceImpl implements TaskAttemptService {
 
         return repo.findById(attemptId)
                 .orElseThrow(() -> new TaskAttemptNotFoundException(attemptNotFoundMessage.formatted(attemptId)));
+    }
+
+    @Override
+    @Transactional
+    public void setStatus(TaskAttempt found, TaskAttemptStatus status) {
+        found.setStatus(status);
+        repo.save(found);
+
+        if (status.equals(TaskAttemptStatus.SUCCESS))
+            taskService.setCompleted(found.getTask(), found.getUserId());
     }
 }

@@ -2,7 +2,7 @@ spring:
   docker:
     compose:
       enabled: true
-      file: task-service/docker-dev-build/docker-compose.yml
+      file: task-service/docker/docker-compose.yml
   security:
     oauth2:
       client:

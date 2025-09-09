@@ -1,6 +1,6 @@
 package com.example.taskservice.entity;
 
-import com.example.other.TaskAttemptStatus;
+import com.example.enums.TaskAttemptStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

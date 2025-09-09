@@ -3,8 +3,8 @@ package com.example.taskservice.controller;
 import com.example.dto.PageDto;
 import com.example.dto.TaskAttemptDto;
 import com.example.dto.TaskAttemptResultDto;
-import com.example.other.AttemptFilter;
-import com.example.other.AttemptResultFilter;
+import com.example.filter.AttemptsFilter;
+import com.example.filter.AttemptResultsFilter;
 import com.example.taskservice.service.TaskAttemptResultService;
 import com.example.taskservice.service.TaskAttemptService;
 import jakarta.annotation.Nullable;
@@ -23,7 +23,7 @@ public class SearchEndpointsController {
     @GetMapping("/api/v1/tasks/attempts")
     public ResponseEntity<?> getAttemptsByFilter(
             @AuthenticationPrincipal Jwt jwt,
-            @ModelAttribute @Nullable AttemptFilter filter,
+            @ModelAttribute @Nullable AttemptsFilter filter,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "5") int size
     ) {
@@ -34,7 +34,7 @@ public class SearchEndpointsController {
     @GetMapping("/api/v1/tasks/attempts/results")
     public ResponseEntity<?> getAttemptsByFilter(
             @AuthenticationPrincipal Jwt jwt,
-            @ModelAttribute @Nullable AttemptResultFilter filter,
+            @ModelAttribute @Nullable AttemptResultsFilter filter,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "5") int size
     ) {

@@ -1,8 +1,11 @@
 package com.example.dto;
 
+import java.util.UUID;
+
 public record CategoryDto(
-        Integer id,
+        UUID id,
         String title,
         String description,
-        String imageUrl) {
+        String previewDescription,
+        UUID titleImageId) {
 }

@@ -2,8 +2,10 @@ package com.example.taskservice.service.impl;
 
 import com.example.dto.PageDto;
 import com.example.dto.TaskAttemptResultDto;
+import com.example.exception.TaskAttemptResultCreateException;
 import com.example.exception.TaskAttemptResultNotFoundException;
-import com.example.other.AttemptResultFilter;
+import com.example.filter.AttemptResultsFilter;
+import com.example.enums.TaskAttemptStatus;
 import com.example.payload.TaskAttemptResultPayload;
 import com.example.taskservice.entity.TaskAttempt;
 import com.example.taskservice.entity.TaskAttemptResult;
@@ -35,6 +37,7 @@ public class TaskAttemptResultServiceImpl implements TaskAttemptResultService {
     @Override
     @Transactional
     public TaskAttemptResultDto create(TaskAttemptResultPayload payload, UUID attemptId, Jwt jwt) {
+        validate(payload, attemptId);
         UUID userId = UUID.fromString(jwt.getSubject());
         log.info("CREATE RESULT FOR TASK ATTEMPT [{}] REQUEST BY ADMIN [{}]", attemptId, userId);
 
@@ -42,9 +45,16 @@ public class TaskAttemptResultServiceImpl implements TaskAttemptResultService {
         TaskAttemptResult mapped = mapper.create(payload, userId, found);
 
         TaskAttemptResult saved = repo.save(mapped);
+        attemptService.setStatus(found, payload.status());
 
         log.info("CREATED TASK ATTEMPT [{}] RESULT BY ADMIN [{}]", saved.getTaskAttempt().getId(), saved.getCheckedBy());
         return mapper.read(saved);
+    }
+
+    private static void validate(TaskAttemptResultPayload payload, UUID attemptId) {
+        if (payload.status().equals(TaskAttemptStatus.NEW)) {
+            throw new TaskAttemptResultCreateException("TASK ATTEMPT [%s] STATUS CANNOT BE SET TO 'NEW'".formatted(attemptId));
+        }
     }
 
     @Override
@@ -75,7 +85,7 @@ public class TaskAttemptResultServiceImpl implements TaskAttemptResultService {
     }
 
     @Override
-    public PageDto<TaskAttemptResultDto> readAll(Jwt jwt, AttemptResultFilter filter, int page, int size) {
+    public PageDto<TaskAttemptResultDto> readAll(Jwt jwt, AttemptResultsFilter filter, int page, int size) {
         UUID adminId = UUID.fromString(jwt.getSubject());
         log.info("READ ALL ATTEMPT RESULTS BY FILTER [{}] BY ADMIN [{}]", filter.toString(), adminId);
         Pageable pageable = PageRequest.of(page, size);

@@ -2,7 +2,7 @@ package com.example.taskservice.service;
 
 import com.example.dto.PageDto;
 import com.example.dto.TaskDto;
-import com.example.other.TaskFilter;
+import com.example.filter.TasksFilter;
 import com.example.payload.TaskPayload;
 import com.example.payload.TaskUpdatePayload;
 import com.example.taskservice.entity.Task;
@@ -24,7 +24,9 @@ public interface TaskService {
 
     TaskDto read(UUID id);
 
-    PageDto<TaskDto> getPage(TaskFilter filter, int page, int size, Jwt jwt);
+    PageDto<TaskDto> getPage(TasksFilter filter, int page, int size, Jwt jwt);
 
     Task get(UUID id);
+
+    void setCompleted(Task task, UUID userId);
 }

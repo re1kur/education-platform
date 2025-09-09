@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: finance-service
+  liquibase:
+    change-log: db/changelog/db.changelog-master.yml
+  jpa:
+    open-in-view: false
+
+server:
+  port: 8083
+

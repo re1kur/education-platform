@@ -50,3 +50,12 @@ CREATE TABLE IF NOT EXISTS task_attempt_results
     FOREIGN KEY (task_attempt_id) REFERENCES task_attempts(id),
     UNIQUE (task_attempt_id, checked_by)
 );
+
+--changeset re1kur:6
+CREATE TABLE IF NOT EXISTS user_completed_tasks
+(
+    user_id UUID NOT NULL,
+    task_id UUID NOT NULL,
+    FOREIGN KEY(task_id) REFERENCES tasks(id),
+    PRIMARY KEY(user_id, task_id)
+);

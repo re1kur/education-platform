@@ -1,0 +1,9 @@
+name: ep-dev-fns
+
+services:
+  psql:
+    image: postgres:17-alpine
+    env_file:
+      - environment/sql.env
+    ports:
+      - '5434:5432'

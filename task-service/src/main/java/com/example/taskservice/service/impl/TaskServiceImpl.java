@@ -2,16 +2,18 @@ package com.example.taskservice.service.impl;
 
 import com.example.dto.PageDto;
 import com.example.dto.TaskDto;
+import com.example.exception.TaskConflictException;
 import com.example.exception.TaskNotFoundException;
-import com.example.other.TaskFilter;
+import com.example.filter.TasksFilter;
 import com.example.payload.TaskPayload;
 import com.example.payload.TaskUpdatePayload;
-import com.example.taskservice.service.FIleService;
+import com.example.taskservice.service.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +33,8 @@ import java.util.UUID;
 public class TaskServiceImpl implements TaskService {
     private final TaskRepository repo;
     private final TaskMapper mapper;
-    private final FIleService fIleService;
+    private final FileService fIleService;
+    private final JdbcTemplate jdbcTemplate;
 
 
     private String messageNotFound = "TASK [%s] WAS NOT FOUND.";
@@ -95,7 +98,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public PageDto<TaskDto> getPage(TaskFilter filter, int page, int size, Jwt jwt) {
+    public PageDto<TaskDto> getPage(TasksFilter filter, int page, int size, Jwt jwt) {
         UUID userId = UUID.fromString(jwt.getSubject());
         log.info("READ ALL TASKS REQUEST BY USER [{}]", userId);
 
@@ -113,5 +116,20 @@ public class TaskServiceImpl implements TaskService {
     public Task get(UUID id) {
         return repo.findById(id)
                 .orElseThrow(() -> new TaskNotFoundException(messageNotFound.formatted(id)));
+    }
+
+    @Override
+    @Transactional
+    public void setCompleted(Task task, UUID userId) {
+        UUID taskId = task.getId();
+        log.info("USER [{}] HAS COMPLETED TASK [{}]", userId, taskId);
+
+        int updated = jdbcTemplate.update(
+                "INSERT INTO user_completed_tasks (task_id, user_id) VALUES (?, ?) ON CONFLICT DO NOTHING",
+                taskId, userId);
+
+        if (updated == 0) throw new TaskConflictException("TASK [%s] ALREADY COMPLETED BY USER [%s]".formatted(taskId, userId));
+
+        // todo: reward logic here
     }
 }

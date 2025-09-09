@@ -11,8 +11,8 @@
     <groupId>com.example</groupId>
     <artifactId>file-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>file-service</name>
-    <description>file-service</description>
+    <name>File Service</name>
+    <description>service for storing files in s3 store. Crud operations with files(entities)</description>
     <properties>
         <java.version>24</java.version>
     </properties>

@@ -4,7 +4,7 @@ spring:
   docker:
     compose:
       enabled: true
-      file: file-service/docker-dev-build/docker-compose.yml
+      file: file-service/docker/docker-compose.yml
 
 minio:
   access-key: developer

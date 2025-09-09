@@ -3,7 +3,8 @@ package com.example.taskservice.service;
 import com.example.dto.PageDto;
 import com.example.dto.TaskAttemptDto;
 import com.example.dto.TaskAttemptFullDto;
-import com.example.other.AttemptFilter;
+import com.example.filter.AttemptsFilter;
+import com.example.enums.TaskAttemptStatus;
 import com.example.payload.TaskAttemptPayload;
 import com.example.taskservice.entity.TaskAttempt;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -20,7 +21,9 @@ public interface TaskAttemptService {
 
     void delete(UUID attemptId, Jwt user);
 
-    PageDto<TaskAttemptDto> readAll(Jwt user, AttemptFilter filter, int page, int size);
+    PageDto<TaskAttemptDto> readAll(Jwt user, AttemptsFilter filter, int page, int size);
 
     TaskAttempt get(UUID attemptId, Jwt user);
+
+    void setStatus(TaskAttempt found, TaskAttemptStatus status);
 }
