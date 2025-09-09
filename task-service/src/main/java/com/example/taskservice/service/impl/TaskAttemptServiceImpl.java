@@ -4,7 +4,6 @@ import com.example.dto.PageDto;
 import com.example.dto.TaskAttemptDto;
 import com.example.dto.TaskAttemptFullDto;
 import com.example.dto.TaskAttemptResultDto;
-import com.example.exception.AttemptNotFoundException;
 import com.example.exception.TaskAttemptNotFoundException;
 import com.example.other.AttemptFilter;
 import com.example.other.TaskAttemptStatus;
@@ -75,7 +74,7 @@ public class TaskAttemptServiceImpl implements TaskAttemptService {
         log.info("READ ATTEMPT [{}] BY USER [{}]", attemptId, userId);
 
         TaskAttempt found = repo.findByIdAndUserId(attemptId, userId)
-                .orElseThrow(() -> new AttemptNotFoundException(attemptNotFoundMessage.formatted(attemptId)));
+                .orElseThrow(() -> new TaskAttemptNotFoundException(attemptNotFoundMessage.formatted(attemptId)));
         TaskAttemptResultDto resultDto = resultMapper.read(found.getResult());
 
         return mapper.readFull(found, resultDto);
@@ -88,7 +87,7 @@ public class TaskAttemptServiceImpl implements TaskAttemptService {
         log.info("DELETE ATTEMPT [{}] BY USER [{}]", attemptId, userId);
 
         TaskAttempt found = repo.findByIdAndUserId(attemptId, userId)
-                .orElseThrow(() -> new AttemptNotFoundException(attemptNotFoundMessage.formatted(attemptId)));
+                .orElseThrow(() -> new TaskAttemptNotFoundException(attemptNotFoundMessage.formatted(attemptId)));
         repo.delete(found);
 
         log.info("TASK ATTEMPT [{}] DELETED BY USER [{}]", attemptId, userId);

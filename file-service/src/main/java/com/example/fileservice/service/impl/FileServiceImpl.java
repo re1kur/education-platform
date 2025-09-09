@@ -2,7 +2,7 @@ package com.example.fileservice.service.impl;
 
 import com.example.dto.PresignedUrl;
 import com.example.exception.FileNotFoundException;
-import com.example.exception.UrlUpdateException;
+import com.example.exception.FileUpdateException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -86,7 +86,7 @@ public class FileServiceImpl implements FileService {
 
         LocalDateTime expiresAt = LocalDateTime.ofInstant(resp.expiration(), ZoneId.systemDefault());
         if (expiresAt.equals(file.getUrlExpiresAt())) {
-            throw new UrlUpdateException("The expiration has not been updated.");
+            throw new FileUpdateException("THE EXPIRATION OF FILE HAS NOT BEEN UPDATED.");
         }
 
         File mapped = mapper.update(file, resp.url(), expiresAt);
