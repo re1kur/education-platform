@@ -30,6 +30,8 @@ public class Order {
 
     private UUID transactionId;
 
+    private LocalDateTime createdAt;
+
     @ManyToMany(fetch = EAGER)
     @JoinColumn(name = "product_id")
     private List<Product> products = new ArrayList<>();
@@ -50,5 +52,11 @@ public class Order {
     @Override
     public int hashCode() {
         return id == null ? System.identityHashCode(this) : id.hashCode();
+    }
+
+    @PrePersist
+    private void prePersist() {
+        if (createdAt == null) createdAt = LocalDateTime.now();
+        if (status == null) status = OrderStatus.NEW;
     }
 }

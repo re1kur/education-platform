@@ -19,12 +19,12 @@
 //    @Value("${custom.message-broker.exchange}")
 //    private String exchange;
 //
-//    @Value("${custom.message-broker.publish-queues.order-created.routing-key}")
+//    @Value("${custom.message-broker.publish-queues.priority-created.routing-key}")
 //    private String orderCreatedRoutingKey;
 //
 //    @Override
 //    public void publishEvent(OrderCreatedEvent event) {
-//        log.info("Publishing order created event {}", event);
+//        log.info("Publishing priority created event {}", event);
 //        String json = mapper.message(event);
 //        template.convertAndSend(exchange, orderCreatedRoutingKey, json);
 //    }

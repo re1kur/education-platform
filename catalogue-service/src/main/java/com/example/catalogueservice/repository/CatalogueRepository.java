@@ -6,10 +6,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import com.example.catalogueservice.entity.CatalogueProduct;
 
+import java.util.UUID;
 
-public interface CatalogueRepository extends CrudRepository<CatalogueProduct, Integer> {
+
+public interface CatalogueRepository extends CrudRepository<CatalogueProduct, UUID> {
     @Query(value = """
-            FROM CatalogueGoods as c ORDER BY c.order 
+            FROM CatalogueProduct cp
+            ORDER BY cp.priority
             """)
-    Page<CatalogueProduct> findAllAndOrderByOrder(Pageable pageable);
+    Page<CatalogueProduct> findAll(Pageable pageable);
 }

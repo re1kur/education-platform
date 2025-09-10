@@ -1,10 +1,10 @@
 package com.example.filter;
 
-import java.math.BigDecimal;
+import java.util.UUID;
 
 public record ProductsFilter(
         String title,
-        Integer categoryId,
-        BigDecimal price
+        UUID categoryId,
+        Integer price
         ) {
 }

@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS products
     for_sale BOOLEAN NOT NULL DEFAULT FALSE,
     single BOOLEAN NOT NULL DEFAULT FALSE,
     description TEXT,
+    preview_description VARCHAR(256),
     category_id UUID       NOT NULL,
     FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE CASCADE
 );

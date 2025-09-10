@@ -4,7 +4,6 @@ import com.example.dto.CategoryDto;
 import com.example.dto.PageDto;
 import com.example.payload.CategoryPayload;
 import com.example.payload.CategoryUpdatePayload;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import com.example.catalogueservice.entity.Category;
@@ -13,7 +12,6 @@ import com.example.catalogueservice.mapper.CategoryMapper;
 import java.util.UUID;
 
 @Component
-@RequiredArgsConstructor
 public class CategoryMapperImpl implements CategoryMapper {
 
     @Override

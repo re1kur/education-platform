@@ -23,30 +23,30 @@
 //    private final OrderRepository repo;
 //    private final StatusRepository statusRepo;
 //
-//    @RabbitListener(queues = "${custom.message-broker.listen-queues.reject-order-command.name}")
+//    @RabbitListener(queues = "${custom.message-broker.listen-queues.reject-priority-command.name}")
 //    @Transactional
 //    public void listenRejectOrderCommand(String message) throws OrderNotFoundException, StatusNotFoundException {
-//        log.info("Listening reject order by command: {}.", message);
+//        log.info("Listening reject priority by command: {}.", message);
 //        String orderId = mapper.rejectOrderCommand(message);
-//        Order order = repo.findById(UUID.fromString(orderId)).orElseThrow(() -> new OrderNotFoundException("Order with id '%s' does not exist.".formatted(orderId)));
+//        Order priority = repo.findById(UUID.fromString(orderId)).orElseThrow(() -> new OrderNotFoundException("Order with id '%s' does not exist.".formatted(orderId)));
 //        Status rejectStatus = statusRepo.findByName("REJECTED").orElseThrow(() -> new StatusNotFoundException("Status 'REJECT' does not exists."));
 //
-//        order.setStatus(rejectStatus);
-//        repo.save(order);
-//        log.info("Order rejected: {}.", order);
+//        priority.setStatus(rejectStatus);
+//        repo.save(priority);
+//        log.info("Order rejected: {}.", priority);
 //    }
 //
-//    @RabbitListener(queues = "${custom.message-broker.listen-queues.approve-order-command.name}")
+//    @RabbitListener(queues = "${custom.message-broker.listen-queues.approve-priority-command.name}")
 //    @Transactional
 //    public void listenApproveOrderCommand(String message) throws OrderNotFoundException, StatusNotFoundException {
-//        log.info("Listening approve order by command: {}.", message);
+//        log.info("Listening approve priority by command: {}.", message);
 //        String orderId = mapper.approveOrderCommand(message);
-//        Order order = repo.findById(UUID.fromString(orderId)).orElseThrow(() -> new OrderNotFoundException("Order with id '%s' does not exist.".formatted(orderId)));
+//        Order priority = repo.findById(UUID.fromString(orderId)).orElseThrow(() -> new OrderNotFoundException("Order with id '%s' does not exist.".formatted(orderId)));
 //        Status approveStatus = statusRepo.findByName("APPROVED").orElseThrow(() -> new StatusNotFoundException("Status 'APPROVED' does not exists."));
 //
-//        order.setStatus(approveStatus);
-//        repo.save(order);
-//        log.info("Order approved: {}.", order);
+//        priority.setStatus(approveStatus);
+//        repo.save(priority);
+//        log.info("Order approved: {}.", priority);
 //    }
 //
 //    @RabbitListener(queues = "${custom.message-broker.listen-queues.create-transaction-command.name}")
@@ -91,29 +91,29 @@
 //    }
 //
 //
-//    @RabbitListener(queues = "${custom.message-broker.listen-queues.reject-order-command.name}")
+//    @RabbitListener(queues = "${custom.message-broker.listen-queues.reject-priority-command.name}")
 //    @Transactional
 //    public void listenRejectOrderCommand(String message) throws OrderNotFoundException, StatusNotFoundException {
-//        log.info("Listening reject order by command: {}.", message);
+//        log.info("Listening reject priority by command: {}.", message);
 //        String orderId = mapper.rejectOrderCommand(message);
-//        Order order = repo.findById(UUID.fromString(orderId)).orElseThrow(() -> new OrderNotFoundException("Order with id '%s' does not exist.".formatted(orderId)));
+//        Order priority = repo.findById(UUID.fromString(orderId)).orElseThrow(() -> new OrderNotFoundException("Order with id '%s' does not exist.".formatted(orderId)));
 //        Status rejectStatus = statusRepo.findByName("REJECTED").orElseThrow(() -> new StatusNotFoundException("Status 'REJECT' does not exists."));
 //
-//        order.setStatus(rejectStatus);
-//        repo.save(order);
-//        log.info("Order rejected: {}.", order);
+//        priority.setStatus(rejectStatus);
+//        repo.save(priority);
+//        log.info("Order rejected: {}.", priority);
 //    }
 //
-//    @RabbitListener(queues = "${custom.message-broker.listen-queues.approve-order-command.name}")
+//    @RabbitListener(queues = "${custom.message-broker.listen-queues.approve-priority-command.name}")
 //    @Transactional
 //    public void listenApproveOrderCommand(String message) throws OrderNotFoundException, StatusNotFoundException {
-//        log.info("Listening approve order by command: {}.", message);
+//        log.info("Listening approve priority by command: {}.", message);
 //        String orderId = mapper.approveOrderCommand(message);
-//        Order order = repo.findById(UUID.fromString(orderId)).orElseThrow(() -> new OrderNotFoundException("Order with id '%s' does not exist.".formatted(orderId)));
+//        Order priority = repo.findById(UUID.fromString(orderId)).orElseThrow(() -> new OrderNotFoundException("Order with id '%s' does not exist.".formatted(orderId)));
 //        Status approveStatus = statusRepo.findByName("APPROVED").orElseThrow(() -> new StatusNotFoundException("Status 'APPROVED' does not exists."));
 //
-//        order.setStatus(approveStatus);
-//        repo.save(order);
-//        log.info("Order approved: {}.", order);
+//        priority.setStatus(approveStatus);
+//        repo.save(priority);
+//        log.info("Order approved: {}.", priority);
 //    }
 //}

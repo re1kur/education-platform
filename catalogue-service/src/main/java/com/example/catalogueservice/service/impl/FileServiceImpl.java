@@ -64,4 +64,43 @@ public class FileServiceImpl implements FileService {
 
         return fileIds.getFirst();
     }
+
+    @Override
+    public List<UUID> uploadFiles(MultipartFile[] files) {
+        if (files == null) return null;
+
+        int length = files.length;
+        log.info("UPLOAD FILES FUNCTION. LENGTH OF FILES ARRAY: [{}]", length);
+        if (length >= 3) throw new FileCountLimitExceededException("FILE COUNT HAVE TO BE LESSER THAN 3.");
+
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+
+        for (MultipartFile file : files) {
+            String originalFilename = file.getOriginalFilename();
+            try {
+                body.add("files", new MultipartInputStreamFileResource(
+                        file.getInputStream(), originalFilename));
+            } catch (IOException e) {
+                throw new FileReadException(FILE_READ_MESSAGE.formatted(originalFilename, e.getMessage()));
+            }
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+
+        log.info("FILE UPLOAD REQUEST. FILES [{}]", Arrays.stream(files)
+                .map(MultipartFile::getOriginalFilename).toList());
+
+        Map response = restTemplate.postForObject(FILE_SERVICE_URL, requestEntity, Map.class);
+
+        List<String> fileIdsStr = (List<String>) response.get("fileIds");
+        List<UUID> fileIds = fileIdsStr.stream().map(UUID::fromString).toList();
+
+
+        log.info("FILE UPLOAD REQUEST IS SUCCESS: [{}]", fileIds);
+
+        return fileIds;
+    }
 }

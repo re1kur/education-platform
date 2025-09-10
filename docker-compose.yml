@@ -23,6 +23,10 @@ services:
     image: quay.io/keycloak/keycloak:26.2
     env_file: docker/keycloak/environment/.env
     command: start-dev
+    volumes:
+      - ./docker/keycloak/init/realms:/tmp/realms
+      - ./docker/keycloak/init/scripts/commands.sh:/tmp/scripts/commands.sh
+    entrypoint: [ "sh", "/tmp/scripts/commands.sh" ]
     ports:
       - "9090:8080"
     networks:

@@ -32,6 +32,8 @@ public class Product {
 
     private String description;
 
+    private String previewDescription;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category category;

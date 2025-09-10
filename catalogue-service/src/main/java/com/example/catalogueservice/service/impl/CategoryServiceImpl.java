@@ -22,7 +22,6 @@ import com.example.catalogueservice.mapper.CategoryMapper;
 import com.example.catalogueservice.repository.CategoryRepository;
 import com.example.catalogueservice.service.CategoryService;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -101,5 +100,13 @@ public class CategoryServiceImpl implements CategoryService {
         log.info("CREATED CATEGORY [{}] BY USER [{}]", saved.getId(), userId);
 
         return mapper.read(saved);
+    }
+
+    @Override
+    public Category get(UUID categoryId, UUID userId) {
+        log.info("GET CATEGORY REQUEST [{}] BY USER [{}].", categoryId, userId);
+
+        return repo.findById(categoryId)
+                .orElseThrow(() -> new CategoryNotFoundException(CATEGORY_NOT_FOUND_MESSAGE.formatted(categoryId)));
     }
 }

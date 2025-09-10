@@ -1,4 +1,4 @@
-package com.example.catalogueservice.controller.advice;
+package com.example.catalogueservice.controller;
 
 import com.example.catalogueservice.exception.*;
 import org.springframework.http.HttpStatus;
@@ -12,13 +12,15 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @RestControllerAdvice
 public class AdviceController {
 
+    //todo: handle every exception
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleMethodArgumentNotValidException() {
         return ResponseEntity.status(BAD_REQUEST).body("Category title must not be empty.");
     }
 
-    @ExceptionHandler(GoodsNotFoundException.class)
-    public ResponseEntity<String> handleGoodsNotFoundException(GoodsNotFoundException ex) {
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<String> handleGoodsNotFoundException(ProductNotFoundException ex) {
         return ResponseEntity.status(BAD_REQUEST).body(ex.getMessage());
     }
 
@@ -27,13 +29,13 @@ public class AdviceController {
         return ResponseEntity.status(BAD_REQUEST).body(ex.getMessage());
     }
 
-    @ExceptionHandler(GoodsAlreadyExistException.class)
-    public ResponseEntity<String> handleGoodsExistingException(GoodsAlreadyExistException ex) {
+    @ExceptionHandler(ProductConflictException.class)
+    public ResponseEntity<String> handleGoodsExistingException(ProductConflictException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
-    @ExceptionHandler(CatalogueGoodsAlreadyExistException.class)
-    public ResponseEntity<String> handleCatalogueGoodsExistingException(CatalogueGoodsAlreadyExistException ex) {
+    @ExceptionHandler(CatalogueProductConflictException.class)
+    public ResponseEntity<String> handleCatalogueGoodsExistingException(CatalogueProductConflictException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 

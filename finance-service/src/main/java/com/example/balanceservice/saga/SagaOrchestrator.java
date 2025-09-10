@@ -21,7 +21,7 @@
 //    @Value("${custom.saga.publish-queues.get-goods-info-command.routing-key}")
 //    private String getGoodsInfoCommandRoutingKey;
 //
-//    @Value("${custom.saga.publish-queues.reject-order-command.routing-key}")
+//    @Value("${custom.saga.publish-queues.reject-priority-command.routing-key}")
 //    private String rejectOrderCommandRoutingKey;
 //
 //    @Value("${custom.saga.publish-queues.block-user-balance-command.routing-key}")
@@ -39,13 +39,13 @@
 //    @Value("${custom.saga.publish-queues.complete-transaction-command.routing-key}")
 //    private String completeTransactionCommandRoutingKey;
 //
-//    @Value("${custom.saga.publish-queues.approve-order-command.routing-key}")
+//    @Value("${custom.saga.publish-queues.approve-priority-command.routing-key}")
 //    private String approveOrderCommandRoutingKey;
 //
 //
-//    @RabbitListener(queues = "${custom.saga.handle-queues.order-created.name}")
+//    @RabbitListener(queues = "${custom.saga.handle-queues.priority-created.name}")
 //    public void handleOrderCreatedEvent(String message) {
-//        log.info("Handling order created event: {}", message);
+//        log.info("Handling priority created event: {}", message);
 //        String jsonCommand = mapper.getGoodsInfoCommand(message);
 //
 //        template.convertAndSend(exchange, getGoodsInfoCommandRoutingKey, jsonCommand);

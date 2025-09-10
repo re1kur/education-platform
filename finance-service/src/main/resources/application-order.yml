@@ -4,7 +4,7 @@ custom:
     exchange: saga.exchange
     publish-queues:
       get-goods-info-command:
-        routing-key: order.is.created
+        routing-key: priority.is.created
       block-user-balance-command:
         routing-key: goods.info.is.received
       reject-order-command:
@@ -21,7 +21,7 @@ custom:
         routing-key: transaction.is.completed
     handle-queues:
       order-created:
-        name: order.created.queue
+        name: priority.created.queue
       goods-info-received:
         name: goods.info.received.queue
       goods-info-receive-failed:
@@ -42,14 +42,14 @@ custom:
         name: transaction.completed.queue
 
   message-broker:
-    exchange: order.service.exchange
+    exchange: priority.service.exchange
     listen-queues:
       reject-order-command:
-        name: reject.order.command
+        name: reject.priority.command
       approve-order-command:
-        name: approve.order.command
+        name: approve.priority.command
     publish-queues:
       order-created:
-        routing-key: order.created
+        routing-key: priority.created
   jwt:
     publicKeyPath: /tmp/public.key
