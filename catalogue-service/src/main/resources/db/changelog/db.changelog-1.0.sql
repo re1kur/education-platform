@@ -3,7 +3,7 @@
 --changeset re1kur:1
 CREATE TABLE IF NOT EXISTS categories
 (
-    id          UUID PRIMARY KEY,
+    id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     title       VARCHAR(128) NOT NULL UNIQUE,
     preview_description VARCHAR(256),
     description TEXT,
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS categories
 --changeset re1kur:2
 CREATE TABLE IF NOT EXISTS products
 (
-    id          UUID PRIMARY KEY,
+    id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     title       VARCHAR(128)   NOT NULL UNIQUE,
     price       SMALLINT NOT NULL CHECK ( price > 0),
     for_sale BOOLEAN NOT NULL DEFAULT FALSE,
@@ -46,9 +46,9 @@ CREATE TABLE IF NOT EXISTS orders
 (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL,
-    status VARCHAR(16) NOT NULL DEFAULT 'NEW' CHECK (status IN ('NEW', 'FAIL', 'SUCCESS')),
+    status VARCHAR(16) NOT NULL DEFAULT 'NEW' CHECK (status IN ('NEW', 'FAIL', 'SUCCESS', 'IN_PROCESSING')),
     transaction_id UUID,
-    created_at TIMESTAMP NOT NULL DEFAULT now(),
+    created_at TIMESTAMP NOT NULL DEFAULT now()
 );
 
 --changeset re1kur:6

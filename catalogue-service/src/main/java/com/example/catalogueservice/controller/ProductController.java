@@ -1,6 +1,5 @@
 package com.example.catalogueservice.controller;
 
-import com.example.catalogueservice.exception.ProductNotFoundException;
 import com.example.catalogueservice.service.ProductService;
 import com.example.dto.ProductDto;
 import com.example.payload.ProductUpdatePayload;

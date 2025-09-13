@@ -7,6 +7,7 @@ import com.example.payload.CategoryPayload;
 import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -20,10 +21,10 @@ import org.springframework.web.multipart.MultipartFile;
 public class CategoriesController {
     private final CategoryService service;
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> create(
             @RequestPart(name = "payload") @Valid CategoryPayload payload,
-            @RequestPart(name = "file") @Nullable MultipartFile titleImage,
+            @RequestPart(name = "file", required = false) @Nullable MultipartFile titleImage,
             @AuthenticationPrincipal Jwt jwt
             ) {
         CategoryDto body = service.create(payload, titleImage, jwt);

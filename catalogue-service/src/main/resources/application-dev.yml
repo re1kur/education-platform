@@ -1,2 +1,29 @@
+spring:
+  docker:
+    compose:
+      enabled: true
+      file: catalogue-service/docker/docker-compose.yml
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:9090/realms/education_platform
+            user-name-attribute: preferred
+  jpa:
+    show-sql: true
+
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: catalogue-service-swagger-ui
+      client-secret: 5MCntf8Q1rIZknqzZ4TYpMwlicHWWDyH
+
+logging:
+  level:
+    org:
+      apache:
+        http: DEBUG
+
 custom:
     file-service-url: http://localhost:8082/api/v1/files

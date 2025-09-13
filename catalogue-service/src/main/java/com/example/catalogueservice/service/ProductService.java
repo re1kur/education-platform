@@ -3,10 +3,10 @@ package com.example.catalogueservice.service;
 import com.example.catalogueservice.entity.Product;
 import com.example.dto.PageDto;
 import com.example.dto.ProductDto;
+import com.example.exception.ProductNotFoundException;
 import com.example.filter.ProductsFilter;
 import com.example.payload.ProductPayload;
 import com.example.payload.ProductUpdatePayload;
-import com.example.catalogueservice.exception.ProductNotFoundException;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.multipart.MultipartFile;
 

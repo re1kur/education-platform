@@ -18,21 +18,21 @@ import com.example.catalogueservice.service.CatalogueService;
 public class CatalogueProductsController {
     private final CatalogueService service;
 
-    @GetMapping
-    public ResponseEntity<?> getCatalogue(
-            @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "5") int size
-    ) {
-        PageDto<ProductDto> body = service.readAll(page, size);
-        return ResponseEntity.ok(body);
-    }
-
     @PostMapping
     public ResponseEntity<?> create(
             @AuthenticationPrincipal Jwt jwt,
             @RequestBody @Valid CatalogueProductPayload payload
     ) {
         CatalogueProductDto body = service.create(payload, jwt);
+        return ResponseEntity.ok(body);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getCatalogue(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "5") int size
+    ) {
+        PageDto<ProductDto> body = service.readAll(page, size);
         return ResponseEntity.ok(body);
     }
 }

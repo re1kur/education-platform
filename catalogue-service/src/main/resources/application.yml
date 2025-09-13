@@ -1,31 +1,26 @@
 spring:
   application:
     name: catalogue-service
-  docker:
-    compose:
-      file: catalogue-service/docker-compose.yml
   liquibase:
     change-log: db/changelog/db.changelog-master.yml
-  rabbitmq:
-    virtual-host: /
-    username: gpnUser
-    password: anotherOnePassword
   jpa:
     open-in-view: false
-server:
-  port: 0
 
-custom:
-  jwt:
-    public-key:
-      path: /tmp/public.key
-  message-broker:
-    exchange: catalogue.service.exchange
-    publish-queues:
-      goods-info-received:
-        routing-key: goods.info.received
-      goods-info-receive-failed:
-        routing-key: goods.info.receive.failed
-    listen-queues:
-      get-goods-info-command:
-        name: get.goods.info.command
+
+server:
+  port: 8083
+
+#custom:
+#  jwt:
+#    public-key:
+#      path: /tmp/public.key
+#  message-broker:
+#    exchange: catalogue.service.exchange
+#    publish-queues:
+#      goods-info-received:
+#        routing-key: goods.info.received
+#      goods-info-receive-failed:
+#        routing-key: goods.info.receive.failed
+#    listen-queues:
+#      get-goods-info-command:
+#        name: get.goods.info.command

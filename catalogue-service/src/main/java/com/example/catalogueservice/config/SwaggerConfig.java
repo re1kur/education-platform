@@ -1,4 +1,4 @@
-package com.example.taskservice.config;
+package com.example.catalogueservice.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
@@ -7,6 +7,13 @@ import io.swagger.v3.oas.annotations.security.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
+@Configuration
+@OpenAPIDefinition(
+        info = @Info(title = "Catalogue Service API", version = "v1"),
+        security = {
+                @SecurityRequirement(name = "Keycloak Auth")
+        }
+)
 @SecurityScheme(
         name = "Keycloak Auth",
         type = SecuritySchemeType.OAUTH2,
@@ -22,13 +29,6 @@ import org.springframework.context.annotation.Configuration;
                 )
         )
 )
-@OpenAPIDefinition(
-        info = @Info(title = "Task Service API", version = "v1"),
-        security = {
-                @SecurityRequirement(name = "Keycloak Auth")
-        }
-)
-@Configuration
 public class SwaggerConfig {
     @Value("${spring.security.oauth2.client.provider.keycloak.issuer-uri}")
     private String issuerUri;

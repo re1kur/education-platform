@@ -12,7 +12,7 @@
 //import payload.GoodsPayload;
 //import payload.GoodsUpdatePayload;
 //import com.example.catalogueservice.entity.Category;
-//import com.example.catalogueservice.exception.CategoryNotFoundException;
+//import com.example.exception.CategoryNotFoundException;
 //import com.example.catalogueservice.mapper.impl.DefaultGoodsMapper;
 //import com.example.catalogueservice.repository.CategoryRepository;
 //

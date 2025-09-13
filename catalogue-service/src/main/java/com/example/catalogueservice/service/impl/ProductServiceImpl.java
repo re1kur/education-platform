@@ -6,6 +6,8 @@ import com.example.catalogueservice.service.CategoryService;
 import com.example.catalogueservice.service.FileService;
 import com.example.dto.PageDto;
 import com.example.dto.ProductDto;
+import com.example.exception.ProductConflictException;
+import com.example.exception.ProductNotFoundException;
 import com.example.filter.ProductsFilter;
 import com.example.payload.ProductPayload;
 import com.example.payload.ProductUpdatePayload;
@@ -16,8 +18,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
-import com.example.catalogueservice.exception.ProductConflictException;
-import com.example.catalogueservice.exception.ProductNotFoundException;
 import com.example.catalogueservice.mapper.ProductMapper;
 import com.example.catalogueservice.repository.ProductRepository;
 import com.example.catalogueservice.service.ProductService;
@@ -112,8 +112,9 @@ public class ProductServiceImpl implements ProductService {
         UUID categoryId = filter.categoryId();
         Integer price = filter.price();
         String title = filter.title();
+        Boolean single = filter.single();
 
-        Page<Product> productPage = repo.findAll(pageable, categoryId, price, title);
+        Page<Product> productPage = repo.findAll(pageable, categoryId, price, single, title);
         return mapper.readPage(productPage);
     }
 

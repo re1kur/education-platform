@@ -17,8 +17,8 @@
 //import payload.UpdateCatalogueGoodsPayload;
 //import com.example.catalogueservice.entity.CatalogueProduct;
 //import com.example.catalogueservice.entity.Category;
-//import com.example.catalogueservice.exception.CatalogueGoodsAlreadyExistException;
-//import com.example.catalogueservice.exception.GoodsNotFoundException;
+//import com.example.exception.exception.CatalogueGoodsAlreadyExistException;
+//import com.example.exception.exception.GoodsNotFoundException;
 //import com.example.catalogueservice.mapper.impl.DefaultGoodsMapper;
 //import com.example.catalogueservice.repository.CatalogueRepository;
 //import com.example.catalogueservice.repository.GoodsRepository;

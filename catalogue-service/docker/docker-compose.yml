@@ -1,8 +1,9 @@
+name: ep-dev-cs
+
 services:
-  gpn_case_catalogue_db:
-    container_name: gpn.case.catalogue.database
+  psql:
+    image: postgres:17-alpine
     env_file:
-      - .env
-    image: postgres:17
+      - environment/sql.env
     ports:
-      - '5436:5432'
+      - '5435:5432'

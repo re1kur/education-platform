@@ -1,4 +1,4 @@
-package com.example.catalogueservice.exception;
+package com.example.exception;
 
 public class CategoryConflictException extends RuntimeException {
     public CategoryConflictException(String message) {

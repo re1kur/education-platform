@@ -17,9 +17,9 @@
 //import org.springframework.data.domain.Pageable;
 //import payload.GoodsPayload;
 //import com.example.catalogueservice.entity.Category;
-//import com.example.catalogueservice.exception.CategoryNotFoundException;
-//import com.example.catalogueservice.exception.GoodsAlreadyExistException;
-//import com.example.catalogueservice.exception.GoodsNotFoundException;
+//import com.example.exception.exception.CategoryNotFoundException;
+//import com.example.exception.exception.GoodsAlreadyExistException;
+//import com.example.exception.exception.GoodsNotFoundException;
 //import com.example.catalogueservice.mapper.GoodsMapper;
 //import com.example.catalogueservice.repository.GoodsRepository;
 //import com.example.catalogueservice.service.impl.DefaultGoodsService;

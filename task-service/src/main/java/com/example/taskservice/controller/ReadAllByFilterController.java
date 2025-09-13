@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-public class SearchEndpointsController {
+public class ReadAllByFilterController {
     private final TaskAttemptService taskAttemptService;
     private final TaskAttemptResultService taskAttemptResultService;
 

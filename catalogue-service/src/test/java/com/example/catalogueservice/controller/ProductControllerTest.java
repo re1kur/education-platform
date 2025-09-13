@@ -19,8 +19,8 @@
 //import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 //import payload.GoodsPayload;
 //import payload.GoodsUpdatePayload;
-//import com.example.catalogueservice.exception.CategoryNotFoundException;
-//import com.example.catalogueservice.exception.GoodsNotFoundException;
+//import com.example.exception.CategoryNotFoundException;
+//import com.example.exception.exception.GoodsNotFoundException;
 //import com.example.catalogueservice.service.impl.DefaultGoodsService;
 //
 //import java.math.BigDecimal;

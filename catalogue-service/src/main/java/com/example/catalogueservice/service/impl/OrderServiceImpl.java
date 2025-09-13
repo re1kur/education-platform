@@ -32,11 +32,11 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository repo;
     private final OrderMapper mapper;
     private final ProductService productService;
-    private String ORDER_NOT_FOUND_MESSAGE = "ORDER [%s] WAS NOT FOUND.";
+    private final String ORDER_NOT_FOUND_MESSAGE = "ORDER [%s] WAS NOT FOUND.";
 
     @Override
     @Transactional
-    public OrderDto create(Jwt jwt, UUID[] productIds) {
+    public OrderDto create(Jwt jwt, List<UUID> productIds) {
         UUID userId = UUID.fromString(jwt.getSubject());
         log.info("CREATE ORDER [{}] REQUEST BU USER [{}].", productIds, userId);
 
@@ -64,7 +64,10 @@ public class OrderServiceImpl implements OrderService {
         OrderStatus status = filter.status();
         UUID userId = filter.userId();
 
-        Page<Order> ordersPage = repo.findAll(pageable, transactionId, createdAt, status, userId);
+        Page<Order> ordersPage;
+        if (createdAt != null) {
+            ordersPage = repo.findAll(pageable, transactionId, createdAt, status, userId);
+        } else ordersPage = repo.findAll(pageable, transactionId, status, userId);
 
         return mapper.readPage(ordersPage);
     }
@@ -73,5 +76,50 @@ public class OrderServiceImpl implements OrderService {
     public OrderDto read(UUID id) {
         return repo.findById(id).map(mapper::read)
                 .orElseThrow(() -> new OrderNotFoundException(ORDER_NOT_FOUND_MESSAGE.formatted(id)));
+    }
+
+    @Override
+    public OrderDto update(UUID id, List<UUID> productIds, Jwt jwt) {
+        UUID userId = UUID.fromString(jwt.getSubject());
+        log.info("UPDATE ORDER [{}] REQUEST BY USER [{}]", id, userId);
+
+        List<Product> products = new ArrayList<>();
+        for (UUID productId : productIds) {
+            Product product = productService.get(productId, userId);
+            products.add(product);
+        }
+
+        Order order = repo.findById(id)
+                .orElseThrow(() -> new OrderNotFoundException(ORDER_NOT_FOUND_MESSAGE.formatted(id)));
+
+        Order mapped = mapper.update(order, products);
+        Order saved = repo.save(mapped);
+
+        log.info("UPDATED ORDER [{}] BY USER [{}].", saved.getId(), userId);
+        return mapper.read(saved);
+    }
+
+    @Override
+    @Transactional
+    public void delete(UUID id, Jwt jwt) {
+        UUID userId = UUID.fromString(jwt.getSubject());
+        log.info("DELETE ORDER [{}] REQUEST BY USER [{}]", id, userId);
+
+        Order order = repo.findById(id)
+                .orElseThrow(() -> new OrderNotFoundException(ORDER_NOT_FOUND_MESSAGE.formatted(id)));
+
+        repo.delete(order);
+
+        log.info("ORDER [{}] IS DELETED BU USER [{}].", id, userId);
+    }
+
+    @Override
+    public PageDto<OrderDto> readAllByUser(int page, int size, Jwt jwt) {
+        UUID userId = UUID.fromString(jwt.getSubject());
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Order> orders = repo.findAllByUserId(pageable, userId);
+
+        return mapper.readPage(orders);
     }
 }

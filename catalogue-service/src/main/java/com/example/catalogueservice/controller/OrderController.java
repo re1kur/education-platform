@@ -2,12 +2,13 @@ package com.example.catalogueservice.controller;
 
 import com.example.catalogueservice.service.OrderService;
 import com.example.dto.OrderDto;
-import com.example.payload.OrderPayload;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -26,11 +27,20 @@ public class OrderController {
 
     @PutMapping
     public ResponseEntity<?> update(
+            @AuthenticationPrincipal Jwt jwt,
             @PathVariable(name = "id") UUID id,
-            @RequestBody @Valid OrderPayload payload,
-            @RequestParam(name = "productId") UUID... productIds
+            @RequestParam(name = "productId") List<UUID> productIds
             ) {
-        OrderDto body = service.read(id, productIds);
+        OrderDto body = service.update(id, productIds, jwt);
         return ResponseEntity.ok(body);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> delete(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable(name = "id") UUID id
+    ) {
+        service.delete(id, jwt);
+        return ResponseEntity.noContent().build();
     }
 }

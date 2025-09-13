@@ -1,0 +1,16 @@
+#spring:
+#  security:
+#    oauth2:
+#      client:
+#        provider:
+#          keycloak:
+#            issuer-uri: http://keycloak:9090/realms/education_platform
+#
+#springdoc:
+#  swagger-ui:
+#    oauth:
+#      client-id: catalogue-service-swagger-ui
+#      client-secret: ${KEYCLOAK-SECRET}
+#
+#custom:
+#  file-service-url: http://localhost:8082/api/v1/files

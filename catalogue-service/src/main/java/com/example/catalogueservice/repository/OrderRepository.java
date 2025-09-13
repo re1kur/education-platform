@@ -17,7 +17,7 @@ public interface OrderRepository extends CrudRepository<Order, UUID> {
     @Query(value = """
             FROM Order o WHERE
             (:transactionId IS NULL OR o.transactionId = :transactionId) AND
-            (:createdAt IS NULL OR o.createdAt = :createdAt) AND
+            (o.createdAt = :createdAt) AND
             (:status IS NULL OR o.status = :status) AND
             (:userId IS NULL OR o.userId = :userId)
             """)
@@ -26,5 +26,25 @@ public interface OrderRepository extends CrudRepository<Order, UUID> {
             @Param("transactionId") UUID transactionId,
             @Param("createdAt") LocalDateTime createdAt,
             @Param("status") OrderStatus status,
+            @Param("userId") UUID userId);
+
+    @Query(value = """
+            FROM Order o WHERE
+            (:transactionId IS NULL OR o.transactionId = :transactionId) AND
+            (:status IS NULL OR o.status = :status) AND
+            (:userId IS NULL OR o.userId = :userId)
+            """)
+    Page<Order> findAll(
+            Pageable pageable,
+            @Param("transactionId") UUID transactionId,
+            @Param("status") OrderStatus status,
+            @Param("userId") UUID userId);
+
+    @Query(value = """
+            FROM Order o WHERE
+            (o.userId = :userId)
+            """)
+    Page<Order> findAllByUserId(
+            Pageable pageable,
             @Param("userId") UUID userId);
 }

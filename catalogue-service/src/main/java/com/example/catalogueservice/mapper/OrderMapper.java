@@ -15,4 +15,6 @@ public interface OrderMapper {
     OrderDto read(Order order);
 
     PageDto<OrderDto> readPage(Page<Order> ordersPage);
+
+    Order update(Order order, List<Product> products);
 }

@@ -1,5 +1,8 @@
 package com.example.enums;
 
 public enum OrderStatus {
-    NEW, FAIL, SUCCESS
+    NEW,
+    FAIL,
+    SUCCESS,
+    IN_PROCESSING
 }

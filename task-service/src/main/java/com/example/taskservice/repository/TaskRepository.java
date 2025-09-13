@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public interface TaskRepository extends JpaRepository<Task, UUID> {
-
     @Query(value = """
             from Task t where
             (lower(t.name) like lower(concat('%', :name, '%')) or :name is null) and

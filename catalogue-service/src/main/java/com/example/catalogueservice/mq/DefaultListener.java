@@ -10,7 +10,7 @@
 //import org.springframework.beans.factory.annotation.Value;
 //import org.springframework.stereotype.Component;
 //import com.example.catalogueservice.entity.Goods;
-//import com.example.catalogueservice.exception.GoodsNotFoundException;
+//import com.example.exception.exception.GoodsNotFoundException;
 //import com.example.catalogueservice.mapper.EventMapper;
 //import com.example.catalogueservice.repository.GoodsRepository;
 //

@@ -16,7 +16,7 @@ public interface CategoryRepository extends CrudRepository<Category, UUID> {
 
     @Query(value = """
             FROM Category c WHERE
-            (:title IS NULL OR lower(c.title) LIKE lower(concat('%', cast(:comment as string), '%')))
+            (:title IS NULL OR lower(c.title) LIKE lower(concat('%', cast(:title as string), '%')))
             """)
     Page<Category> findAll(
             Pageable pageable,

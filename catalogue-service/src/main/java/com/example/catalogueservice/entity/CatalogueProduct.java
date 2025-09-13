@@ -3,6 +3,8 @@ package com.example.catalogueservice.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "catalogue_products")
 @Builder
@@ -12,7 +14,7 @@ import lombok.*;
 @NoArgsConstructor
 public class CatalogueProduct {
     @Id
-    private Integer productId;
+    private UUID productId;
 
     @MapsId
     @JoinColumn(name = "product_id")

@@ -13,8 +13,8 @@
 //import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 //import payload.CategoryPayload;
 //import payload.CategoryUpdatePayload;
-//import com.example.catalogueservice.exception.CategoryConflictException;
-//import com.example.catalogueservice.exception.CategoryNotFoundException;
+//import com.example.exception.CategoryConflictException;
+//import com.example.exception.exception.CategoryNotFoundException;
 //import com.example.catalogueservice.service.CategoryService;
 //
 //import java.util.List;

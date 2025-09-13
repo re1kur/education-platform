@@ -5,6 +5,7 @@ import java.util.UUID;
 public record ProductsFilter(
         String title,
         UUID categoryId,
-        Integer price
+        Integer price,
+        Boolean single
         ) {
 }

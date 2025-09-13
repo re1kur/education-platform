@@ -10,8 +10,8 @@
 //import payload.CategoryPayload;
 //import payload.CategoryUpdatePayload;
 //import com.example.catalogueservice.entity.Category;
-//import com.example.catalogueservice.exception.CategoryConflictException;
-//import com.example.catalogueservice.exception.CategoryNotFoundException;
+//import com.example.exception.CategoryConflictException;
+//import com.example.exception.CategoryNotFoundException;
 //import com.example.catalogueservice.mapper.CategoryMapper;
 //import com.example.catalogueservice.repository.CategoryRepository;
 //import com.example.catalogueservice.service.impl.CategoryServiceImpl;

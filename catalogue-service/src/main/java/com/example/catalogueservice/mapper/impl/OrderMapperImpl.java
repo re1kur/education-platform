@@ -43,4 +43,11 @@ public class OrderMapperImpl implements OrderMapper {
                 page.hasNext(),
                 page.hasPrevious());
     }
+
+    @Override
+    public Order update(Order order, List<Product> products) {
+        order.setProducts(products);
+
+        return order;
+    }
 }

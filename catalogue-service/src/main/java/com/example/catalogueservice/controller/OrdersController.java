@@ -9,11 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -22,20 +20,22 @@ import java.util.UUID;
 public class OrdersController {
     private final OrderService service;
 
+    @PostMapping
     public ResponseEntity<?> create(
             @AuthenticationPrincipal Jwt jwt,
-            @RequestParam("productId") UUID... productIds
+            @RequestParam("productId") List<UUID> productIds
             ) {
         OrderDto body = service.create(jwt, productIds);
         return ResponseEntity.ok(body);
     }
 
+    @GetMapping
     public ResponseEntity<?> readAll(
-            @RequestParam(name = "page") int page,
-            @RequestParam(name = "size") int size,
-            @ModelAttribute @Nullable OrderFilter filter
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "5") int size,
+            @AuthenticationPrincipal Jwt jwt
     ) {
-        PageDto<OrderDto> body = service.readAll(page, size, filter);
+        PageDto<OrderDto> body = service.readAllByUser(page, size, jwt);
         return ResponseEntity.ok(body);
     }
 }

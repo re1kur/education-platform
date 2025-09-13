@@ -14,16 +14,17 @@ import java.util.UUID;
 public interface ProductRepository extends CrudRepository<Product, UUID> {
     Boolean existsByTitle(String title);
 
-    @Query(value =
-            """
-                    from Product p WHERE
-                    (:title IS NULL OR (lower(p.title) LIKE lower(concat('%', cast(:comment as string), '%'))) AND
-                    (:price IS NULL (p.price = :price)) AND
-                    (:categoryId IS NULL OR (p.category.id = :categoryId))
-                    """)
+    @Query(value = """
+            from Product p WHERE
+            (:title IS NULL OR lower(p.title) LIKE lower(concat('%', cast(:title as string), '%'))) AND
+            (:price IS NULL OR p.price = :price) AND
+            (:single IS NULL OR p.single = :single) AND
+            (:categoryId IS NULL OR p.category.id = :categoryId)
+            """)
     Page<Product> findAll(
             Pageable pageable,
             @Param("categoryId") UUID categoryId,
             @Param("price") Integer price,
+            @Param("single") Boolean single,
             @Param("title") String title);
 }
