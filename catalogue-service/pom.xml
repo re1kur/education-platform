@@ -48,10 +48,6 @@
 
         <!--        BOOT-->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.example</groupId>
             <artifactId>core</artifactId>
             <version>1.0</version>

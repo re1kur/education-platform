@@ -9,18 +9,3 @@ spring:
 
 server:
   port: 8083
-
-#custom:
-#  jwt:
-#    public-key:
-#      path: /tmp/public.key
-#  message-broker:
-#    exchange: catalogue.service.exchange
-#    publish-queues:
-#      goods-info-received:
-#        routing-key: goods.info.received
-#      goods-info-receive-failed:
-#        routing-key: goods.info.receive.failed
-#    listen-queues:
-#      get-goods-info-command:
-#        name: get.goods.info.command

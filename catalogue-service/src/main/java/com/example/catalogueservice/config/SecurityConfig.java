@@ -34,7 +34,9 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/v3/api-docs",
-                                "/v3/api-docs/**").permitAll()
+                                "/v3/api-docs/**",
+                                "/api/v1/outbox",
+                                "/api/v1/outbox/**").permitAll()
 
                         .requestMatchers(HttpMethod.POST, "/api/v1/orders").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/v1/orders/*").authenticated()
@@ -64,7 +66,6 @@ public class SecurityConfig {
                                 "/api/v1/catalogue/*",
                                 "/api/v1/categories/*",
                                 "/api/v1/products/*").hasRole("ADMIN")
-
                         .anyRequest().denyAll())
                 .build();
     }

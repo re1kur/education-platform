@@ -26,4 +26,6 @@ logging:
         http: DEBUG
 
 custom:
-    file-service-url: http://localhost:8082/api/v1/files
+  outbox:
+    reservation-time: 1
+  file-service-url: http://localhost:8082/api/v1/files

@@ -20,4 +20,6 @@ public interface OrderService {
     void delete(UUID id, Jwt jwt);
 
     PageDto<OrderDto> readAllByUser(int page, int size, Jwt jwt);
+
+    void pay(UUID id, Jwt jwt);
 }

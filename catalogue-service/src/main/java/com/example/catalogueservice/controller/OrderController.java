@@ -43,4 +43,13 @@ public class OrderController {
         service.delete(id, jwt);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/pay")
+    public ResponseEntity<?> pay(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable(name = "id") UUID id
+    ) {
+        service.pay(id, jwt);
+        return ResponseEntity.ok().build();
+    }
 }

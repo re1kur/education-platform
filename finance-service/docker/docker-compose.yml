@@ -6,4 +6,4 @@ services:
     env_file:
       - environment/sql.env
     ports:
-      - '5434:5432'
+      - '5436:5432'
