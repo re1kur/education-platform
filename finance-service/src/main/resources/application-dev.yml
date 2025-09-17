@@ -11,5 +11,7 @@ logging:
     com.example.financeservice: INFO
 
 custom:
+  outbox:
+    reservation-time: 1
   catalogue-service:
     url: http://localhost:8083/api/v1/outbox

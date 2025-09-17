@@ -21,6 +21,7 @@ public class OutboxEventServiceImpl implements OutboxEventService {
     private final OutboxEventRepository repo;
 
     @Override
+    @Transactional
     public void createOrder(Order order) {
         log.info("CREATE OUTBOX EVENT [{}]", OutboxType.PAY_ORDER_REQUEST);
 
@@ -54,6 +55,7 @@ public class OutboxEventServiceImpl implements OutboxEventService {
     }
 
     @Override
+    @Transactional
     public void release(UUID id) {
         log.info("RELEASE OUTBOX EVENT [{}] REQUEST.", id);
 
@@ -64,5 +66,17 @@ public class OutboxEventServiceImpl implements OutboxEventService {
         OutboxEvent saved = repo.save(mapped);
 
         log.info("OUTBOX EVENT [{}] IS RELEASED.", saved.getId());
+    }
+
+    @Override
+    @Transactional
+    public void delete(UUID id) {
+        log.info("DELETE OUTBOX EVENT [{}] REQUEST.", id);
+
+        OutboxEvent found = repo.findById(id)
+                .orElseThrow(() -> new OutboxEventNotFoundException("OUTBOX EVENT [%s] WAS NOT FOUND.".formatted(id)));
+        repo.delete(found);
+
+        log.info("OUTBOX EVENT [{}] IS DELETED.", id);
     }
 }

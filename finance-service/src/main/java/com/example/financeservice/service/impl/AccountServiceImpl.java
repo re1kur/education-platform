@@ -37,7 +37,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    @Transactional
+    @Transactional(noRollbackFor = NotEnoughBalanceOnAccountException.class)
     public void debit(Account account, Integer amount, UUID transactionId) {
         UUID accountId = account.getId();
         log.info("DEBIT TRANSACTION [{}] FOR ACCOUNT [{}] WITH AMOUNT [{}].", transactionId, accountId, amount);

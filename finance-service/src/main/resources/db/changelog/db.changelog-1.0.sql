@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS transactions
     id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     account_id UUID NOT NULL,
     created_at  TIMESTAMP NOT NULL DEFAULT NOW(),
-    executed_at  TIMESTAMP NOT NULL,
+    executed_at  TIMESTAMP,
     type     VARCHAR(16) NOT NULL CHECK (type IN ('DEBIT', 'CREDIT')),
     status   VARCHAR(16) NOT NULL DEFAULT 'NEW' CHECK (status IN ('NEW', 'FAIL', 'SUCCESS')),
     amount   SMALLINT NOT NULL CHECK (amount > 0),

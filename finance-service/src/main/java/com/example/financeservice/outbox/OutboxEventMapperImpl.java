@@ -4,14 +4,16 @@ import com.example.dto.OutboxEventDto;
 import com.example.enums.OutboxType;
 import com.example.event.PayOrderRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
 @Component
+@RequiredArgsConstructor
 public class OutboxEventMapperImpl implements OutboxEventMapper {
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     @SneakyThrows
     @Override
@@ -29,6 +31,6 @@ public class OutboxEventMapperImpl implements OutboxEventMapper {
 
     @Override
     public UUID performTransaction(OutboxEvent event) {
-        return event.getId();
+        return UUID.fromString(event.getPayload());
     }
 }

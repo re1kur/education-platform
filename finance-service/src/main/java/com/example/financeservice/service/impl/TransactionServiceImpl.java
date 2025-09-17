@@ -53,7 +53,6 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    @Transactional
     public void perform(UUID transactionId) {
         log.info("PERFORM TRANSACTION [{}] REQUEST.", transactionId);
 
@@ -72,20 +71,32 @@ public class TransactionServiceImpl implements TransactionService {
             } else if (type == TransactionType.CREDIT) {
                 accountService.credit(account, amount, transactionId);
             } else {
+                found = mapper.fail(found);
+                repo.save(found);
+
                 throw new IllegalStateException(UKNOWN_TYPE_MESSAGE.formatted(transactionId, type));
             }
+
+            found = mapper.success(found);
+            repo.save(found);
+
         } catch (NotEnoughBalanceOnAccountException e) {
             log.warn(NOT_ENOUGH_MONEY_MESSAGE,
                     transactionId, account.getId(), e);
-            throw e;
+
+            found = mapper.fail(found);
+            repo.save(found);
+
         } catch (RuntimeException e) {
             log.error("UNEXPECTED ERROR DURING TRANSACTION [{}]. RELEASING ACCOUNT [{}].",
                     transactionId, account.getId(), e);
-            throw e;
+
+            found = mapper.fail(found);
+            repo.save(found);
         } finally {
             accountService.releaseAccount(account, transactionId);
         }
 
-        log.info("TRANSACTION [{}] IS PERFORMED SUCCESSFULLY.", transactionId);
+        log.info("TRANSACTION [{}] IS PERFORMED AT [{}] WITH STATUS [{}]", found.getId(), found.getExecutedAt(), found.getStatus());
     }
 }

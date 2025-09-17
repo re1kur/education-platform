@@ -15,4 +15,6 @@ public interface OutboxEventService {
     void reserve(UUID id);
 
     void release(UUID id);
+
+    void delete(UUID id);
 }

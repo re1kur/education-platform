@@ -39,4 +39,12 @@ public class OutboxController {
         service.release(id);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteEvent(
+            @PathVariable(name = "id") UUID id
+    ) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -3,10 +3,12 @@ package com.example.financeservice.outbox;
 import com.example.dto.OutboxEventDto;
 import com.example.enums.OutboxType;
 import com.example.exception.OutboxEventReservedException;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -31,10 +33,15 @@ public class OutboxScheduler {
     public void getPayOrderRequestOutboxEvents() {
         log.info(CHECK_OUTBOX_EVENTS_MESSAGE, OutboxType.PAY_ORDER_REQUEST);
 
-        var response = restTemplate.getForEntity(catalogueServiceEventsUrl + "?type=" + OutboxType.PAY_ORDER_REQUEST.name(), List.class);
-        List<OutboxEventDto> events = response.getBody();
+        ResponseEntity<List<OutboxEventDto>> response = restTemplate.exchange(
+                catalogueServiceEventsUrl + "?type=" + OutboxType.PAY_ORDER_REQUEST.name(),
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<>() {
+                }
+        );
 
-        if (events == null) throw new NullPointerException(EVENTS_ARE_NULL_MESSAGE);
+        List<OutboxEventDto> events = response.getBody();
 
         log.info(EVENTS_ARE_RECEIVED_MESSAGE, OutboxType.PAY_ORDER_REQUEST, events.size());
 

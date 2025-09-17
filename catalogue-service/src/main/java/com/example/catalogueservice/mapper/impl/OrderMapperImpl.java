@@ -5,6 +5,7 @@ import com.example.catalogueservice.entity.Product;
 import com.example.catalogueservice.mapper.OrderMapper;
 import com.example.dto.OrderDto;
 import com.example.dto.PageDto;
+import com.example.enums.OrderStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
@@ -30,6 +31,7 @@ public class OrderMapperImpl implements OrderMapper {
                 .userId(order.getUserId())
                 .transactionId(order.getTransactionId())
                 .productIds(order.getProducts().stream().map(Product::getId).toList())
+                .amount(order.getProducts().stream().map(Product::getPrice).mapToInt(Integer::intValue).sum())
                 .build();
     }
 
@@ -47,6 +49,13 @@ public class OrderMapperImpl implements OrderMapper {
     @Override
     public Order update(Order order, List<Product> products) {
         order.setProducts(products);
+
+        return order;
+    }
+
+    @Override
+    public Order pay(Order order) {
+        order.setStatus(OrderStatus.IN_PROCESSING);
 
         return order;
     }

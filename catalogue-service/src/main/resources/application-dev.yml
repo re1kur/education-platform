@@ -17,7 +17,7 @@ springdoc:
   swagger-ui:
     oauth:
       client-id: catalogue-service-swagger-ui
-      client-secret: 5MCntf8Q1rIZknqzZ4TYpMwlicHWWDyH
+      client-secret: aaOmCEnQ7o6txAiABcbEqj3czGaR0lFr
 
 logging:
   level:

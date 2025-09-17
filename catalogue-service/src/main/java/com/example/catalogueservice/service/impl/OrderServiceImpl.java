@@ -136,7 +136,10 @@ public class OrderServiceImpl implements OrderService {
         Order order = repo.findById(id)
                 .orElseThrow(() -> new OrderNotFoundException(ORDER_NOT_FOUND_MESSAGE.formatted(id)));
 
+        Order mapped = mapper.pay(order);
         outboxService.createOrder(order);
+
+        repo.save(mapped);
 
         log.info("PAY ORDER [{}] REQUEST BY USER [{}] IS CREATED.", id, userId);
     }

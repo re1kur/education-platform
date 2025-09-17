@@ -14,6 +14,7 @@ public record OrderDto(
     OrderStatus status,
     UUID transactionId,
     LocalDateTime createdAt,
-    List<UUID> productIds
+    List<UUID> productIds,
+    Integer amount
 ) {
 }

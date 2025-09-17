@@ -9,7 +9,9 @@ import com.example.financeservice.service.TransactionService;
 import com.example.financeservice.util.WebClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +26,9 @@ public class OutboxEventServiceImpl implements OutboxEventService {
     private final WebClient webClient;
     private final TransactionService transactionService;
 
+    @Value("${custom.outbox.reservation-time}")
+    public int reservationMinutes;
+
     @Override
     public void payOrder(OutboxEventDto event) {
         UUID eventId = event.id();
@@ -35,7 +40,6 @@ public class OutboxEventServiceImpl implements OutboxEventService {
         Transaction saved = transactionService.create(request);
 
         createTransaction(saved);
-
 
         webClient.deleteEvent(eventId);
 
@@ -61,28 +65,46 @@ public class OutboxEventServiceImpl implements OutboxEventService {
     }
 
     @Override
+    @Transactional(noRollbackFor = {IllegalStateException.class, OutboxEventReservedException.class})
     public void performTransaction(OutboxEvent event) {
         UUID eventId = event.getId();
         log.info("LISTEN PERFORM TRANSACTION EVENT [{}]", eventId);
 
-        reserveCatalogueEvent(event.getReservedTo(), eventId);
+        reserveFinanceEvent(event);
 
         UUID transactionId = mapper.performTransaction(event);
         try {
             transactionService.perform(transactionId);
         } catch (RuntimeException e) {
-            log.warn(e.getMessage());
-            webClient.releaseCatalogueOutboxEvent(eventId);
-            return;
+            log.error(e.getMessage());
         }
-
-        webClient.deleteEvent(eventId);
+        deleteFinanceEvent(event);
 
         log.info("PERFORM TRANSACTION EVENT [{}] IS LISTENED.", eventId);
     }
 
+    private void deleteFinanceEvent(OutboxEvent event) {
+        UUID id = event.getId();
+        log.info("DELETE OUTBOX EVENT [{}] REQUEST.", id);
+
+        repo.delete(event);
+
+        log.info("OUTBOX EVENT [{}] IS DELETED.", id);
+    }
+
+    private void reserveFinanceEvent(OutboxEvent event) {
+        UUID id = event.getId();
+        log.info("RESERVE OUTBOX EVENT [{}] REQUEST.", id);
+
+        int reserved = repo.reserve(id, LocalDateTime.now().plusMinutes(1));
+
+        if (reserved == 0) throw new OutboxEventReservedException("OUTBOX EVENT [%s] ALREADY RESERVED.".formatted(id));
+
+        log.info("OUTBOX EVENT [{}] IS RESERVED", id);
+    }
+
     private void reserveCatalogueEvent(LocalDateTime reservedTo, UUID id) {
-        if (reservedTo.isBefore(LocalDateTime.now())) {
+        if (reservedTo == null || reservedTo.isBefore(LocalDateTime.now())) {
             webClient.reserveCatalogueOutboxEvent(id);
             return;
         }

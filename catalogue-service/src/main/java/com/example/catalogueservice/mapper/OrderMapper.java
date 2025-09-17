@@ -17,4 +17,6 @@ public interface OrderMapper {
     PageDto<OrderDto> readPage(Page<Order> ordersPage);
 
     Order update(Order order, List<Product> products);
+
+    Order pay(Order order);
 }
