@@ -1,15 +1,21 @@
 package com.example.dto;
 
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import lombok.Builder;
 
-public record TransactionDto(String id,
-                             String userId,
-                             String orderId,
-                             String type,
-                             String status,
-                             BigDecimal amount,
-                             LocalDateTime date,
-                             String description) {
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Builder
+public record TransactionDto(
+        UUID id,
+        UUID accountId,
+        LocalDateTime createdAt,
+        LocalDateTime executedAt,
+        String type,
+        String status,
+        int amount,
+        String referenceType,
+        UUID referenceId
+) {
 }

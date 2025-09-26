@@ -3,6 +3,13 @@ spring:
     compose:
       enabled: true
       file: finance-service/docker/docker-compose.yml
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:9090/realms/education_platform
+            user-name-attribute: preferred
   jpa:
     show-sql: true
 logging:
@@ -15,3 +22,9 @@ custom:
     reservation-time: 1
   catalogue-service:
     url: http://localhost:8083/api/v1/outbox
+
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: finance-service-swagger-ui
+      client-secret: g1z2OO3J5XfDw4BXfS3q0sQQIDfg7onE

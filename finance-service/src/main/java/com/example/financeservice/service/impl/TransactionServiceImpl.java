@@ -1,5 +1,7 @@
 package com.example.financeservice.service.impl;
 
+import com.example.dto.PageDto;
+import com.example.dto.TransactionDto;
 import com.example.enums.OutboxType;
 import com.example.enums.TransactionType;
 import com.example.event.PayOrderRequest;
@@ -14,6 +16,10 @@ import com.example.financeservice.service.TransactionService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -98,5 +104,24 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         log.info("TRANSACTION [{}] IS PERFORMED AT [{}] WITH STATUS [{}]", found.getId(), found.getExecutedAt(), found.getStatus());
+    }
+
+    @Override
+    public PageDto<TransactionDto> readAll(Jwt jwt, int page, int size) {
+        UUID userId = UUID.fromString(jwt.getSubject());
+        log.info("READ ALL TRANSACTIONS REQUEST BY USER [{}].", userId);
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Transaction> found = repo.findAllByUserId(pageable, userId);
+        return mapper.readPage(found);
+    }
+
+    @Override
+    public TransactionDto read(Jwt jwt, UUID id) {
+        UUID userId = UUID.fromString(jwt.getSubject());
+        log.info("READ TRANSACTION [{}] REQUEST BY USER [{}].", id, userId);
+
+       return  repo.findById(id).map(mapper::read)
+                .orElseThrow(() -> new TransactionNotFoundException(NOT_FOUND_MESSAGE.formatted(id)));
     }
 }
