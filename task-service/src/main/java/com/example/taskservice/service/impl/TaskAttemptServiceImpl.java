@@ -121,11 +121,12 @@ public class TaskAttemptServiceImpl implements TaskAttemptService {
 
     @Override
     @Transactional
-    public void setStatus(TaskAttempt found, TaskAttemptStatus status) {
+    public TaskAttempt setStatus(TaskAttempt found, TaskAttemptStatus status) {
         found.setStatus(status);
         repo.save(found);
 
         if (status.equals(TaskAttemptStatus.SUCCESS))
             taskService.setCompleted(found.getTask(), found.getUserId());
+        return found;
     }
 }

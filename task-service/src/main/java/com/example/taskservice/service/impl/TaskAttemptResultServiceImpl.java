@@ -10,6 +10,7 @@ import com.example.payload.TaskAttemptResultPayload;
 import com.example.taskservice.entity.TaskAttempt;
 import com.example.taskservice.entity.TaskAttemptResult;
 import com.example.taskservice.mapper.TaskAttemptResultMapper;
+import com.example.taskservice.outbox.OutboxService;
 import com.example.taskservice.repository.TaskAttemptResultRepository;
 import com.example.taskservice.service.TaskAttemptResultService;
 import com.example.taskservice.service.TaskAttemptService;
@@ -31,6 +32,7 @@ public class TaskAttemptResultServiceImpl implements TaskAttemptResultService {
     private final TaskAttemptResultRepository repo;
     private final TaskAttemptResultMapper mapper;
     private final TaskAttemptService attemptService;
+    private final OutboxService outboxService;
 
     private final String resultNotFoundMessage = "TASK ATTEMPT [%S] RESULT WAS NOT FOUND";
 
@@ -45,7 +47,10 @@ public class TaskAttemptResultServiceImpl implements TaskAttemptResultService {
         TaskAttemptResult mapped = mapper.create(payload, userId, found);
 
         TaskAttemptResult saved = repo.save(mapped);
-        attemptService.setStatus(found, payload.status());
+        TaskAttempt savedAttempt = attemptService.setStatus(found, payload.status());
+
+        if (savedAttempt.getStatus().equals(TaskAttemptStatus.SUCCESS))
+            outboxService.successTask(savedAttempt);
 
         log.info("CREATED TASK ATTEMPT [{}] RESULT BY ADMIN [{}]", saved.getTaskAttempt().getId(), saved.getCheckedBy());
         return mapper.read(saved);

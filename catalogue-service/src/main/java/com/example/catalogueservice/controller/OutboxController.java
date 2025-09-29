@@ -1,6 +1,6 @@
 package com.example.catalogueservice.controller;
 
-import com.example.catalogueservice.outbox.OutboxEventService;
+import com.example.catalogueservice.outbox.OutboxService;
 import com.example.dto.OutboxEventDto;
 import com.example.enums.OutboxType;
 import lombok.RequiredArgsConstructor;
@@ -14,10 +14,10 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/outbox")
 public class OutboxController {
-    private final OutboxEventService service;
+    private final OutboxService service;
 
     @GetMapping
-    public ResponseEntity<?> getEvents(
+    public ResponseEntity<?> readEvents(
             @RequestParam(value = "type") OutboxType type
             ) {
         List<OutboxEventDto> body = service.readAll(type);

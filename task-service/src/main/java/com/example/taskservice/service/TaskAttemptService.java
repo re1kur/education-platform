@@ -25,5 +25,5 @@ public interface TaskAttemptService {
 
     TaskAttempt get(UUID attemptId, Jwt user);
 
-    void setStatus(TaskAttempt found, TaskAttemptStatus status);
+    TaskAttempt setStatus(TaskAttempt found, TaskAttemptStatus status);
 }

@@ -4,6 +4,7 @@ import com.example.dto.PageDto;
 import com.example.dto.TransactionDto;
 import com.example.event.PayOrderRequest;
 import com.example.financeservice.entity.Transaction;
+import com.example.payload.SuccessTaskPayload;
 import org.springframework.security.oauth2.jwt.Jwt;
 
 import java.util.UUID;
@@ -17,4 +18,6 @@ public interface TransactionService {
     PageDto<TransactionDto> readAll(Jwt jwt, int page, int size);
 
     TransactionDto read(Jwt jwt, UUID id);
+
+    Transaction create(SuccessTaskPayload payload);
 }

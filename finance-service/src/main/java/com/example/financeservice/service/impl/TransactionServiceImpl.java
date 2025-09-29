@@ -13,6 +13,7 @@ import com.example.financeservice.mapper.TransactionMapper;
 import com.example.financeservice.repository.TransactionRepository;
 import com.example.financeservice.service.AccountService;
 import com.example.financeservice.service.TransactionService;
+import com.example.payload.SuccessTaskPayload;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -123,5 +124,11 @@ public class TransactionServiceImpl implements TransactionService {
 
        return  repo.findById(id).map(mapper::read)
                 .orElseThrow(() -> new TransactionNotFoundException(NOT_FOUND_MESSAGE.formatted(id)));
+    }
+
+    @Override
+    public Transaction create(SuccessTaskPayload payload) {
+        return null;
+        //todo
     }
 }

@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
-public class OutboxEventMapperImpl implements OutboxEventMapper {
+public class OutboxMapperImpl implements OutboxMapper {
     private final ObjectMapper mapper;
 
     @Value("${custom.outbox.reservation-time}")

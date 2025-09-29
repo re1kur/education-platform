@@ -6,7 +6,7 @@ import com.example.enums.OutboxType;
 import com.example.event.OutboxEventPayload;
 import com.example.event.PayOrderRequest;
 
-public interface OutboxEventMapper {
+public interface OutboxMapper {
     OutboxEvent create(OutboxEventPayload payload, OutboxType type);
 
     OutboxEventDto read(OutboxEvent outboxEvent);

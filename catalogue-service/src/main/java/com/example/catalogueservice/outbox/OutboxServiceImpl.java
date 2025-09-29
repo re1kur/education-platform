@@ -16,9 +16,9 @@ import java.util.UUID;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class OutboxEventServiceImpl implements OutboxEventService {
-    private final OutboxEventMapper mapper;
-    private final OutboxEventRepository repo;
+public class OutboxServiceImpl implements OutboxService {
+    private final OutboxMapper mapper;
+    private final OutboxRepository repo;
 
     @Override
     @Transactional

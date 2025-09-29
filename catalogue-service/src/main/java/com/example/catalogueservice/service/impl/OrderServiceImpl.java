@@ -3,14 +3,13 @@ package com.example.catalogueservice.service.impl;
 import com.example.catalogueservice.entity.Order;
 import com.example.catalogueservice.entity.Product;
 import com.example.catalogueservice.mapper.OrderMapper;
-import com.example.catalogueservice.outbox.OutboxEventService;
+import com.example.catalogueservice.outbox.OutboxService;
 import com.example.catalogueservice.repository.OrderRepository;
 import com.example.catalogueservice.service.OrderService;
 import com.example.catalogueservice.service.ProductService;
 import com.example.dto.OrderDto;
 import com.example.dto.PageDto;
 import com.example.enums.OrderStatus;
-import com.example.enums.OutboxType;
 import com.example.exception.OrderNotFoundException;
 import com.example.filter.OrderFilter;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +33,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository repo;
     private final OrderMapper mapper;
     private final ProductService productService;
-    private final OutboxEventService outboxService;
+    private final OutboxService outboxService;
 
     private final String ORDER_NOT_FOUND_MESSAGE = "ORDER [%s] WAS NOT FOUND.";
 

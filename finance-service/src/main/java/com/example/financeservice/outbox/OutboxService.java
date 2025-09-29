@@ -6,7 +6,7 @@ import com.example.financeservice.entity.Transaction;
 
 import java.util.List;
 
-public interface OutboxEventService {
+public interface OutboxService {
     void payOrder(OutboxEventDto outboxEventDto);
 
     void createTransaction(Transaction saved);
@@ -14,4 +14,6 @@ public interface OutboxEventService {
     List<OutboxEvent> getAll(OutboxType outboxType);
 
     void performTransaction(OutboxEvent event);
+
+    void successTask(OutboxEventDto event);
 }

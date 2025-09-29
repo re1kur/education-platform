@@ -7,6 +7,7 @@ import com.example.exception.OutboxEventReservedException;
 import com.example.financeservice.entity.Transaction;
 import com.example.financeservice.service.TransactionService;
 import com.example.financeservice.util.WebClient;
+import com.example.payload.SuccessTaskPayload;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,9 +21,9 @@ import java.util.UUID;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class OutboxEventServiceImpl implements OutboxEventService {
-    private final OutboxEventMapper mapper;
-    private final OutboxEventRepository repo;
+public class OutboxServiceImpl implements OutboxService {
+    private final OutboxMapper mapper;
+    private final OutboxRepository repo;
     private final WebClient webClient;
     private final TransactionService transactionService;
 
@@ -34,7 +35,7 @@ public class OutboxEventServiceImpl implements OutboxEventService {
         UUID eventId = event.id();
         log.info("LISTEN PAY ORDER EVENT [{}].", eventId);
 
-        reserveCatalogueEvent(event.reservedTo(), eventId);
+        reserveOutboxEvent(event.reservedTo(), eventId, OutboxType.PAY_ORDER_REQUEST);
 
         PayOrderRequest request = mapper.payOrderRequest(event);
         Transaction saved = transactionService.create(request);
@@ -83,6 +84,23 @@ public class OutboxEventServiceImpl implements OutboxEventService {
         log.info("PERFORM TRANSACTION EVENT [{}] IS LISTENED.", eventId);
     }
 
+    @Override
+    public void successTask(OutboxEventDto event) {
+        UUID eventId = event.id();
+        log.info("LISTEN SUCCESS TASK EVENT [{}].", eventId);
+
+        reserveOutboxEvent(event.reservedTo(), eventId, OutboxType.SUCCESS_TASK);
+
+        SuccessTaskPayload payload = mapper.successTask(event);
+        Transaction saved = transactionService.create(payload);
+
+        createTransaction(saved);
+
+        webClient.deleteEvent(eventId);
+
+        log.info("SUCCESS TASK EVENT [{}] IS LISTENED.", eventId);
+    }
+
     private void deleteFinanceEvent(OutboxEvent event) {
         UUID id = event.getId();
         log.info("DELETE OUTBOX EVENT [{}] REQUEST.", id);
@@ -103,9 +121,9 @@ public class OutboxEventServiceImpl implements OutboxEventService {
         log.info("OUTBOX EVENT [{}] IS RESERVED", id);
     }
 
-    private void reserveCatalogueEvent(LocalDateTime reservedTo, UUID id) {
+    private void reserveOutboxEvent(LocalDateTime reservedTo, UUID id, OutboxType type) {
         if (reservedTo == null || reservedTo.isBefore(LocalDateTime.now())) {
-            webClient.reserveCatalogueOutboxEvent(id);
+            webClient.reserveOutboxEvent(id, type);
             return;
         }
         throw new OutboxEventReservedException("OUTBOX EVENT [%s] ALREADY RESERVED.".formatted(id));

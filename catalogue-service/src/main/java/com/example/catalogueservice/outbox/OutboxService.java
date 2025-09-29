@@ -7,7 +7,7 @@ import com.example.enums.OutboxType;
 import java.util.List;
 import java.util.UUID;
 
-public interface OutboxEventService {
+public interface OutboxService {
     void createOrder(Order payload);
 
     List<OutboxEventDto> readAll(OutboxType type);

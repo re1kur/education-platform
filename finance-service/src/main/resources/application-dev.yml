@@ -22,6 +22,8 @@ custom:
     reservation-time: 1
   catalogue-service:
     url: http://localhost:8083/api/v1/outbox
+  task-service:
+    url: http://localhost:8081/api/v1/outbox
 
 springdoc:
   swagger-ui:

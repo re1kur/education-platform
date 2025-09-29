@@ -1,18 +1,16 @@
-package com.example.financeservice.outbox;
+package com.example.catalogueservice.outbox;
 
 import com.example.enums.OutboxType;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface OutboxEventRepository extends CrudRepository<OutboxEvent, UUID> {
+public interface OutboxRepository extends CrudRepository<OutboxEvent, UUID> {
     @Query(value = """
             FROM OutboxEvent o WHERE
             (o.type = :type) AND
@@ -20,15 +18,4 @@ public interface OutboxEventRepository extends CrudRepository<OutboxEvent, UUID>
             """)
     List<OutboxEvent> findAll(
             @Param("type") OutboxType type);
-
-    @Modifying
-    @Query(value = """
-            UPDATE OutboxEvent e
-            SET e.reservedTo = :reservedTo
-            WHERE e.id = :id AND
-            (e.reservedTo IS NULL OR e.reservedTo < CURRENT_TIMESTAMP)
-            """)
-    int reserve(
-            @Param("id") UUID id,
-            @Param("reservedTo") LocalDateTime reservedTo);
 }
