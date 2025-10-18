@@ -12,4 +12,4 @@ FROM eclipse-temurin:24-jre-alpine
 WORKDIR /app
 COPY --from=builder /app/file-service/target/file-service-0.0.1-SNAPSHOT.jar app.jar
 
-CMD ["java", "-jar", "app.jar", "-Dspring.profiles.active=prod"]
+CMD ["java", "-jar", "-Dspring.profiles.active=prod", "app.jar"]

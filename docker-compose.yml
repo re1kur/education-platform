@@ -3,6 +3,8 @@ services:
     image: postgres:17-alpine
     container_name: kc_psql
     env_file: docker/psql/environment/.env
+    networks:
+      - keycloak_net
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${KC_DB_USER} -d ${KC_DB_NAME}" ]
       interval: 10s
@@ -14,11 +16,13 @@ services:
     container_name: keycloak
     env_file: docker/keycloak/environment/.env
     environment:
-      KC_HEALTH_ENABLED: "true"
+      KC_HEALTH_ENABLED: true
+      KC_HTTP_MANAGEMENT_ENABLED: true
+      KC_HTTP_MANAGEMENT_PORT: 9000
+      KC_HTTP_MANAGEMENT_SCHEME: http
     command: start-dev --metrics-enabled=true
     ports:
       - "9090:8080"
-      - "9111:9000"
     volumes:
       - ./docker/keycloak/init/realms:/tmp/realms
       - ./docker/keycloak/init/scripts/commands.sh:/tmp/scripts/commands.sh
@@ -26,8 +30,10 @@ services:
     depends_on:
       kc_psql:
         condition: service_healthy
+    networks:
+      - keycloak_net
     healthcheck:
-      test: [ "CMD-SHELL", "curl -fsS http://localhost:9000/health/ready || exit 1" ]
+      test: ["CMD-SHELL" , "{ printf 'HEAD /health/ready HTTP/1.0\r\n\r\n' >&0; grep 'HTTP/1.0 200'; } 0<>/dev/tcp/localhost/9000"]
       start_period: 60s
       interval: 10s
       timeout: 5s
@@ -82,3 +88,6 @@ services:
       interval: 5s
       timeout: 5s
       retries: 30
+
+networks:
+  keycloak_net:
