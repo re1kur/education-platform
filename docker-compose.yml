@@ -3,8 +3,6 @@ services:
     image: postgres:17-alpine
     container_name: kc_psql
     env_file: docker/psql/environment/.env
-    networks:
-      - keycloak_net
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${KC_DB_USER} -d ${KC_DB_NAME}" ]
       interval: 10s
@@ -30,8 +28,6 @@ services:
     depends_on:
       kc_psql:
         condition: service_healthy
-    networks:
-      - keycloak_net
     healthcheck:
       test: ["CMD-SHELL" , "{ printf 'HEAD /health/ready HTTP/1.0\r\n\r\n' >&0; grep 'HTTP/1.0 200'; } 0<>/dev/tcp/localhost/9000"]
       start_period: 60s
@@ -65,11 +61,11 @@ services:
       timeout: 5s
       retries: 30
 
-  file_service:
+  file-service:
+    container_name: file_service
     build:
       context: .
       dockerfile: file-service/Dockerfile
-    container_name: file-service
     env_file:
       - file-service/docker/environment/service.env
     expose:
@@ -89,5 +85,35 @@ services:
       timeout: 5s
       retries: 30
 
-networks:
-  keycloak_net:
+  ts_psql:
+    container_name: ts_psql
+    image: postgres:17-alpine
+    env_file:
+      - task-service/docker/environment/sql.env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${TS_DB_USER} -d ${TS_DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+
+  task-service:
+    container_name: task_service
+    build:
+      context: .
+      dockerfile: task-service/Dockerfile
+    env_file:
+      - task-service/docker/environment/service.env
+    expose:
+      - "8081"
+    ports:
+      - "8081:8081"
+    depends_on:
+      keycloak:
+        condition: service_healthy
+      ts_psql:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8081/actuator/health || exit 1" ]
+      interval: 5s
+      timeout: 5s
+      retries: 30

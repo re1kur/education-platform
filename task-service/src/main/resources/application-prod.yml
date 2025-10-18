@@ -2,6 +2,10 @@ spring:
   docker:
     compose:
       enabled: false
+  datasource:
+    username: ${DB_USER}
+    password: ${DB_PASS}
+    url: ${DB_URL}
   security:
     oauth2:
       client:

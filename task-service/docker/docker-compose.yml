@@ -1,7 +1,6 @@
-name: ep-dev-ts
-
 services:
   psql:
+    container_name: psql
     env_file:
       - environment/sql.env
     image: postgres:17-alpine
