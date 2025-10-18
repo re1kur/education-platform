@@ -11,6 +11,7 @@
 
     <modules>
         <module>core</module>
+        <module>file-service</module>
         <module>task-service</module>
         <module>finance-service</module>
     </modules>

@@ -1,6 +1,4 @@
 spring:
-  application:
-    name: file-service
   docker:
     compose:
       enabled: true

@@ -1,0 +1,18 @@
+spring:
+  docker:
+    compose:
+      enabled: false
+  datasource:
+    username: ${DB_USER}
+    password: ${DB_PASS}
+    url: ${DB_URL}
+
+
+minio:
+  access-key: ${S3_ACCESS_KEY}
+  secret-key: ${S3_SECRET_KEY}
+  endpoint: ${S3_ENDPOINT}
+  endpoint-override: ${S3_ENDPOINT_OVERRIDE}
+  url:
+    time-to-live: 7
+  default-bucket: developer
