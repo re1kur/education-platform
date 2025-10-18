@@ -2,3 +2,19 @@ spring:
   docker:
     compose:
       enabled: false
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: ${OAUTH2_ISSUER_URI}
+            user-name-attribute: preferred
+
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: ${OAUTH2_CLIENT_ID}
+      client-secret: ${OAUTH2_CLIENT_SECRET}
+
+custom:
+  file-service-url: ${FILE_SERVICE_URL}
