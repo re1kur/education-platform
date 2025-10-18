@@ -4,6 +4,6 @@ services:
   psql:
     image: postgres:17-alpine
     env_file:
-      - environment/sql.env
+      - environment/db.env
     ports:
       - '5436:5432'
