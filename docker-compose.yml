@@ -154,6 +154,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 30
+
 #   CATALOGUE SERVICE
   cs_psql:
     container_name: cs_psql
@@ -166,3 +167,24 @@ services:
       timeout: 5s
       retries: 20
 
+  catalogue-service:
+    container_name: catalogue_service
+    build:
+      context: .
+      dockerfile: catalogue-service/Dockerfile
+    env_file:
+      - catalogue-service/docker/environment/service.env
+    expose:
+      - "8083"
+    ports:
+      - "8083:8083"
+    depends_on:
+      keycloak:
+        condition: service_healthy
+      cs_psql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8083/actuator/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 30

@@ -1,7 +1,7 @@
-name: ep-dev-cs
 
 services:
-  psql:
+  cs_psql_dev:
+    container_name: cs_psql_dev
     image: postgres:17-alpine
     env_file:
       - environment/db.env
