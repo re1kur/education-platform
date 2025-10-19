@@ -11,6 +11,7 @@ spring:
       client:
         provider:
           keycloak:
+            external-issuer-uri: ${OAUTH2_ISSUER_EXTERNAL_URI}
             issuer-uri: ${OAUTH2_ISSUER_URI}
             user-name-attribute: preferred
 

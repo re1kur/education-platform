@@ -1,2 +1,28 @@
 покрытие тестами.
+
+
 секурити везде, подумать о взаимодействии сервисов.
+
+
+task-service:
+    1. аутбокс разобраться.
+    (finance_service    | org.springframework.web.client.HttpClientErrorException$Unauthorized: 401  on GET request for "http://task-service:8081/api/v1/outbox": [no body]
+     finance_service    |    at org.springframework.web.client.HttpClientErrorException.create(HttpClientErrorException.java:106) ~[spring-web-6.2.5.jar!/:6.2.5]
+     ТАМ СТРИМ ВОЗВРАЩАЕТСЯ ВМЕСТО ЛИСТА)
+
+
+swagger:
+    1. исправить в finance-service конфигурацию(там название сервиса как у каталог сервиса)
+
+
+протестировать полностью.
+
+
+finance-service:
+    1. keycloak клиента создать. рилм конфиг поменять.
+    2. вставить в проперти креды
+
+
+keycloak:
+    1. сделать вечного админа
+    2. поменять рилм при выполнении пункта 1.

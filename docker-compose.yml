@@ -21,7 +21,7 @@ services:
       KC_HTTP_MANAGEMENT_SCHEME: http
     command: start-dev --metrics-enabled=true
     ports:
-      - "9090:8080"
+      - "8080:8080"
     volumes:
       - ./docker/keycloak/init/realms:/tmp/realms
       - ./docker/keycloak/init/scripts/commands.sh:/tmp/scripts/commands.sh
