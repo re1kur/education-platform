@@ -36,6 +36,7 @@ public class OutboxServiceImpl implements OutboxService {
     @Override
     public List<OutboxEventDto> readAll() {
         Stream<OutboxEvent> stream = Stream.of((OutboxEvent) repo.findAll());
+//        todo: che za stream
         return stream.map(mapper::read).toList();
     }
 }

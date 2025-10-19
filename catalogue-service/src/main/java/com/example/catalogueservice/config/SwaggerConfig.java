@@ -20,8 +20,8 @@ import org.springframework.context.annotation.Configuration;
         bearerFormat = "JWT",
         flows = @OAuthFlows(
                 authorizationCode = @OAuthFlow(
-                        tokenUrl = "${spring.security.oauth2.client.provider.keycloak.issuer-uri}/protocol/openid-connect/token",
-                        authorizationUrl = "${spring.security.oauth2.client.provider.keycloak.issuer-uri}/protocol/openid-connect/auth",
+                        tokenUrl = "${spring.security.oauth2.client.provider.keycloak.external-issuer-uri}/protocol/openid-connect/token",
+                        authorizationUrl = "${spring.security.oauth2.client.provider.keycloak.external-issuer-uri}/protocol/openid-connect/auth",
                         scopes = {
                                 @OAuthScope(name = "openid")
                         }

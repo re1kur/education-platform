@@ -1,0 +1,30 @@
+spring:
+  docker:
+    compose:
+      enabled: false
+  datasource:
+    username: ${DB_USER}
+    password: ${DB_PASS}
+    url: ${DB_URL}
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            external-issuer-uri: ${OAUTH2_ISSUER_EXTERNAL_URI}
+            issuer-uri: ${OAUTH2_ISSUER_URI}
+            user-name-attribute: preferred
+
+custom:
+  outbox:
+    reservation-time: 1
+  catalogue-service:
+    url: ${CATALOGUE_SERVICE_URL}
+  task-service:
+    url: ${TASK_SERVICE_URL}
+
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: ${OAUTH2_CLIENT_ID}
+      client-secret: ${OAUTH2_CLIENT_SECRET}

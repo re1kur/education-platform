@@ -26,7 +26,8 @@ public class SecurityConfiguration {
                         .requestMatchers("/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/v3/api-docs",
-                                "/v3/api-docs/**").permitAll()
+                                "/v3/api-docs/**",
+                                "/actuator/**").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .build();

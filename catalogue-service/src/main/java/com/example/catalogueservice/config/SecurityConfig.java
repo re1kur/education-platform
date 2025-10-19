@@ -36,7 +36,8 @@ public class SecurityConfig {
                                 "/v3/api-docs",
                                 "/v3/api-docs/**",
                                 "/api/v1/outbox",
-                                "/api/v1/outbox/**").permitAll()
+                                "/api/v1/outbox/**",
+                                "/actuator/**").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/api/v1/orders/*").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/v1/orders").authenticated()

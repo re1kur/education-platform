@@ -4,13 +4,13 @@ services:
   psql:
     image: postgres:17-alpine
     env_file:
-      - environment/sql.env
+      - environment/db.env
     ports:
       - '5434:5432'
   minio:
     image: quay.io/minio/minio:latest
     env_file:
-      - environment/minio.env
+      - environment/s3.env
     command: server /data --console-address ":9001"
     ports:
       - '9000:9000'

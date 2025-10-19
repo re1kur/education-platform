@@ -1,9 +1,8 @@
-name: ep-dev-ts
-
 services:
   psql:
+    container_name: psql
     env_file:
-      - environment/sql.env
+      - environment/db.env
     image: postgres:17-alpine
     ports:
       - '5433:5432'

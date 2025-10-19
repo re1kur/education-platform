@@ -1,24 +1,190 @@
 services:
-  ep-kc-psql:
+#   KEYCLOAK
+  kc_psql:
     image: postgres:17-alpine
+    container_name: kc_psql
     env_file: docker/psql/environment/.env
-    networks:
-      - keycloak_net
-  ep-keycloak:
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${KC_DB_USER} -d ${KC_DB_NAME}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+
+  keycloak:
     image: quay.io/keycloak/keycloak:26.2
+    container_name: keycloak
     env_file: docker/keycloak/environment/.env
-    command: start-dev
+    environment:
+      KC_HEALTH_ENABLED: true
+      KC_HTTP_MANAGEMENT_ENABLED: true
+      KC_HTTP_MANAGEMENT_PORT: 9000
+      KC_HTTP_MANAGEMENT_SCHEME: http
+    command: start-dev --metrics-enabled=true
+    ports:
+      - "8080:8080"
     volumes:
       - ./docker/keycloak/init/realms:/tmp/realms
       - ./docker/keycloak/init/scripts/commands.sh:/tmp/scripts/commands.sh
     entrypoint: [ "sh", "/tmp/scripts/commands.sh" ]
-    ports:
-      - "9090:8080"
-    networks:
-      - keycloak_net
     depends_on:
-      - ep-kc-psql
+      kc_psql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL" , "{ printf 'HEAD /health/ready HTTP/1.0\r\n\r\n' >&0; grep 'HTTP/1.0 200'; } 0<>/dev/tcp/localhost/9000"]
+      start_period: 60s
+      interval: 10s
+      timeout: 5s
+      retries: 30
 
-networks:
-  keycloak_net:
-    external: false
+#   FILE SERVICE
+  fs_psql:
+    image: postgres:17-alpine
+    container_name: fs_psql
+    env_file:
+      - file-service/docker/environment/db.env
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${FS_DB_USER} -d ${FS_DB_NAME}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+
+  minio:
+    image: quay.io/minio/minio:latest
+    container_name: minio
+    env_file:
+      - file-service/docker/environment/s3.env
+    command: server /data --console-address ":9001"
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -k -f http://localhost:9001/minio/health/live || exit 1" ]
+      interval: 15s
+      timeout: 5s
+      retries: 30
+
+  file-service:
+    container_name: file_service
+    build:
+      context: .
+      dockerfile: file-service/Dockerfile
+    env_file:
+      - file-service/docker/environment/service.env
+    expose:
+      - "8082"
+    ports:
+      - "8082:8082"
+    depends_on:
+      fs_psql:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8082/actuator/health || exit 1" ]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+#   TASK SERVICE
+  ts_psql:
+    container_name: ts_psql
+    image: postgres:17-alpine
+    env_file:
+      - task-service/docker/environment/db.env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${TS_DB_USER} -d ${TS_DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+
+  task-service:
+    container_name: task_service
+    build:
+      context: .
+      dockerfile: task-service/Dockerfile
+    env_file:
+      - task-service/docker/environment/service.env
+    expose:
+      - "8081"
+    ports:
+      - "8081:8081"
+    depends_on:
+      keycloak:
+        condition: service_healthy
+      ts_psql:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8081/actuator/health || exit 1" ]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+#   FINANCE SERVICE
+  fns_psql:
+    container_name: fns_psql
+    image: postgres:17-alpine
+    env_file:
+      - finance-service/docker/environment/db.env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${FNS_DB_USER} -d ${FNS_DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+
+  finance-service:
+    container_name: finance_service
+    build:
+      context: .
+      dockerfile: finance-service/Dockerfile
+    env_file:
+      - finance-service/docker/environment/service.env
+    depends_on:
+      keycloak:
+        condition: service_healthy
+      fns_psql:
+        condition: service_healthy
+    expose:
+      - "8084"
+    ports:
+      - "8084:8084"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8084/actuator/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+#   CATALOGUE SERVICE
+  cs_psql:
+    container_name: cs_psql
+    image: postgres:17-alpine
+    env_file:
+      - catalogue-service/docker/environment/db.env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${CS_DB_USER} -d ${CS_DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+
+  catalogue-service:
+    container_name: catalogue_service
+    build:
+      context: .
+      dockerfile: catalogue-service/Dockerfile
+    env_file:
+      - catalogue-service/docker/environment/service.env
+    expose:
+      - "8083"
+    ports:
+      - "8083:8083"
+    depends_on:
+      keycloak:
+        condition: service_healthy
+      cs_psql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8083/actuator/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 30

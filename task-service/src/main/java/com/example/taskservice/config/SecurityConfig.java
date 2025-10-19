@@ -33,7 +33,10 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/v3/api-docs",
-                                "/v3/api-docs/**").permitAll()
+                                "/v3/api-docs/**",
+                                "/actuator/**",
+                                "/api/v1/outbox",
+                                "/api/v1/outbox/**").permitAll()
                         .requestMatchers("/api/v1/test/token",
                                 "/api/v1/tasks/attempts/*/results").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/v1/tasks/*").hasRole("ADMIN")

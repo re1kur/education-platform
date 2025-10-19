@@ -8,7 +8,8 @@ spring:
       client:
         provider:
           keycloak:
-            issuer-uri: http://localhost:9090/realms/education_platform
+            external-issuer-uri: http://localhost:8080/realms/education_platform
+            issuer-uri: http://localhost:8080/realms/education_platform
             user-name-attribute: preferred
 
 springdoc:

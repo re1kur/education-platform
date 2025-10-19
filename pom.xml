@@ -11,8 +11,10 @@
 
     <modules>
         <module>core</module>
+        <module>file-service</module>
         <module>task-service</module>
         <module>finance-service</module>
+        <module>catalogue-service</module>
     </modules>
 
     <properties>
